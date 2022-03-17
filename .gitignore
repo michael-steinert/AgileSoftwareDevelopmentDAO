@@ -1,0 +1,17 @@
+node_modules
+coverage
+coverage.json
+package-lock.json
+
+# Hardhat Files
+cache
+app/src/artifacts
+deployments
+
+# IntelliJ
+.idea
+
+# TypeScript
+typechain-types
+
+.env
