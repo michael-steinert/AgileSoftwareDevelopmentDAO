@@ -115,16 +115,15 @@ const UserStory = (): ReactElement => {
             setUserStoryContract(_userStoryContract);
             /* Subscribe to Event Calling Listener when the Event `UserStoryCreated` occurs */
             _userStoryContract.on("UserStoryCreated", onUserStoryCreated);
-
-            async function retrieveAllUserStories(_userStoryContract: Contract): Promise<void> {
+            const retrieveAllUserStories = async (_userStoryContract: Contract): Promise<void> => {
                 /* Getting all User Stories */
-                const userStories = await _userStoryContract.userStories();
+                const userStories = await _userStoryContract.retrieveAllUserStory();
+                console.log(userStories)
                 /* Change all User Stories, if they changed */
                 if (allUserStories !== userStories) {
                     setAllUserStories(userStories);
                 }
             }
-
             retrieveAllUserStories(_userStoryContract).catch(console.error);
         }
         /*

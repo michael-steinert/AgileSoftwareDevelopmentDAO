@@ -27,12 +27,7 @@ const ChainId = (): ReactElement => {
 
     return (
         <React.Fragment>
-      <span>
-        <strong>Chain Id</strong>
-      </span>
-            <span role={"img"} aria-label={"chain"}>
-        Blockchain
-      </span>
+            <span><strong>Chain Id</strong></span>
             <span>{chainId ?? ""}</span>
         </React.Fragment>
     );
@@ -69,18 +64,19 @@ const BlockNumber = (): ReactElement => {
 
         library.on("block", setBlockNumber);
 
-        return (): void => {
-            stale = true;
-            library.removeListener("block", setBlockNumber);
-            setBlockNumber(undefined);
-        };
+        return (
+            (): void => {
+                stale = true;
+                library.removeListener("block", setBlockNumber);
+                setBlockNumber(undefined);
+            }
+        );
         /* Ensuring Refresh if referential Identity of Library does not change across chainIds */
     }, [library, chainId]);
 
     return (
         <React.Fragment>
             <span><strong>Block Number</strong></span>
-            <span role={"img"} aria-label={"numbers"}>Block Number</span>
             <span>{blockNumber === null ? "Error" : blockNumber ?? ""}</span>
         </React.Fragment>
     );
@@ -92,7 +88,6 @@ const Account = (): ReactElement => {
     return (
         <React.Fragment>
             <span><strong>Account</strong></span>
-            <span role={"img"} aria-label={"robot"}>Robot</span>
             <span>
             {
                 typeof account === "undefined" ? "" :
@@ -153,7 +148,6 @@ const Balance = (): ReactElement => {
     return (
         <React.Fragment>
             <span><strong>Balance</strong></span>
-            <span role={"img"} aria-label={"gold"}>Balance</span>
             <span>
             {
                 balance === null ? (
@@ -216,7 +210,6 @@ const NextNonce = (): ReactElement => {
     return (
         <React.Fragment>
             <span><strong>Next Nonce</strong></span>
-            <span role={"img"} aria-label={"gold"}>Next Nonce</span>
             <span>{nextNonce === null ? "Error" : nextNonce ?? ""}</span>
         </React.Fragment>
     );
