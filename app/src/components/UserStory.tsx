@@ -4,14 +4,12 @@ import {Contract, ethers, Signer} from "ethers";
 import GovernorContract from "../artifacts/contracts/GovernorContract.sol/GovernorContract.json";
 // @ts-ignore
 import UserStoryContract from "../artifacts/contracts/UserStoryContract.sol/UserStoryContract.json";
-import {network} from "hardhat";
-import * as fs from "fs";
 import styled from "styled-components";
 import {useWeb3React} from "@web3-react/core";
 import {Provider} from "../utils/provider";
 import {SectionDivider} from "./SectionDivider";
 
-type UserStory = {
+type IUserStory = {
     creator: string;
     userStoryNumber: number;
     description: string;
@@ -32,8 +30,8 @@ const StyledDeployContractButton = styled.button`
 
 const StyledUserStoryDiv = styled.div`
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr;
-  grid-template-columns: 135px 2.7fr 1fr;
+  /* grid-template-rows: 1fr 1fr 1fr; */
+  /* grid-template-columns: 135px 2.7fr 1fr; */
   grid-gap: 10px;
   place-self: center;
   align-items: center;
@@ -45,7 +43,6 @@ const StyledLabel = styled.label`
 
 const StyledInput = styled.input`
   padding: 0.4rem 0.6rem;
-  line-height: 2fr;
 `;
 
 const StyledButton = styled.button`
@@ -56,18 +53,17 @@ const StyledButton = styled.button`
   cursor: pointer;
 `;
 
-
 const UserStory = (): ReactElement => {
-    const context = useWeb3React<Provider>();
-    const {library, active} = context;
+    const {library, active, account} = useWeb3React<Provider>();
     const [signer, setSigner] = useState<Signer>();
     const [userStoryContract, setUserStoryContract] = useState<Contract>();
     const [currentAccount, setCurrentAccount] = useState("");
-    const [allUserStories, setAllUserStories] = useState<UserStory[]>([]);
-    const [error, setError] = useState({});
+    const [allUserStories, setAllUserStories] = useState<IUserStory[]>([]);
+    const [error, setError] = useState<Error>();
     const [description, setDescription] = useState("");
     const [functionalComplexity, setFunctionalComplexity] = useState("");
     const [effortEstimation, setEffortEstimation] = useState("");
+    const [allProposalIDs, setAllProposalIDs] = useState<number[]>([]);
 
     const governanceContractAddress = "0x15F16B9c06a107eEED8192682Ca22fdac64E74e3";
     const userStoryContractAddress = "0xbD046a019aCf77B9F370C4F7C4C6354Af8936C1a";
@@ -96,8 +92,8 @@ const UserStory = (): ReactElement => {
             timestamp: any,
             isDone: boolean
         ) => {
-            /* Set User's Message from Wave Event */
-            setAllUserStories((previousUserStories) => {
+            /* Set User Story from Event */
+            setAllUserStories((previousUserStories: IUserStory[]) => {
                 return [
                     ...previousUserStories, {
                         creator: creator,
@@ -143,34 +139,6 @@ const UserStory = (): ReactElement => {
         */
     }, []);
 
-    const connectWallet = async () => {
-        try {
-            const {ethereum} = window as any;
-            if (!ethereum) {
-                alert("A Wallet like MetaMask is required");
-                return;
-            }
-            /* Asking User to give Access to their Wallet */
-            const accounts = await ethereum.request({
-                method: "eth_requestAccounts"
-            });
-            console.log("Wallet connected with Account", accounts[0]);
-            setCurrentAccount(accounts[0]);
-            /* Listening on Wallet Event when Account is changed */
-            ethereum.on("accountsChanged", async () => {
-                /* Getting List of connected Accounts */
-                const _accounts = await ethereum.request({
-                    method: "eth_accounts"
-                });
-                setCurrentAccount(_accounts[0]);
-            });
-        } catch (err: any) {
-            setError(err);
-            console.error(err.message);
-        }
-    }
-
-
     const storeUserStory = async () => {
         try {
             const {ethereum} = window as any;
@@ -210,12 +178,14 @@ const UserStory = (): ReactElement => {
                 const proposalSnapShot = await governorContract.proposalSnapshot(proposalId);
                 /* Getting Deadline for Proposal */
                 const proposalDeadline = await governorContract.proposalDeadline(proposalId);
-                /* Getting all Proposals from `proposals.json` */
-                let proposals = JSON.parse(fs.readFileSync("proposals.json", "utf8"));
-                /* Saving new Proposal */
-                proposals[network.config.chainId!.toString()].push(proposalId.toString());
-                /* Writing new Proposal into `proposals.json` */
-                fs.writeFileSync("proposals.json", JSON.stringify(proposals));
+                /* Set User Story from Event */
+                setAllProposalIDs((previousProposalIDs: number[]) => {
+                    return [
+                        ...previousProposalIDs,
+                        proposalId
+                    ]
+                });
+                console.log(`Sate with Proposal ID:\n  ${allProposalIDs}`);
                 /* State of Proposal: 1 is not passed and 0 is passed */
                 console.log(`Current Proposal State: ${proposalState}`);
                 /* Block Number that the current Proposal was snapshot */
@@ -231,42 +201,7 @@ const UserStory = (): ReactElement => {
         }
     }
 
-    const retrieveAllUserStories = async () => {
-        try {
-            const {ethereum} = window as any;
-            if (ethereum) {
-                const provider = new ethers.providers.Web3Provider(ethereum);
-                const signer = provider.getSigner();
-                const userStoryContract = new ethers.Contract(userStoryContractAddress, userStoryContractABI, signer);
-                /* Call Read Function `retrieveAllUserStories` from the Smart Contract */
-                const userStories = await userStoryContract.retrieveAllUserStory();
-                if (userStories) {
-                    /* Formatting Timestamp from the Struct `UserStory` */
-                    let userStoriesFormatted: any = [];
-                    userStories.forEach((userStory: UserStory) => {
-                        userStoriesFormatted.push({
-                            creator: userStory.creator,
-                            userStoryNumber: userStory.userStoryNumber,
-                            description: userStory.description,
-                            functionalComplexity: userStory.functionalComplexity,
-                            effortEstimation: userStory.effortEstimation,
-                            timestamp: new Date(userStory.timestamp * 1000),
-                            isDone: userStory.isDone
-                        });
-                    });
-                    setAllUserStories(userStoriesFormatted);
-                }
-            } else {
-                console.log("Ethereum Object does not exist");
-            }
-        } catch (err: any) {
-            setError(err);
-            console.error(err.message);
-        }
-    }
-
     /* Pop a Error Message if User is not on Testnet Rinkeby */
-    // @ts-ignore
     if (error && error.name === "UnsupportedChainIdError") {
         return (
             <div>
@@ -277,12 +212,6 @@ const UserStory = (): ReactElement => {
             </div>
         );
     }
-
-    /* Shorten a given Wallet Address */
-    const shortenAddress = (address: any) => {
-        return (`${address.substring(0, 6)}...${address.substring(address.length - 4)}`);
-    };
-
 
     function handleDescriptionChange(event: ChangeEvent<HTMLInputElement>): void {
         event.preventDefault();
@@ -299,27 +228,20 @@ const UserStory = (): ReactElement => {
         setEffortEstimation(event.target.value);
     }
 
-    /* If User has not connected their Wallet to the Application */
-    if (!currentAccount) {
-        return (
-            <div>
-                <h1>Welcome to Agile Development DAO</h1>
-                <button onClick={connectWallet}>
-                    Connect Wallet
-                </button>
-            </div>
-        );
-    }
-
     return (
         <React.Fragment>
             <StyledUserStoryDiv>
                 <h1>Agile DAO</h1>
-                <StyledLabel>Contract addr</StyledLabel>
+                <StyledLabel>Contract Address</StyledLabel>
                 <div>
                     {
                         userStoryContract ? (
-                            shortenAddress(signer?.getAddress())
+                            typeof account === "undefined" ? ("") : (
+                                account ?
+                                    (
+                                        `${account.substring(0, 6)}...${account.substring(account.length - 4)}`
+                                    ) : ("")
+                            )
                         ) : (
                             <em>{`<Smart Contract not yet deployed>`}</em>
                         )
@@ -334,7 +256,7 @@ const UserStory = (): ReactElement => {
                             <div>
                                 <h2>Active User Stories</h2>
                                 {
-                                    allUserStories && allUserStories.map((userStory: UserStory, index: number) => {
+                                    allUserStories && allUserStories.map((userStory: IUserStory, index: number) => {
                                         return (
                                             <div key={index}>
                                                 <h5>{userStory.userStoryNumber}</h5>
@@ -351,8 +273,9 @@ const UserStory = (): ReactElement => {
                 </div>
                 {/* Empty Placeholder `div` below to provide empty first Row, third Colum `div` for a 2x3 Grid */}
                 <div/>
-                <SectionDivider />
-                <StyledLabel htmlFor={"greetingInput"}>Create new User Story</StyledLabel>
+                <SectionDivider/>
+                <h2>Create new User Story</h2>
+                <StyledLabel htmlFor={"descriptionInput"}>Description</StyledLabel>
                 <StyledInput
                     id={"descriptionInput"}
                     type={"text"}
@@ -360,6 +283,7 @@ const UserStory = (): ReactElement => {
                     onChange={handleDescriptionChange}
                     style={{fontStyle: userStoryContract ? "normal" : "italic"}}
                 />
+                <StyledLabel htmlFor={"functionalComplexityInput"}>Functional Complexity</StyledLabel>
                 <StyledInput
                     id={"functionalComplexityInput"}
                     type={"text"}
@@ -367,6 +291,7 @@ const UserStory = (): ReactElement => {
                     onChange={handleFunctionalComplexityChange}
                     style={{fontStyle: userStoryContract ? "normal" : "italic"}}
                 />
+                <StyledLabel htmlFor={"effortEstimationInput"}>Effort Estimation</StyledLabel>
                 <StyledInput
                     id={"effortEstimationInput"}
                     type={"text"}

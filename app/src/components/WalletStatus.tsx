@@ -156,7 +156,9 @@ const Balance = (): ReactElement => {
             <span role={"img"} aria-label={"gold"}>Balance</span>
             <span>
             {
-                balance === null ? "Error" : (
+                balance === null ? (
+                    "Error"
+                ) : (
                     balance ? (
                         `Ξ${Math.round(+ethers.utils.formatEther(balance) * 1e4) / 1e4}`
                     ) : ("")
