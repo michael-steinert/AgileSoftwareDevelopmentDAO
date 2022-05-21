@@ -1,4 +1,4 @@
-import {network, ethers} from "hardhat";
+import {network, ethers, deployments} from "hardhat";
 import * as fs from "fs";
 import {proposalsFile, developmentChains, VOTING_PERIOD} from "../utils/hardhat-config";
 import {moveBlocks} from "../utils/move-blocks";
@@ -12,20 +12,21 @@ const vote = async (proposalIndex: number) => {
     const proposalId = proposals[network.config.chainId!][proposalIndex];
     /* Vote Types := 0 = Against, 1 = For, and 2 = Abstain for Proposal */
     const voteType = 1;
-    const reasonForVote = "Change Number to 42";
+    const reasonForVote = "Voting for new User Story";
     console.log("Voting in Process");
-    const governorContract = await ethers.getContract("GovernorContract");
+    const DaoGovernor = await deployments.get("DaoGovernor");
+    const daoGovernor = await ethers.getContractAt("GovernorContract", DaoGovernor.address);
     /* Creating Proposal with Reason */
-    const voteTransaction = await governorContract.castVoteWithReason(proposalId, voteType, reasonForVote);
+    const voteTransaction = await daoGovernor.castVoteWithReason(proposalId, voteType, reasonForVote);
     const voteTransactionResult = await voteTransaction.wait(1);
     console.log(voteTransactionResult.events[0].args.reason);
-    const proposalState = await governorContract.state(proposalId);
+    const proposalState = await daoGovernor.state(proposalId);
     console.log(`Current Proposal State is ${proposalState}`);
     /* If working on a Development Network, the Blocks will be pushed forward till got to the Voting Period */
     if (developmentChains.includes(network.name)) {
         await moveBlocks(VOTING_PERIOD + 1);
     }
-    console.log("Voted");
+    console.log("Voted for new Proposal");
 }
 
 vote(index)

@@ -1,3 +1,5 @@
+type UserStory = [description: string, functionalComplexity: number, effortEstimation: number];
+
 export interface networkConfigItem {
     ethUsdPriceFeed?: string
     blockConfirmations?: number
@@ -19,15 +21,22 @@ export const developmentChains = ["hardhat", "localhost"];
 export const proposalsFile = "proposals.json";
 
 /* Governor Contract Values */
-/* A Vote needs 4% of Voters to voted for it to pass */
-export const QUORUM_PERCENTAGE = 4;
-/* A Vote has to pass 1 Hour before it can be enacted */
-export const MIN_DELAY = 3600;
+
+/* A Proposal needs 42% of Voters to vote for it to pass */
+/* Percentage of total Supply of Token Holders (People) / Tokens needed to approve Proposals (42%) */
+export const QUORUM_PERCENTAGE = 42;
 /* The Vote has to last over 5 Blocks */
 export const VOTING_PERIOD = 5;
-/* The Vote becomes active after 1 Block */
+/* The passed Vote has to wait one Block before it can be executed */
 export const VOTING_DELAY = 1;
+/* Minimum Number of Votes an Account must have to create a proposal */
+export const THRESHOLD = 0;
 
-export const NEW_STORE_VALUE = 42;
-export const FUNCTION_TO_CALL = "store";
-export const PROPOSAL_DESCRIPTION = "Proposal #1 42 in the Box!";
+/* Time Lock Controller */
+/* A Vote has to pass 60 Seconds before it can be enacted */
+export const MIN_DELAY = 60;
+
+/* Store new User Story */
+export const NEW_USER_STORY:UserStory = ["First User Story", 21, 42];
+export const FUNCTION_TO_CALL = "storeUserStory";
+export const PROPOSAL_DESCRIPTION = "Proposal #1 Store new User Story";
