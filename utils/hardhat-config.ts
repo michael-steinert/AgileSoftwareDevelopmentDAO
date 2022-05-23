@@ -37,6 +37,6 @@ export const THRESHOLD = 0;
 export const MIN_DELAY = 60;
 
 /* Store new User Story */
-export const NEW_USER_STORY:UserStory = ["First User Story", 21, 42];
+export const NEW_USER_STORY: UserStory = ["First User Story", 21, 42];
 export const FUNCTION_TO_CALL = "storeUserStory";
 export const PROPOSAL_DESCRIPTION = "Proposal #1 Store new User Story";

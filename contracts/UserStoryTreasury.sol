@@ -6,6 +6,12 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 
 /* `UserStory` is owned and governed by DAO - new Values for `UserStory` are proposed through the DAO */
 contract UserStoryTreasury is Ownable {
+    error InvalidUserStory(
+        string sentDescription,
+        uint256 sentFunctionalComplexity,
+        uint256 sentEffortEstimation
+    );
+
     using Counters for Counters.Counter;
     Counters.Counter private userStoryCounter;
 
@@ -48,17 +54,27 @@ contract UserStoryTreasury is Ownable {
         uint256 _functionalComplexity,
         uint256 _effortEstimation
     ) public onlyOwner {
-        userStories.push(
-            UserStory(
-                msg.sender,
-                userStoryCounter.current(),
-                _description,
-                _functionalComplexity,
-                _effortEstimation,
-                block.timestamp,
-                false
-            )
-        );
+        /* Convert String to Byte to check its Length */
+        bytes memory descriptionAsByte = bytes(_description);
+        if (descriptionAsByte.length == 0 || _functionalComplexity == 0 || _effortEstimation == 0) {
+            revert InvalidUserStory({
+            sentDescription : _description,
+            sentFunctionalComplexity : _functionalComplexity,
+            sentEffortEstimation : _effortEstimation
+            });
+        } else {
+            userStories.push(
+                UserStory(
+                    msg.sender,
+                    userStoryCounter.current(),
+                    _description,
+                    _functionalComplexity,
+                    _effortEstimation,
+                    block.timestamp,
+                    false
+                )
+            );
+        }
 
         emit UserStoryCreated(
             msg.sender,

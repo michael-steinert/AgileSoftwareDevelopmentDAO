@@ -18,7 +18,7 @@ const propose = async (userStory: UserStory, functionToCall: string, proposalDes
     const UserStoryTreasury = await deployments.get("UserStoryTreasury");
     const userStoryTreasury = await ethers.getContractAt("UserStoryTreasury", UserStoryTreasury.address);
     /* `encodeFunctionData` returns the encoded Data, which can be used as the Data for a Transaction for Fragment for the given Values */
-    /* Encoding Function to call with their Parameters */
+    /* Encoding Function to call with its Parameter */
     const encodedFunctionCall = userStoryTreasury.interface.encodeFunctionData(functionToCall, userStory);
     console.log(`Proposing ${functionToCall} on ${userStoryTreasury.address} with ${userStory}`);
     console.log(`Proposal Description:\n  ${proposalDescription}`);
