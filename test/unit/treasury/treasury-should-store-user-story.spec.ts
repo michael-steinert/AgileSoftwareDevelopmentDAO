@@ -11,7 +11,7 @@ interface Voters {
     mallory: Wallet;
 }
 
-const treasuryShouldStoreUserStory = (userStoryTreasury: UserStoryTreasury, voters: Voters): void => {
+const treasuryShouldStoreUserStory = async (userStoryTreasury: UserStoryTreasury, voters: Voters): Promise<void> => {
     context("Testing Function deposit()", async function () {
         it("should store a new User Story", async () => {
             const description: string = "New User Story";

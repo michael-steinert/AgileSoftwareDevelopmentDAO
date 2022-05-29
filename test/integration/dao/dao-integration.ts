@@ -17,7 +17,7 @@ import {
 import {moveBlocks} from "../../../utils/move-blocks";
 import {moveTime} from "../../../utils/move-time";
 
-const daoIntegration = (): void => {
+const daoIntegration = async (): Promise<void> => {
     context("DAO Integration Test", async () => {
         let daoGovernor: DaoGovernor;
         let governanceToken: GovernanceToken;

@@ -30,6 +30,6 @@ describe("Unit Tests for Contracts", async () => {
             const UserStoryTreasury = await deployments.get("UserStoryTreasury");
             userStoryTreasury = (await ethers.getContractAt("UserStoryTreasury", UserStoryTreasury.address)) as UserStoryTreasury;
         });
-        treasuryShouldStoreUserStory(userStoryTreasury, voters);
+        await treasuryShouldStoreUserStory(userStoryTreasury, voters);
     });
 });
