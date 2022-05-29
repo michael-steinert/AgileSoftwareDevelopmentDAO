@@ -16,7 +16,8 @@ const queueAndExecute = async () => {
     const encodedFunctionCall = userStoryTreasury.interface.encodeFunctionData(FUNCTION_TO_CALL, NEW_USER_STORY);
     /* Alternative: ethers.utils.id(PROPOSAL_DESCRIPTION) */
     /* `PROPOSAL_DESCRIPTION` has to be hashed to match because on-chain all Data are hashed */
-    const descriptionHash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(PROPOSAL_DESCRIPTION));
+    //const descriptionHash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(PROPOSAL_DESCRIPTION));
+    const descriptionHash = ethers.utils.id(PROPOSAL_DESCRIPTION);
     const DaoGovernor = await deployments.get("DaoGovernor");
     const daoGovernor = await ethers.getContractAt("GovernorContract", DaoGovernor.address);
     console.log("Queueing in Process");

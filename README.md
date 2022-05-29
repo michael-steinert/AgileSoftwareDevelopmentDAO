@@ -1,8 +1,10 @@
 # TODODs
+
 * Front End reacts on emitted Events (hardhat) from Smart Contracts
 * Front End using a Poll to vote (npm: react-polls)
 
 # Tally
+
 * Tally allows Users to create Proposals, visualize Voting Power and Advocates, navigate Proposals, and cast Votes
 
 # Decentralized autonomous Organization
@@ -13,9 +15,43 @@
 * Decisions are executed via Proposals and Voting, this ensures Fairness and Equality amongst its Owners (Community Members)
 * DAOs allow everyone to have a Voice within the Proposal and Voting
 
+* DAOs are a new Form of Organization that
+    * distributes Decision-Making Power
+    * shares Ownership amongst Participants
+    * automates exception to Decisions
+    * are cryptographically secured and transparent
+
 * Smart Contracts are a Computer Programs that run on the Blockchain, they are executed once pre-determined Conditions are met
 * They represent the Laws of the DAO - this Rules Set in the Smart Contract will govern the Entity
 * This Rules Set is defined in Code therefore there is no Need for an Intermediary to facilitate Trust and execute Decisions
+
+## Smart Contract
+
+* Smart Contracts are superior digital Agreements
+    * __Security__: Smart Contract are tamper-proof digital Agreements that can not be influenced by a single Party
+    * __Guaranteed Execution__: Execution and Enforcement of the Agreements is performed by an always-on decentralized Network (Blockchain)
+    * __Transparency__: Transparency of the Agreements and their Enforcement us unavoidably built-in the Blockchain
+    * __Trust Minimization__: Smart Contracts reduce the Counterparty Risk due to neither Party having Control over them to execute or enforce their Agreements
+    * __Efficiency__: Smart Contracts provide an Opportunity to migrate existing manual Processes to be automated
+
+## Description of the DAO
+
+* `UserStoryTreasury` is owned by the `TimeLock` and therefore can only be called by it
+* This ensures Automation, and dao-controlled Execution of successful Proposals
+* `Governor` is given Proposer Rights, while the Executor is given to anyone
+
+### Structure On-Chain Voting
+
+* __Governance Token__: The Governance Token gives Voting Power for each Account
+* __Governor__: The Governor contains the Logic and Mechanics to propose, vote and execute Proposals
+* __Time Lock__: The Time Lock is a Queue to enforce Time Gap between the Passing and Execution of a Proposal
+* __Target Contract__: The Target Contract is that Smart Contract on that the DAO is making Decisions
+
+### Time-related Concepts
+
+* __votingDelay (Governor)__ is a Time Interval (in Number of Blocks) between Submitting a Proposal and when Voting Power is fixed. It can be used to enforce a Delay after a Proposal is published for Users to unstake Tokens or delegate their Votes
+* __votingPeriod (Governor)__ is the Time Slot when Voting is open. It starts after votingDelay, als in Number of Blocks
+* __minDelay (TimeLock)__ is the Delay Period before a passed Proposal is executed. When it is active the Proposal is queued. It gives the Users the Opportunity to exit the DAO if they disagree with the Proposal
 
 ## Governance
 
@@ -46,7 +82,7 @@
 
 ## Types of Governance
 
-* DAO is a System where a Treasury is controlled by the collective Decision of the Token Holders of a Project, and all Actions are executed via Proposals enforced by On-Chain Votes
+* DAO is a Organization where a Treasury is controlled by the collective Decision of the Token Holders of a Project, and all Actions are executed via Proposals enforced by On-Chain Votes
 
 ### On-Chain Voting
 * On-Chain Voting refers to Governance Systems where individual Votes are submitted as Transactions, and recorded directly on the Blockchain
@@ -113,7 +149,7 @@
 
 #### Optional Modules
 
-* Timelock: Perform Operations (queued Proposal) through a TimeLock Contract (Time Lapse)
+* TimeLock: Perform Operations (queued Proposal) through a TimeLock Contract (Time Lapse)
 * Threshold: Limit some Operation (Proposal) to Users with enough Tokens
 
 ### Proposal
