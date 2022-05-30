@@ -25,9 +25,9 @@ const deployUserStoryTreasury: DeployFunction = async (hre: HardhatRuntimeEnviro
         await verify(userStoryTreasury.address, []);
     }
     /* Contract Object `userStory` that can invoke Function from Contract `UserStoryTreasury` */
-    const TimeLockController = await deployments.get("TimeLock");
+    const TimeLock = await deployments.get("TimeLock");
     /* Giving Ownership of Contract `UserStoryContract` from `deployer` to Contract `TimeLockController` */
-    const transferTransaction = await userStoryTreasury.transferOwnership(TimeLockController.address);
+    const transferTransaction = await userStoryTreasury.transferOwnership(TimeLock.address);
     await transferTransaction.wait();
 }
 

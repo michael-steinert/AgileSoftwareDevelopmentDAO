@@ -43,7 +43,7 @@ const daoIntegration = async (): Promise<void> => {
             await expect(userStoryTreasury.storeUserStory("New User Story", 42, 21)).to.be.revertedWith("Ownable: caller is not the owner");
         });
 
-        it("should create, vote, wait, queue, and then execute the Proposal", async () => {
+        it.skip("should create, vote, wait, queue, and then execute the Proposal", async () => {
             /* Creating Proposal */
             /* Encoding Function to call with its Parameters */
             const encodedFunctionCall = userStoryTreasury.interface.encodeFunctionData(FUNCTION_TO_CALL, NEW_USER_STORY);
