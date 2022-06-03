@@ -14,7 +14,7 @@ type UserStory = [description: string, functionalComplexity: number, effortEstim
 
 const propose = async (userStory: UserStory, functionToCall: string, proposalDescription: string) => {
     const DaoGovernor = await deployments.get("DaoGovernor");
-    const daoGovernor = await ethers.getContractAt("GovernorContract", DaoGovernor.address);
+    const daoGovernor = await ethers.getContractAt("DaoGovernor", DaoGovernor.address);
     const UserStoryTreasury = await deployments.get("UserStoryTreasury");
     const userStoryTreasury = await ethers.getContractAt("UserStoryTreasury", UserStoryTreasury.address);
     /* `encodeFunctionData` returns the encoded Data, which can be used as the Data for a Transaction for Fragment for the given Values */

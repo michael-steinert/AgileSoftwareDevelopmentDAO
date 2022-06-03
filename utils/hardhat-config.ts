@@ -13,8 +13,11 @@ export const networkConfig: networkConfigInfo = {
     localhost: {},
     hardhat: {},
     rinkeby: {
-        blockConfirmations: 6,
+        blockConfirmations: 3,
     },
+    mumbai: {
+        blockConfirmations: 2,
+    }
 }
 
 export const developmentChains = ["hardhat", "localhost"];

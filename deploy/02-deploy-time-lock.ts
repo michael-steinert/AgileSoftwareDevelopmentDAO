@@ -1,7 +1,6 @@
 import {HardhatRuntimeEnvironment} from "hardhat/types";
 import {DeployFunction} from "hardhat-deploy/types";
-import verify from "../utils/verify";
-import {networkConfig, developmentChains, MIN_DELAY} from "../utils/hardhat-config";
+import {networkConfig, MIN_DELAY} from "../utils/hardhat-config";
 
 const deployTimeLock: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
     const {getNamedAccounts, deployments, network} = hre;
@@ -22,15 +21,6 @@ const deployTimeLock: DeployFunction = async (hre: HardhatRuntimeEnvironment) =>
         waitConfirmations: networkConfig[network.name].blockConfirmations || 1
     });
     log(`Time Lock Controller at ${timeLock.address}`);
-    /*
-    if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
-        await verify(deployTimeLock.address, [
-            MIN_DELAY,
-            [],
-            []
-        ]);
-    }
-    */
 }
 
 export default deployTimeLock;

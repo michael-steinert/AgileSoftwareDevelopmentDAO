@@ -10,8 +10,10 @@ import "solidity-coverage";
 import {HardhatUserConfig} from "hardhat/config";
 
 const RINKEBY_RPC_URL = process.env.RINKEBY_RPC_URL || "";
+const MUMBAI_RPC_URL = process.env.MUMBAI_RPC_URL || "";
 const PRIVATE_KEY = process.env.PRIVATE_KEY || "";
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || "";
+const POLYGONSCAN_API_KEY = process.env.POLYGONSCAN_API_KEY || "";
 
 const config: HardhatUserConfig = {
     defaultNetwork: "hardhat",
@@ -29,9 +31,10 @@ const config: HardhatUserConfig = {
             gas: 2100000,
             gasPrice: 8000000000
         },
-        matic: {
-            url: "https://rpc-mumbai.maticvigil.com",
+        mumbai: {
+            url: MUMBAI_RPC_URL,
             accounts: [PRIVATE_KEY],
+            chainId: 80001,
             gas: 2100000,
             gasPrice: 8000000000
         }
@@ -46,7 +49,17 @@ const config: HardhatUserConfig = {
         }
     },
     etherscan: {
-        apiKey: ETHERSCAN_API_KEY,
+        apiKey: {
+            /* Ethereum */
+            mainnet: ETHERSCAN_API_KEY,
+            ropsten: ETHERSCAN_API_KEY,
+            rinkeby: ETHERSCAN_API_KEY,
+            goerli: ETHERSCAN_API_KEY,
+            kovan: ETHERSCAN_API_KEY,
+            /* Polygon */
+            polygon: POLYGONSCAN_API_KEY,
+            polygonMumbai: POLYGONSCAN_API_KEY
+        }
     },
     gasReporter: {
         enabled: true,

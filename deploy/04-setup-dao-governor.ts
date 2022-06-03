@@ -5,7 +5,6 @@ import {ethers} from "hardhat";
 const setupDaoGovernor: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
     const {getNamedAccounts, deployments} = hre;
     const {log} = deployments;
-    const {deployer} = await getNamedAccounts();
     const TimeLockController = await deployments.get("TimeLock");
     const timeLockController = await ethers.getContractAt(
         "TimeLock",

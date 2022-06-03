@@ -22,7 +22,10 @@ const deployUserStoryTreasury: DeployFunction = async (hre: HardhatRuntimeEnviro
     const userStoryTreasury = (await ethers.getContractAt("UserStoryTreasury", UserStoryTreasury.address)) as UserStoryTreasury;
     log(`UserStoryTreasury at ${userStoryTreasury.address}`);
     if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
-        await verify(userStoryTreasury.address, []);
+        await verify(
+            userStoryTreasury.address,
+            network.name,
+            []);
     }
     /* Contract Object `userStory` that can invoke Function from Contract `UserStoryTreasury` */
     const TimeLock = await deployments.get("TimeLock");

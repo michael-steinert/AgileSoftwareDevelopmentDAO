@@ -34,16 +34,19 @@ const deployDaoGovernor: DeployFunction = async (hre: HardhatRuntimeEnvironment)
         /* Waiting some Block Confirmation, so on a Testnet or Mainnet it can be verified properly */
         waitConfirmations: networkConfig[network.name].blockConfirmations || 1
     });
-    log(`Governor at ${daoGovernor.address}`);
+    log(`DAO Governor at ${daoGovernor.address}`);
     if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
-        await verify(daoGovernor.address, [
-            governanceToken.address,
-            timeLockController.address,
-            QUORUM_PERCENTAGE,
-            VOTING_PERIOD,
-            VOTING_DELAY,
-            THRESHOLD
-        ]);
+        await verify(
+            daoGovernor.address,
+            network.name,
+            [
+                governanceToken.address,
+                timeLockController.address,
+                QUORUM_PERCENTAGE,
+                VOTING_PERIOD,
+                VOTING_DELAY,
+                THRESHOLD
+            ]);
     }
 }
 

@@ -16,19 +16,22 @@ const deployGovernanceToken: DeployFunction = async (hre: HardhatRuntimeEnvironm
         args: [
             "AGILE Token",
             "AGILE",
-            (42*10**18).toString()
+            (42 * 10 ** 18).toString()
         ],
         log: true,
         /* Waiting some Block Confirmation, so on a Testnet or Mainnet it can be verified properly */
         waitConfirmations: networkConfig[network.name].blockConfirmations || 1
     });
     log(`GovernanceToken at ${governanceToken.address}`);
-    if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
-        await verify(governanceToken.address, [
-            "AGILE Token",
-            "AGILE",
-            (42*10**18).toString()
-        ]);
+    if (!developmentChains.includes(network.name)) {
+        await verify(
+            governanceToken.address,
+            network.name,
+            [
+                "AGILE Token",
+                "AGILE",
+                (42 * 10 ** 18).toString()
+            ]);
     }
     log(`Delegating to ${deployer} in Process`);
     await delegate(governanceToken.address, deployer);
