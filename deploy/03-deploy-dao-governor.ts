@@ -37,6 +37,7 @@ const deployDaoGovernor: DeployFunction = async (hre: HardhatRuntimeEnvironment)
     log(`DAO Governor at ${daoGovernor.address}`);
     if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
         await verify(
+            "DaoGovernor",
             daoGovernor.address,
             network.name,
             [

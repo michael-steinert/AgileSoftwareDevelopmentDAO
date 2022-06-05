@@ -25,6 +25,7 @@ const deployGovernanceToken: DeployFunction = async (hre: HardhatRuntimeEnvironm
     log(`GovernanceToken at ${governanceToken.address}`);
     if (!developmentChains.includes(network.name)) {
         await verify(
+            "GovernanceToken",
             governanceToken.address,
             network.name,
             [

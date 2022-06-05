@@ -23,15 +23,17 @@ const deployUserStoryTreasury: DeployFunction = async (hre: HardhatRuntimeEnviro
     log(`UserStoryTreasury at ${userStoryTreasury.address}`);
     if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
         await verify(
+            "UserStoryTreasury",
             userStoryTreasury.address,
             network.name,
-            []);
+            []
+        );
     }
     /* Contract Object `userStory` that can invoke Function from Contract `UserStoryTreasury` */
     const TimeLock = await deployments.get("TimeLock");
     /* Giving Ownership of Contract `UserStoryContract` from `deployer` to Contract `TimeLockController` */
     const transferTransaction = await userStoryTreasury.transferOwnership(TimeLock.address);
-    await transferTransaction.wait();
+    await transferTransaction.wait(1);
 }
 
 export default deployUserStoryTreasury;
