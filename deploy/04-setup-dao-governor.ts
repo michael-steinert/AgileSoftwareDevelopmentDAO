@@ -17,10 +17,8 @@ const setupDaoGovernor: DeployFunction = async (hre: HardhatRuntimeEnvironment) 
     );
     /* A Role can only be granted or revoked by someone with the Admin Role */
     /* Upon Deployment of the Time Lock Controller, both the Time Lock Controller and the Deployer of the Smart Contract have this Privilege */
-    log("Setting up Time Lock Controller with new Roles");
-    /* Admin: is an Address (Smart Contract or EOA) responsible for Assigning the Roles of Proposer and Executor */
-    const adminRole = await timeLockController.TIMELOCK_ADMIN_ROLE();
     log("----------------------------------------------------");
+    log("Setting up Time Lock Controller with new Roles");
     /* Proposer is an Address (Smart Contract or EOA) responsible for Scheduling (and Cancelling) Operations */
     const proposerRole = await timeLockController.PROPOSER_ROLE();
     /* Executor is an Address (Smart Contract or EOA) responsible for Executing Operations once the Time Lock has expired */
