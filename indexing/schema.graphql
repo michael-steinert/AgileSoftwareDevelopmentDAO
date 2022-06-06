@@ -1,0 +1,9 @@
+type Proposal @entity {
+    id: ID!
+    proposalId: BigInt!
+    proposer: Bytes!
+    values: [BigInt!]
+    startBlock: BigInt!
+    endBlock: BigInt!
+    description: String!
+}
