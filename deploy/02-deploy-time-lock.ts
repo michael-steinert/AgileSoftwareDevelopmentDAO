@@ -1,6 +1,6 @@
 import {HardhatRuntimeEnvironment} from "hardhat/types";
 import {DeployFunction} from "hardhat-deploy/types";
-import {networkConfig, MIN_DELAY, developmentChains} from "../utils/hardhat-config";
+import {networkConfig, MIN_DELAY, developmentChains, PROPOSERS, EXECUTORS} from "../utils/hardhat-config";
 import verify from "../utils/verify";
 
 const deployTimeLock: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
@@ -11,11 +11,10 @@ const deployTimeLock: DeployFunction = async (hre: HardhatRuntimeEnvironment) =>
     log("Deploying Time Lock Controller and waiting for Confirmations");
     const timeLock = await deploy("TimeLock", {
         from: deployer,
-        /* args: minDelay, proposers, executors */
         args: [
             MIN_DELAY,
-            [],
-            []
+            PROPOSERS,
+            EXECUTORS
         ],
         log: true,
         /* Waiting some Block Confirmation, so on a Testnet or Mainnet it can be verified properly */
@@ -28,8 +27,8 @@ const deployTimeLock: DeployFunction = async (hre: HardhatRuntimeEnvironment) =>
             network.name,
             [
                 MIN_DELAY,
-                [],
-                []
+                PROPOSERS,
+                EXECUTORS
             ]);
     }
     log(`Time Lock Controller at ${timeLock.address}`);

@@ -15,7 +15,7 @@ const vote = async (proposalIndex: number) => {
     const reasonForVote = "Voting for new User Story";
     console.log("Voting in Process");
     const DaoGovernor = await deployments.get("DaoGovernor");
-    const daoGovernor = await ethers.getContractAt("GovernorContract", DaoGovernor.address);
+    const daoGovernor = await ethers.getContractAt("DaoGovernor", DaoGovernor.address);
     /* Creating Proposal with Reason */
     const voteTransaction = await daoGovernor.castVoteWithReason(proposalId, voteType, reasonForVote);
     const voteTransactionResult = await voteTransaction.wait(1);

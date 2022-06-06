@@ -8,7 +8,17 @@ import {
 } from "../utils/hardhat-config";
 import {moveBlocks} from "../utils/move-blocks";
 import {moveTime} from "../utils/move-time";
+import {BigNumber} from "ethers";
 
+interface UserStory {
+    creator: string;
+    userStoryNumber: BigNumber;
+    description: string;
+    functionalComplexity: BigNumber;
+    effortEstimation: BigNumber;
+    timestamp: BigNumber;
+    isDone: boolean;
+}
 
 const queueAndExecute = async () => {
     const UserStoryTreasury = await deployments.get("UserStoryTreasury");
@@ -19,8 +29,8 @@ const queueAndExecute = async () => {
     //const descriptionHash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(PROPOSAL_DESCRIPTION));
     const descriptionHash = ethers.utils.id(PROPOSAL_DESCRIPTION);
     const DaoGovernor = await deployments.get("DaoGovernor");
-    const daoGovernor = await ethers.getContractAt("GovernorContract", DaoGovernor.address);
-    console.log("Queueing in Process");
+    const daoGovernor = await ethers.getContractAt("DaoGovernor", DaoGovernor.address);
+    console.log("Queueing Proposal in Process");
     /* Exact the same Parameter as in the `propose()` because this Data is not stored on-chain, as a Measure to save Gas */
     const queueTransaction = await daoGovernor.queue(
         [userStoryTreasury.address],
@@ -36,7 +46,7 @@ const queueAndExecute = async () => {
         await moveTime(MIN_DELAY + 1);
         await moveBlocks(1);
     }
-    console.log("Executing in Process");
+    console.log("Executing Proposal in Process");
     /* Exact the same Parameter as in the `propose()` because this Data is not stored on-chain, as a Measure to save Gas */
     /* `execute()` will fail on Testnet or Mainnet because the `MIN_DELAY` for the Voting Period must expire */
     const executeTransaction = await daoGovernor.execute(
@@ -47,11 +57,10 @@ const queueAndExecute = async () => {
         descriptionHash
     );
     await executeTransaction.wait(1);
-    console.log("Executed");
+    console.log("Proposal executed");
     /* Retrieving new Value that has been proposed and executed in Contract `UserStory` */
     const allUserStories = await userStoryTreasury.retrieveAllUserStory();
-    /* TODO: Add the correct Type for UserStory */
-    allUserStories?.forEach((userStory: any, index: number) => console.log(`User Story ${index} : ${userStory}`));
+    allUserStories?.forEach((userStory: UserStory, index: number) => console.log(`User Story ${index} : ${userStory}`));
 }
 
 queueAndExecute()
