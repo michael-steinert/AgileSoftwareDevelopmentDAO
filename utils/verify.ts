@@ -1,28 +1,30 @@
-import {run} from "hardhat";
+import { run } from "hardhat";
 
 const verify = async (
-    contractName: string,
-    contractAddress: string,
-    networkName: string,
-    args: any[]
+  contractName: string,
+  contractAddress: string,
+  networkName: string,
+  args: any[]
 ) => {
-    console.log("Verifying Smart Contract");
-    if ((networkName.includes("rinkeby") && process.env.ETHERSCAN_API_KEY) ||
-        (networkName.includes("mumbai") && process.env.POLYGONSCAN_API_KEY)) {
-        try {
-            await run("verify:verify", {
-                address: contractAddress,
-                constructorArguments: args,
-                contract: `contracts/${contractName}.sol:${contractName}`
-            });
-        } catch (error: any) {
-            if (error.message.toLowerCase().includes("already verified")) {
-                console.log(`Contract ${contractName} already verified`);
-            } else {
-                console.error(error);
-            }
-        }
+  console.log("Verifying Smart Contract");
+  if (
+    (networkName.includes("rinkeby") && process.env.ETHERSCAN_API_KEY) ||
+    (networkName.includes("mumbai") && process.env.POLYGONSCAN_API_KEY)
+  ) {
+    try {
+      await run("verify:verify", {
+        address: contractAddress,
+        constructorArguments: args,
+        contract: `contracts/${contractName}.sol:${contractName}`,
+      });
+    } catch (error: any) {
+      if (error.message.toLowerCase().includes("already verified")) {
+        console.log(`Contract ${contractName} already verified`);
+      } else {
+        console.error(error);
+      }
     }
-}
+  }
+};
 
 export default verify;

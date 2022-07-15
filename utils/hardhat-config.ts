@@ -1,23 +1,27 @@
-type UserStory = [description: string, functionalComplexity: number, effortEstimation: number];
+type UserStory = [
+  description: string,
+  functionalComplexity: number,
+  effortEstimation: number
+];
 
 export interface networkConfigItem {
-    blockConfirmations?: number
+  blockConfirmations?: number;
 }
 
 export interface networkConfigInfo {
-    [key: string]: networkConfigItem
+  [key: string]: networkConfigItem;
 }
 
 export const networkConfig: networkConfigInfo = {
-    localhost: {},
-    hardhat: {},
-    rinkeby: {
-        blockConfirmations: 3,
-    },
-    mumbai: {
-        blockConfirmations: 2,
-    }
-}
+  localhost: {},
+  hardhat: {},
+  rinkeby: {
+    blockConfirmations: 3,
+  },
+  mumbai: {
+    blockConfirmations: 2,
+  },
+};
 
 export const developmentChains = ["hardhat", "localhost"];
 export const proposalsFile = "proposals.json";

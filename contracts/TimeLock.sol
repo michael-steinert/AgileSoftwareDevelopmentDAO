@@ -23,7 +23,8 @@ contract TimeLock is TimelockController {
         /* List of Addresses that can execute a Proposal - only the `GovernorContract` */
         address[] memory executors
     )
-    /* The Admin Role can grant and revoke the two Roles Proposer ans Executor */
-    /* The Admin Role will be granted automatically to both Deployer and TimeLock itself, but should be renounced by the Deployer after Setup */
-    TimelockController(minDelay, proposers, executors) {}
+        /* The Admin Role can grant and revoke the two Roles Proposer ans Executor */
+        /* The Admin Role will be granted automatically to both Deployer and TimeLock itself, but should be renounced by the Deployer after Setup */
+        TimelockController(minDelay, proposers, executors)
+    {}
 }

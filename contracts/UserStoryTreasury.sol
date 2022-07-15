@@ -56,11 +56,15 @@ contract UserStoryTreasury is Ownable {
     ) public onlyOwner {
         /* Convert String to Byte to check its Length */
         bytes memory descriptionAsByte = bytes(_description);
-        if (descriptionAsByte.length == 0 || _functionalComplexity == 0 || _effortEstimation == 0) {
+        if (
+            descriptionAsByte.length == 0 ||
+            _functionalComplexity == 0 ||
+            _effortEstimation == 0
+        ) {
             revert InvalidUserStory({
-            sentDescription : _description,
-            sentFunctionalComplexity : _functionalComplexity,
-            sentEffortEstimation : _effortEstimation
+                sentDescription: _description,
+                sentFunctionalComplexity: _functionalComplexity,
+                sentEffortEstimation: _effortEstimation
             });
         } else {
             userStories.push(
@@ -90,7 +94,11 @@ contract UserStoryTreasury is Ownable {
     }
 
     /* Everyone can invoke `retrieveUserStory` to get the UserStory for a UserStoryNumber */
-    function retrieveUserStory(uint256 _userStoryNumber) public view returns (UserStory memory) {
+    function retrieveUserStory(uint256 _userStoryNumber)
+        public
+        view
+        returns (UserStory memory)
+    {
         return userStories[_userStoryNumber];
     }
 

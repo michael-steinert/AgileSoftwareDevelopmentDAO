@@ -33,7 +33,10 @@ contract GovernanceToken is ERC20Votes {
         super._mint(to, amount);
     }
 
-    function _burn(address account, uint256 amount) internal override(ERC20Votes) {
+    function _burn(address account, uint256 amount)
+        internal
+        override(ERC20Votes)
+    {
         super._burn(account, amount);
     }
 }

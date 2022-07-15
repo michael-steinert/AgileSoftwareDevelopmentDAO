@@ -11,6 +11,9 @@ deployments
 # IntelliJ
 .idea
 
+# Visual Studio Code
+.code
+
 # TypeScript
 typechain-types
 

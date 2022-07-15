@@ -18,7 +18,8 @@ contract DaoGovernor is
     GovernorVotes,
     /* `GovernorVotesQuorumFraction` works together with `ERC20Votes` to define Quorum as a Percentage of the Total Supply at the Block a Proposal’s Voting Power is retrieved */
     GovernorVotesQuorumFraction,
-    GovernorTimelockControl {
+    GovernorTimelockControl
+{
     constructor(
         /* Token to govern the DAO that asserts the Voting Power */
         IVotes _token,
@@ -38,27 +39,53 @@ contract DaoGovernor is
         GovernorSettings(_votingDelay, _votingPeriod, _threshold)
         GovernorVotes(_token)
         GovernorVotesQuorumFraction(_quorumPercentage)
-        GovernorTimelockControl(_timeLockController) {}
+        GovernorTimelockControl(_timeLockController)
+    {}
 
-    function votingDelay() public view override(IGovernor, GovernorSettings) returns (uint256) {
+    function votingDelay()
+        public
+        view
+        override(IGovernor, GovernorSettings)
+        returns (uint256)
+    {
         return super.votingDelay();
     }
 
-    function votingPeriod() public view override(IGovernor, GovernorSettings) returns (uint256) {
+    function votingPeriod()
+        public
+        view
+        override(IGovernor, GovernorSettings)
+        returns (uint256)
+    {
         return super.votingPeriod();
     }
 
-    function quorum(uint256 blockNumber) public view override(IGovernor, GovernorVotesQuorumFraction) returns (uint256) {
+    function quorum(uint256 blockNumber)
+        public
+        view
+        override(IGovernor, GovernorVotesQuorumFraction)
+        returns (uint256)
+    {
         return super.quorum(blockNumber);
     }
 
     /* Checking State of Proposal on given ID */
-    function state(uint256 proposalId) public view override(Governor, GovernorTimelockControl) returns (ProposalState) {
+    function state(uint256 proposalId)
+        public
+        view
+        override(Governor, GovernorTimelockControl)
+        returns (ProposalState)
+    {
         return super.state(proposalId);
     }
 
     /* Minimum Number of Votes an Account must have to create a Proposal */
-    function proposalThreshold() public view override(Governor, GovernorSettings) returns (uint256){
+    function proposalThreshold()
+        public
+        view
+        override(Governor, GovernorSettings)
+        returns (uint256)
+    {
         return super.proposalThreshold();
     }
 
@@ -93,16 +120,31 @@ contract DaoGovernor is
         return super._cancel(targets, values, calldatas, descriptionHash);
     }
 
-    function _executor() internal view override(Governor, GovernorTimelockControl) returns (address) {
+    function _executor()
+        internal
+        view
+        override(Governor, GovernorTimelockControl)
+        returns (address)
+    {
         return super._executor();
     }
 
     /* Execute can execute a queued Proposal */
-    function supportsInterface(bytes4 interfaceId) public view override(Governor, GovernorTimelockControl) returns (bool) {
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        override(Governor, GovernorTimelockControl)
+        returns (bool)
+    {
         return super.supportsInterface(interfaceId);
     }
 
-    function getVotes(address account, uint256 blockNumber) public view override(IGovernor, Governor) returns (uint256) {
+    function getVotes(address account, uint256 blockNumber)
+        public
+        view
+        override(IGovernor, Governor)
+        returns (uint256)
+    {
         return super.getVotes(account, blockNumber);
     }
 }
