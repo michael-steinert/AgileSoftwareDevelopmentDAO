@@ -1,14 +1,14 @@
+import { BigNumber } from "ethers";
 import { deployments, ethers, network } from "hardhat";
 import {
-  FUNCTION_TO_CALL,
-  PROPOSAL_DESCRIPTION,
-  MIN_DELAY,
   developmentChains,
+  FUNCTION_TO_CALL,
+  MIN_DELAY,
   NEW_USER_STORY,
+  PROPOSAL_DESCRIPTION,
 } from "../utils/hardhat-config";
 import { moveBlocks } from "../utils/move-blocks";
 import { moveTime } from "../utils/move-time";
-import { BigNumber } from "ethers";
 
 interface UserStory {
   creator: string;
@@ -21,15 +21,18 @@ interface UserStory {
 }
 
 const queueAndExecute = async () => {
-  const UserStoryTreasury = await deployments.get("UserStoryTreasury");
-  const userStoryTreasury = await ethers.getContractAt(
-    "UserStoryTreasury",
-    UserStoryTreasury.address
+  const UserStoryTreasuryCoordinator = await deployments.get(
+    "UserStoryTreasuryCoordinator"
   );
-  const encodedFunctionCall = userStoryTreasury.interface.encodeFunctionData(
-    FUNCTION_TO_CALL,
-    NEW_USER_STORY
+  const userStoryTreasuryCoordinator = await ethers.getContractAt(
+    "UserStoryTreasuryCoordinator",
+    UserStoryTreasuryCoordinator.address
   );
+  const encodedFunctionCall =
+    userStoryTreasuryCoordinator.interface.encodeFunctionData(
+      FUNCTION_TO_CALL,
+      NEW_USER_STORY
+    );
   /* Alternative: ethers.utils.id(PROPOSAL_DESCRIPTION) */
   /* `PROPOSAL_DESCRIPTION` has to be hashed to match because on-chain all Data are hashed */
   //const descriptionHash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(PROPOSAL_DESCRIPTION));
@@ -42,7 +45,7 @@ const queueAndExecute = async () => {
   console.log("Queueing Proposal in Process");
   /* Exact the same Parameter as in the `propose()` because this Data is not stored on-chain, as a Measure to save Gas */
   const queueTransaction = await daoGovernor.queue(
-    [userStoryTreasury.address],
+    [userStoryTreasuryCoordinator.address],
     [0],
     [encodedFunctionCall],
     descriptionHash
@@ -60,15 +63,16 @@ const queueAndExecute = async () => {
   /* `execute()` will fail on Testnet or Mainnet because the `MIN_DELAY` for the Voting Period must expire */
   const executeTransaction = await daoGovernor.execute(
     /* Exact the same Parameter as in the `propose()` */
-    [userStoryTreasury.address],
+    [userStoryTreasuryCoordinator.address],
     [0],
     [encodedFunctionCall],
     descriptionHash
   );
   await executeTransaction.wait(1);
   console.log("Proposal executed");
-  /* Retrieving new Value that has been proposed and executed in Contract `UserStory` */
-  const allUserStories = await userStoryTreasury.retrieveAllUserStory();
+  /* Retrieving new Value that has been proposed and executed in Contract `UserStoryTreasuryCoordinator` */
+  const allUserStories =
+    await userStoryTreasuryCoordinator.retrieveAllUserStory();
   allUserStories?.forEach((userStory: UserStory, index: number) =>
     console.log(`User Story ${index} : ${userStory}`)
   );

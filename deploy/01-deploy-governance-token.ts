@@ -1,8 +1,8 @@
-import { HardhatRuntimeEnvironment } from "hardhat/types";
-import { DeployFunction } from "hardhat-deploy/types";
-import verify from "../utils/verify";
-import { networkConfig, developmentChains } from "../utils/hardhat-config";
 import { ethers } from "hardhat";
+import { DeployFunction } from "hardhat-deploy/types";
+import { HardhatRuntimeEnvironment } from "hardhat/types";
+import { developmentChains, networkConfig } from "../utils/hardhat-config";
+import verify from "../utils/verify";
 
 const deployGovernanceToken: DeployFunction = async (
   hre: HardhatRuntimeEnvironment
@@ -46,7 +46,7 @@ const delegate = async (
   /* Transaction will be confirmed by one Block */
   await delegateTransaction.wait();
   /* `numCheckpoints()` from `ERC20Votes` keep a Mapping over how many Checkpoints an Address (User) has */
-  /* Votes are based on Checkpoints - everytime a Vote Token is delegated (or transferred) a Checkpoint is created */
+  /* Votes are based on Checkpoints - every Time a Vote Token is delegated (or transferred) a Checkpoint is created */
   /* Each Checkpoint represent how much Vote Tokens (Voting Power) each User has */
   /* Updating Checkpoints is much cheaper than updating Blocks */
   console.log(

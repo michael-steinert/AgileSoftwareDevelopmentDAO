@@ -1,18 +1,18 @@
+import { assert, expect } from "chai";
+import { deployments, ethers } from "hardhat";
 import {
-  GovernanceToken,
   DaoGovernor,
+  GovernanceToken,
   TimeLock,
   UserStoryTreasury,
 } from "../../../typechain-types";
-import { deployments, ethers } from "hardhat";
-import { assert, expect } from "chai";
 import {
   FUNCTION_TO_CALL,
+  MIN_DELAY,
+  NEW_USER_STORY,
   PROPOSAL_DESCRIPTION,
   VOTING_DELAY,
   VOTING_PERIOD,
-  MIN_DELAY,
-  NEW_USER_STORY,
 } from "../../../utils/hardhat-config";
 import { moveBlocks } from "../../../utils/move-blocks";
 import { moveTime } from "../../../utils/move-time";
@@ -49,6 +49,7 @@ const daoIntegration = async (): Promise<void> => {
         "UserStoryTreasury",
         UserStoryTreasury.address
       )) as UserStoryTreasury;
+      // TODO: Fix UserStoryTreasuryCoordinator
     });
 
     it("should store User Story only through Governance", async () => {

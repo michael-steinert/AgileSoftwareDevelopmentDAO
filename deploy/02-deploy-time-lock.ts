@@ -1,11 +1,7 @@
-import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
+import { HardhatRuntimeEnvironment } from "hardhat/types";
 import {
-  networkConfig,
-  MIN_DELAY,
-  developmentChains,
-  PROPOSERS,
-  EXECUTORS,
+  developmentChains, EXECUTORS, MIN_DELAY, networkConfig, PROPOSERS
 } from "../utils/hardhat-config";
 import verify from "../utils/verify";
 

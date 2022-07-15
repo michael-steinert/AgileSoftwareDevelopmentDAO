@@ -49,5 +49,5 @@ export const EXECUTORS: string[] = [];
 
 /* User Story Treasury */
 export const NEW_USER_STORY: UserStory = ["First User Story", 21, 42];
-export const FUNCTION_TO_CALL: string = "storeUserStory";
+export const FUNCTION_TO_CALL: any = "storeUserStory";
 export const PROPOSAL_DESCRIPTION: string = "Proposal #1 Store new User Story";

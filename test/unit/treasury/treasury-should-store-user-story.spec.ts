@@ -1,7 +1,7 @@
 import { assert, expect } from "chai";
-import { TimeLock, UserStoryTreasury } from "../../../typechain-types";
 import { BigNumberish } from "ethers/lib/ethers";
 import { deployments, ethers } from "hardhat";
+import { TimeLock, UserStoryTreasury } from "../../../typechain-types";
 
 const treasuryShouldStoreUserStory = async (): Promise<void> => {
   let timeLock: TimeLock;
@@ -10,6 +10,7 @@ const treasuryShouldStoreUserStory = async (): Promise<void> => {
     beforeEach(async () => {
       await deployments.fixture([
         "deploy-time-lock",
+        // TODO: Fix deploy-user-story-treasury-coordinator
         "deploy-user-story-treasury",
       ]);
       const TimeLock = await deployments.get("TimeLock");
@@ -42,15 +43,12 @@ const treasuryShouldStoreUserStory = async (): Promise<void> => {
         const description: string = "New User Story";
         const functionalComplexity: BigNumberish = "42";
         const effortEstimation: BigNumberish = "21";
-        const timeLockSigner = await timeLock.signer;
+        const timeLockSigner = timeLock.signer;
         await userStoryTreasury
           .connect(timeLockSigner)
           .storeUserStory(description, functionalComplexity, effortEstimation);
         const result = await userStoryTreasury.retrieveAllUserStories();
-        await assert(
-          result.length === 1,
-          "User Story was not stored in Treasury"
-        );
+        assert(result.length === 1, "User Story was not stored in Treasury");
       });
     });
   });

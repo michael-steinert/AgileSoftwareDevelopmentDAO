@@ -1,4 +1,4 @@
-# TODODs
+# TODOs
 
 - Front End reacts on emitted Events (hardhat) from Smart Contracts
 - Front End using a Poll to vote (npm: react-polls)

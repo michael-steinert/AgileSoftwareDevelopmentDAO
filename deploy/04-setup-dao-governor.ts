@@ -1,11 +1,11 @@
-import { HardhatRuntimeEnvironment } from "hardhat/types";
-import { DeployFunction } from "hardhat-deploy/types";
 import { ethers } from "hardhat";
+import { DeployFunction } from "hardhat-deploy/types";
+import { HardhatRuntimeEnvironment } from "hardhat/types";
 
 const setupDaoGovernor: DeployFunction = async (
   hre: HardhatRuntimeEnvironment
 ) => {
-  const { getNamedAccounts, deployments } = hre;
+  const { deployments } = hre;
   const { log } = deployments;
   const TimeLockController = await deployments.get("TimeLock");
   const timeLockController = await ethers.getContractAt(

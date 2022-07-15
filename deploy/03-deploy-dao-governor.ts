@@ -1,14 +1,9 @@
-import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
-import verify from "../utils/verify";
+import { HardhatRuntimeEnvironment } from "hardhat/types";
 import {
-  networkConfig,
-  developmentChains,
-  QUORUM_PERCENTAGE,
-  VOTING_PERIOD,
-  VOTING_DELAY,
-  THRESHOLD,
+  developmentChains, networkConfig, QUORUM_PERCENTAGE, THRESHOLD, VOTING_DELAY, VOTING_PERIOD
 } from "../utils/hardhat-config";
+import verify from "../utils/verify";
 
 const deployDaoGovernor: DeployFunction = async (
   hre: HardhatRuntimeEnvironment

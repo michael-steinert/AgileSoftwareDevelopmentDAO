@@ -1,13 +1,13 @@
+import * as fs from "fs";
 import { deployments, ethers, network } from "hardhat";
 import {
   developmentChains,
-  VOTING_DELAY,
-  proposalsFile,
-  NEW_USER_STORY,
   FUNCTION_TO_CALL,
+  NEW_USER_STORY,
+  proposalsFile,
   PROPOSAL_DESCRIPTION,
+  VOTING_DELAY
 } from "../utils/hardhat-config";
-import * as fs from "fs";
 import { moveBlocks } from "../utils/move-blocks";
 
 type UserStory = [
@@ -26,25 +26,28 @@ const propose = async (
     "DaoGovernor",
     DaoGovernor.address
   );
-  const UserStoryTreasury = await deployments.get("UserStoryTreasury");
-  const userStoryTreasury = await ethers.getContractAt(
-    "UserStoryTreasury",
-    UserStoryTreasury.address
+  const UserStoryTreasuryCoordinator = await deployments.get(
+    "UserStoryTreasuryCoordinator"
+  );
+  const userStoryTreasuryCoordinator = await ethers.getContractAt(
+    "UserStoryTreasuryCoordinator",
+    UserStoryTreasuryCoordinator.address
   );
   /* `encodeFunctionData` returns the encoded Data, which can be used as the Data for a Transaction for Fragment for the given Values */
   /* Encoding Function to call with its Parameter */
-  const encodedFunctionCall = userStoryTreasury.interface.encodeFunctionData(
-    functionToCall,
-    userStory
-  );
+  const encodedFunctionCall =
+    userStoryTreasuryCoordinator.interface.encodeFunctionData(
+      functionToCall,
+      userStory
+    );
   console.log(
-    `Proposing ${functionToCall} on ${userStoryTreasury.address} with ${userStory}`
+    `Proposing ${functionToCall} on ${userStoryTreasuryCoordinator.address} with ${userStory}`
   );
   console.log(`Proposal Description:\n  ${proposalDescription}`);
   /* Creating a new Proposal, with a Proposal ID that is obtained by Hashing together the Proposal Data, and which will also be found in an event in the Logs of the Transaction */
   const proposeTransaction = await daoGovernor.propose(
     /* Targets that are called from the DAO */
-    [userStoryTreasury.address],
+    [userStoryTreasuryCoordinator.address],
     /* Ether sending to Targets */
     [0],
     /* Encoded Parameters for the Functions that are going to be called */

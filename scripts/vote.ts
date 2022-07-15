@@ -1,8 +1,8 @@
-import { network, ethers, deployments } from "hardhat";
 import * as fs from "fs";
+import { deployments, ethers, network } from "hardhat";
 import {
-  proposalsFile,
   developmentChains,
+  proposalsFile,
   VOTING_PERIOD,
 } from "../utils/hardhat-config";
 import { moveBlocks } from "../utils/move-blocks";

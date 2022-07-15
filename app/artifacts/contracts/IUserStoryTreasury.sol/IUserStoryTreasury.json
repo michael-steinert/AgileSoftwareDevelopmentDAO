@@ -1,0 +1,232 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "IUserStoryTreasury",
+  "sourceName": "contracts/IUserStoryTreasury.sol",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "creator",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "userStoryNumber",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "functionalComplexity",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "effortEstimation",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "isDone",
+          "type": "bool"
+        }
+      ],
+      "name": "UserStoryCreated",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "retrieveAllUserStories",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "creator",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "userStoryNumber",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "description",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "functionalComplexity",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "effortEstimation",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "timestamp",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "isDone",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct IUserStoryTreasury.UserStory[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_userStoryNumber",
+          "type": "uint256"
+        }
+      ],
+      "name": "retrieveUserStory",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "creator",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "userStoryNumber",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "description",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "functionalComplexity",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "effortEstimation",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "timestamp",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "isDone",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct IUserStoryTreasury.UserStory",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_description",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_functionalComplexity",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_effortEstimation",
+          "type": "uint256"
+        }
+      ],
+      "name": "storeUserStory",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "creator",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "userStoryNumber",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "description",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "functionalComplexity",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "effortEstimation",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "timestamp",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "isDone",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct IUserStoryTreasury.UserStory",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}
