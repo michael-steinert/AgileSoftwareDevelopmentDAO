@@ -1,9 +1,8 @@
 import { useWeb3React } from "@web3-react/core";
 import { ethers } from "ethers";
-import React from "react";
-import { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import styled from "styled-components";
-import { Provider } from "../../../../hardhat-ethers-react-ts-starter-main/hardhat-ethers-react-ts-starter-main/frontend/src/utils/provider";
+import { Provider } from "../utils/provider";
 
 type CleanupFunction = (() => void) | undefined;
 

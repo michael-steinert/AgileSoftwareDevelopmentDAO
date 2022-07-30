@@ -1,8 +1,8 @@
 import { useWeb3React } from "@web3-react/core";
-import React from "react";
-import { MouseEvent, ReactElement } from "react";
+import React, { MouseEvent, ReactElement } from "react";
 import styled from "styled-components";
-import { Provider } from "../../../../hardhat-ethers-react-ts-starter-main/hardhat-ethers-react-ts-starter-main/frontend/src/utils/provider";
+import { Provider } from "../utils/provider";
+
 
 const StyledButton = styled.button`
   width: 150px;

@@ -1,11 +1,11 @@
-import React, { ChangeEvent, ReactElement, useEffect, useState } from "react";
 import { Contract, ethers, Signer } from "ethers";
+import React, { ChangeEvent, ReactElement, useEffect, useState } from "react";
+import { useWeb3React } from "@web3-react/core";
+import styled from "styled-components";
 // @ts-ignore
 import GovernorContract from "../artifacts/contracts/GovernorContract.sol/GovernorContract.json";
 // @ts-ignore
 import UserStoryContract from "../artifacts/contracts/UserStoryContract.sol/UserStoryContract.json";
-import styled from "styled-components";
-import { useWeb3React } from "@web3-react/core";
 import { Provider } from "../utils/provider";
 import { SectionDivider } from "./SectionDivider";
 

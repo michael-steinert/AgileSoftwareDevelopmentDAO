@@ -1,15 +1,15 @@
 html,
 body {
-    margin: 0;
-    font-family: Inter, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    background: linear-gradient(#9198e5, #e66465);
-    color: #fff;
-    overflow-x: hidden;
+  margin: 0;
+  font-family: Inter, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(#9198e5, #e66465);
+  color: #fff;
+  overflow-x: hidden;
 }
 
 #root {
-    min-height: 100vh;
-    display: flex;
+  min-height: 100vh;
+  display: flex;
 }

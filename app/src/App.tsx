@@ -1,11 +1,10 @@
-import { ReactElement } from "react";
+import React, { ReactElement } from "react";
 import styled from "styled-components";
 import { ActivateDeactivate } from "./components/ActivateDeactivate";
-import { SignMessage } from "./components/SignMessage";
 import { SectionDivider } from "./components/SectionDivider";
-import { WalletStatus } from "./components/WalletStatus";
+import { SignMessage } from "./components/SignMessage";
 import UserStory from "./components/UserStory";
-import React from "react";
+import { WalletStatus } from "./components/WalletStatus";
 
 const StyledAppDiv = styled.div`
   display: grid;

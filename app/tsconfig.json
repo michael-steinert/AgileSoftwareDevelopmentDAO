@@ -7,10 +7,6 @@
     "outDir": "dist",
     "jsx": "react"
   },
-  "include": [
-    "./src"
-  ],
-  "exclude": [
-    "./src/artifacts"
-  ]
+  "include": ["./src"],
+  "exclude": ["./src/artifacts"]
 }
