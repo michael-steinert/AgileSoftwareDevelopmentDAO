@@ -19,6 +19,14 @@ const deployUserStoryTreasury: DeployFunction = async (
     log: true,
     /* Waiting some Block Confirmation, so on a Testnet or Mainnet it can be verified properly */
     waitConfirmations: networkConfig[network.name].blockConfirmations || 1,
+    /* Deployment of Proxy Contract to upgrade Logic of `UserStoryTreasury` */
+    proxy: {
+      proxyContract: "OpenZeppelinTransparentProxy",
+      viaAdminContract: {
+        name: "UserStoryTreasuryProxy",
+        artifact: "UserStoryTreasuryProxy",
+      },
+    },
   });
   const UserStoryTreasury = await deployments.get("UserStoryTreasury");
   const userStoryTreasury = (await ethers.getContractAt(

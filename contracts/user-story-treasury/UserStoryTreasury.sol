@@ -5,7 +5,7 @@ import "./IUserStoryTreasury.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-/* `UserStory` is owned and governed by DAO - new Values for `UserStory` are proposed through the DAO */
+/* `UserStoryTreasuryCoordinator` is owned and governed by DAO - new Values for `UserStory` are proposed through the DAO */
 contract UserStoryTreasury is IUserStoryTreasury, Ownable {
     error InvalidUserStory(
         string sentDescription,

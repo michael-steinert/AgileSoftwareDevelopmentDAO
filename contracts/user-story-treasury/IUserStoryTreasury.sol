@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
-/* Interface to allow the Adapater Pattern for change the current Implementation fo the Smart Contract */
+/* Interface for Smart Contract `UserStoryTreasury` */
 abstract contract IUserStoryTreasury {
     struct UserStory {
         address creator;

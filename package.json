@@ -36,6 +36,7 @@
     "vote:mumbai": "npx hardhat run scripts/vote.ts --network mumbai",
     "queue-and-execute:mumbai": "npx hardhat run scripts/queue-and-execute-new-user-story.ts --network mumbai",
     "deploy:mumbai": "npx hardhat deploy --network mumbai",
+    "compile": "npx hardhat compile",
     "test": "npx hardhat test",
     "node": "npx hardhat node",
     "typechain": "npx hardhat typechain",

@@ -6,7 +6,7 @@ import {
   NEW_USER_STORY,
   proposalsFile,
   PROPOSAL_DESCRIPTION,
-  VOTING_DELAY
+  VOTING_DELAY,
 } from "../utils/hardhat-config";
 import { moveBlocks } from "../utils/move-blocks";
 
@@ -26,28 +26,28 @@ const propose = async (
     "DaoGovernor",
     DaoGovernor.address
   );
-  const UserStoryTreasuryCoordinator = await deployments.get(
-    "UserStoryTreasuryCoordinator"
+  const userStoryTreasuryTransparentProxy = await deployments.get(
+    "UserStoryTreasury_Proxy"
   );
-  const userStoryTreasuryCoordinator = await ethers.getContractAt(
-    "UserStoryTreasuryCoordinator",
-    UserStoryTreasuryCoordinator.address
+  /* `UserStoryTreasury` can be reached at the Address of its Transparent Proxy */
+  const userStoryTreasury = await ethers.getContractAt(
+    "UserStoryTreasury",
+    userStoryTreasuryTransparentProxy.address
   );
   /* `encodeFunctionData` returns the encoded Data, which can be used as the Data for a Transaction for Fragment for the given Values */
   /* Encoding Function to call with its Parameter */
-  const encodedFunctionCall =
-    userStoryTreasuryCoordinator.interface.encodeFunctionData(
-      functionToCall,
-      userStory
-    );
+  const encodedFunctionCall = userStoryTreasury.interface.encodeFunctionData(
+    functionToCall,
+    userStory
+  );
   console.log(
-    `Proposing ${functionToCall} on ${userStoryTreasuryCoordinator.address} with ${userStory}`
+    `Proposing ${functionToCall} on ${userStoryTreasury.address} with ${userStory}`
   );
   console.log(`Proposal Description:\n  ${proposalDescription}`);
   /* Creating a new Proposal, with a Proposal ID that is obtained by Hashing together the Proposal Data, and which will also be found in an event in the Logs of the Transaction */
   const proposeTransaction = await daoGovernor.propose(
     /* Targets that are called from the DAO */
-    [userStoryTreasuryCoordinator.address],
+    [userStoryTreasury.address],
     /* Ether sending to Targets */
     [0],
     /* Encoded Parameters for the Functions that are going to be called */
