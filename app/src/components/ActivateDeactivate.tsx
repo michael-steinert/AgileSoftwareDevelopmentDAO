@@ -1,14 +1,14 @@
-import { AbstractConnector } from "@web3-react/abstract-connector";
-import { UnsupportedChainIdError, useWeb3React } from "@web3-react/core";
+import { AbstractConnector } from '@web3-react/abstract-connector';
+import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import {
   NoEthereumProviderError,
-  UserRejectedRequestError
-} from "@web3-react/injected-connector";
-import React, { MouseEvent, ReactElement, useState } from "react";
-import styled from "styled-components";
-import { injected } from "../utils/connectors";
-import { useEagerConnect, useInactiveListener } from "../utils/hooks";
-import { Provider } from "../utils/provider";
+  UserRejectedRequestError,
+} from '@web3-react/injected-connector';
+import React, { MouseEvent, ReactElement, useState } from 'react';
+import styled from 'styled-components';
+import { injected } from '../utils/connectors';
+import { useEagerConnect, useInactiveListener } from '../utils/hooks';
+import { Provider } from '../utils/provider';
 
 type ActivateFunction = (
   connector: AbstractConnector,
@@ -89,8 +89,8 @@ const Activate = (): ReactElement => {
     <StyledActivateButton
       disabled={active}
       style={{
-        cursor: active ? "not-allowed" : "pointer",
-        borderColor: activating ? "orange" : active ? "unset" : "green",
+        cursor: active ? 'not-allowed' : 'pointer',
+        borderColor: activating ? 'orange' : active ? 'unset' : 'green',
       }}
       onClick={handleActivate}
     >
@@ -112,8 +112,8 @@ const Deactivate = (): ReactElement => {
     <StyledDeactivateButton
       disabled={!active}
       style={{
-        cursor: active ? "pointer" : "not-allowed",
-        borderColor: active ? "red" : "unset",
+        cursor: active ? 'pointer' : 'not-allowed',
+        borderColor: active ? 'red' : 'unset',
       }}
       onClick={handleDeactivate}
     >

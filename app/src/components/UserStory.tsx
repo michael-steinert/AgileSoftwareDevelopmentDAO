@@ -1,13 +1,13 @@
-import { Contract, ethers, Signer } from "ethers";
-import React, { ChangeEvent, ReactElement, useEffect, useState } from "react";
-import { useWeb3React } from "@web3-react/core";
-import styled from "styled-components";
+import { Contract, ethers, Signer } from 'ethers';
+import React, { ChangeEvent, ReactElement, useEffect, useState } from 'react';
+import { useWeb3React } from '@web3-react/core';
+import styled from 'styled-components';
 // @ts-ignore
-import GovernorContract from "../artifacts/contracts/GovernorContract.sol/GovernorContract.json";
+import GovernorContract from '../artifacts/contracts/GovernorContract.sol/GovernorContract.json';
 // @ts-ignore
-import UserStoryContract from "../artifacts/contracts/UserStoryContract.sol/UserStoryContract.json";
-import { Provider } from "../utils/provider";
-import { SectionDivider } from "./SectionDivider";
+import UserStoryContract from '../artifacts/contracts/UserStoryContract.sol/UserStoryContract.json';
+import { Provider } from '../utils/provider';
+import { SectionDivider } from './SectionDivider';
 
 type IUserStory = {
   creator: string;
@@ -57,17 +57,17 @@ const UserStory = (): ReactElement => {
   const { library, active, account } = useWeb3React<Provider>();
   const [signer, setSigner] = useState<Signer>();
   const [userStoryContract, setUserStoryContract] = useState<Contract>();
-  const [currentAccount, setCurrentAccount] = useState("");
+  const [currentAccount, setCurrentAccount] = useState('');
   const [allUserStories, setAllUserStories] = useState<IUserStory[]>([]);
   const [error, setError] = useState<Error>();
-  const [description, setDescription] = useState("");
-  const [functionalComplexity, setFunctionalComplexity] = useState("");
-  const [effortEstimation, setEffortEstimation] = useState("");
+  const [description, setDescription] = useState('');
+  const [functionalComplexity, setFunctionalComplexity] = useState('');
+  const [effortEstimation, setEffortEstimation] = useState('');
   const [allProposalIDs, setAllProposalIDs] = useState<number[]>([]);
 
   const governanceContractAddress =
-    "0x15F16B9c06a107eEED8192682Ca22fdac64E74e3";
-  const userStoryContractAddress = "0xbD046a019aCf77B9F370C4F7C4C6354Af8936C1a";
+    '0x15F16B9c06a107eEED8192682Ca22fdac64E74e3';
+  const userStoryContractAddress = '0xbD046a019aCf77B9F370C4F7C4C6354Af8936C1a';
   const governanceContractABI = GovernorContract.abi;
   const userStoryContractABI = UserStoryContract.abi;
 
@@ -122,7 +122,7 @@ const UserStory = (): ReactElement => {
       );
       setUserStoryContract(_userStoryContract);
       /* Subscribe to Event Calling Listener when the Event `UserStoryCreated` occurs */
-      _userStoryContract.on("UserStoryCreated", onUserStoryCreated);
+      _userStoryContract.on('UserStoryCreated', onUserStoryCreated);
       const retrieveAllUserStories = async (
         _userStoryContract: Contract
       ): Promise<void> => {
@@ -168,7 +168,7 @@ const UserStory = (): ReactElement => {
         /* `encodeFunctionData` returns the encoded Data, which can be used as the Data for a Transaction for Fragment for the given Values */
         /* Encoding Function to call with their Parameters */
         const encodedFunctionCall =
-          userStoryContract.interface.encodeFunctionData("storeUserStory", [
+          userStoryContract.interface.encodeFunctionData('storeUserStory', [
             description,
             functionalComplexity,
             effortEstimation,
@@ -183,7 +183,7 @@ const UserStory = (): ReactElement => {
           /* Encoded Parameters for the Functions that are going to be called */
           [encodedFunctionCall],
           /* Description of Proposal */
-          "Proposal for creating a new User Story"
+          'Proposal for creating a new User Story'
         );
 
         const proposeTransactionResult = await proposeTransaction.wait();
@@ -211,7 +211,7 @@ const UserStory = (): ReactElement => {
         /* Block Number that the Proposal Voting will expire */
         console.log(`Current Proposal Deadline: ${proposalDeadline}`);
       } else {
-        console.log("Ethereum Object does not exist");
+        console.log('Ethereum Object does not exist');
       }
     } catch (err: any) {
       setError(err);
@@ -220,7 +220,7 @@ const UserStory = (): ReactElement => {
   };
 
   /* Pop a Error Message if User is not on Testnet Rinkeby */
-  if (error && error.name === "UnsupportedChainIdError") {
+  if (error && error.name === 'UnsupportedChainIdError') {
     return (
       <div>
         <h2>Please connect to Testnet Rinkeby</h2>
@@ -255,14 +255,14 @@ const UserStory = (): ReactElement => {
         <StyledLabel>Contract Address</StyledLabel>
         <div>
           {userStoryContract ? (
-            typeof account === "undefined" ? (
-              ""
+            typeof account === 'undefined' ? (
+              ''
             ) : account ? (
               `${account.substring(0, 6)}...${account.substring(
                 account.length - 4
               )}`
             ) : (
-              ""
+              ''
             )
           ) : (
             <em>{`<Smart Contract not yet deployed>`}</em>
@@ -293,45 +293,45 @@ const UserStory = (): ReactElement => {
         <div />
         <SectionDivider />
         <h2>Create new User Story</h2>
-        <StyledLabel htmlFor={"descriptionInput"}>Description</StyledLabel>
+        <StyledLabel htmlFor={'descriptionInput'}>Description</StyledLabel>
         <StyledInput
-          id={"descriptionInput"}
-          type={"text"}
+          id={'descriptionInput'}
+          type={'text'}
           placeholder={
-            userStoryContract ? "" : "<Smart Contract not yet deployed>"
+            userStoryContract ? '' : '<Smart Contract not yet deployed>'
           }
           onChange={handleDescriptionChange}
-          style={{ fontStyle: userStoryContract ? "normal" : "italic" }}
+          style={{ fontStyle: userStoryContract ? 'normal' : 'italic' }}
         />
-        <StyledLabel htmlFor={"functionalComplexityInput"}>
+        <StyledLabel htmlFor={'functionalComplexityInput'}>
           Functional Complexity
         </StyledLabel>
         <StyledInput
-          id={"functionalComplexityInput"}
-          type={"text"}
+          id={'functionalComplexityInput'}
+          type={'text'}
           placeholder={
-            userStoryContract ? "" : "<Smart Contract not yet deployed>"
+            userStoryContract ? '' : '<Smart Contract not yet deployed>'
           }
           onChange={handleFunctionalComplexityChange}
-          style={{ fontStyle: userStoryContract ? "normal" : "italic" }}
+          style={{ fontStyle: userStoryContract ? 'normal' : 'italic' }}
         />
-        <StyledLabel htmlFor={"effortEstimationInput"}>
+        <StyledLabel htmlFor={'effortEstimationInput'}>
           Effort Estimation
         </StyledLabel>
         <StyledInput
-          id={"effortEstimationInput"}
-          type={"text"}
+          id={'effortEstimationInput'}
+          type={'text'}
           placeholder={
-            userStoryContract ? "" : "<Smart Contract not yet deployed>"
+            userStoryContract ? '' : '<Smart Contract not yet deployed>'
           }
           onChange={handleEffortEstimationChange}
-          style={{ fontStyle: userStoryContract ? "normal" : "italic" }}
+          style={{ fontStyle: userStoryContract ? 'normal' : 'italic' }}
         />
         <StyledButton
           disabled={!active || !userStoryContract}
           style={{
-            cursor: !active || !userStoryContract ? "not-allowed" : "pointer",
-            borderColor: !active || !userStoryContract ? "unset" : "blue",
+            cursor: !active || !userStoryContract ? 'not-allowed' : 'pointer',
+            borderColor: !active || !userStoryContract ? 'unset' : 'blue',
           }}
           onClick={storeUserStory}
         >

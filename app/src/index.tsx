@@ -1,11 +1,11 @@
-import { Web3ReactProvider } from "@web3-react/core";
-import React from "react";
-import { createRoot } from "react-dom/client";
-import App from "./App";
-import "./index.css";
-import { getProvider } from "./utils/provider";
+import { Web3ReactProvider } from '@web3-react/core';
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import App from './App';
+import './index.css';
+import { getProvider } from './utils/provider';
 
-const container = document.getElementById("app") as HTMLDivElement;
+const container = document.getElementById('app') as HTMLDivElement;
 const root = createRoot(container);
 
 root.render(

@@ -1,8 +1,7 @@
-import { useWeb3React } from "@web3-react/core";
-import React, { MouseEvent, ReactElement } from "react";
-import styled from "styled-components";
-import { Provider } from "../utils/provider";
-
+import { useWeb3React } from '@web3-react/core';
+import React, { MouseEvent, ReactElement } from 'react';
+import styled from 'styled-components';
+import { Provider } from '../utils/provider';
 
 const StyledButton = styled.button`
   width: 150px;
@@ -21,7 +20,7 @@ export const SignMessage = (): ReactElement => {
     event.preventDefault();
 
     if (!library || !account) {
-      window.alert("Wallet not connected");
+      window.alert('Wallet not connected');
       return;
     }
 
@@ -30,10 +29,10 @@ export const SignMessage = (): ReactElement => {
       account: string
     ): Promise<void> => {
       try {
-        const signature = await library.getSigner(account).signMessage("👋");
+        const signature = await library.getSigner(account).signMessage('👋');
         window.alert(`Successful\n${signature}`);
       } catch (error: any) {
-        window.alert(`Error ${error && error.message ? error.message : ""}`);
+        window.alert(`Error ${error && error.message ? error.message : ''}`);
       }
     };
 
@@ -44,8 +43,8 @@ export const SignMessage = (): ReactElement => {
     <StyledButton
       disabled={!active}
       style={{
-        cursor: !active ? "not-allowed" : "pointer",
-        borderColor: !active ? "unset" : "blue",
+        cursor: !active ? 'not-allowed' : 'pointer',
+        borderColor: !active ? 'unset' : 'blue',
       }}
       onClick={handleSignMessage}
     >

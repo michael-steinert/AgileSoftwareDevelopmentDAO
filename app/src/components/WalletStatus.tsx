@@ -1,8 +1,8 @@
-import { useWeb3React } from "@web3-react/core";
-import { ethers } from "ethers";
-import React, { ReactElement, useEffect, useState } from "react";
-import styled from "styled-components";
-import { Provider } from "../utils/provider";
+import { useWeb3React } from '@web3-react/core';
+import { ethers } from 'ethers';
+import React, { ReactElement, useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { Provider } from '../utils/provider';
 
 type CleanupFunction = (() => void) | undefined;
 
@@ -27,7 +27,7 @@ const ChainId = (): ReactElement => {
       <span>
         <strong>Chain Id</strong>
       </span>
-      <span>{chainId ?? ""}</span>
+      <span>{chainId ?? ''}</span>
     </React.Fragment>
   );
 };
@@ -55,17 +55,17 @@ const BlockNumber = (): ReactElement => {
           setBlockNumber(undefined);
         }
 
-        window.alert(`Error ${error && error.message ? error.message : ""}`);
+        window.alert(`Error ${error && error.message ? error.message : ''}`);
       }
     };
 
     getBlockNumber(library).catch(console.error);
 
-    library.on("block", setBlockNumber);
+    library.on('block', setBlockNumber);
 
     return (): void => {
       stale = true;
-      library.removeListener("block", setBlockNumber);
+      library.removeListener('block', setBlockNumber);
       setBlockNumber(undefined);
     };
     /* Ensuring Refresh if referential Identity of Library does not change across chainIds */
@@ -76,7 +76,7 @@ const BlockNumber = (): ReactElement => {
       <span>
         <strong>Block Number</strong>
       </span>
-      <span>{blockNumber === null ? "Error" : blockNumber ?? ""}</span>
+      <span>{blockNumber === null ? 'Error' : blockNumber ?? ''}</span>
     </React.Fragment>
   );
 };
@@ -90,13 +90,13 @@ const Account = (): ReactElement => {
         <strong>Account</strong>
       </span>
       <span>
-        {typeof account === "undefined"
-          ? ""
+        {typeof account === 'undefined'
+          ? ''
           : account
           ? `${account.substring(0, 6)}...${account.substring(
               account.length - 4
             )}`
-          : ""}
+          : ''}
       </span>
     </React.Fragment>
   );
@@ -108,7 +108,7 @@ const Balance = (): ReactElement => {
   const [balance, setBalance] = useState<ethers.BigNumber>();
 
   useEffect((): CleanupFunction => {
-    if (typeof account === "undefined" || account === null || !library) {
+    if (typeof account === 'undefined' || account === null || !library) {
       return;
     }
 
@@ -126,7 +126,7 @@ const Balance = (): ReactElement => {
       } catch (error: any) {
         if (!stale) {
           setBalance(undefined);
-          window.alert(`Error ${error && error.message ? error.message : ""}`);
+          window.alert(`Error ${error && error.message ? error.message : ''}`);
         }
       }
     };
@@ -138,12 +138,12 @@ const Balance = (): ReactElement => {
       getBalance(library, account).catch(console.error);
     };
 
-    library.on("block", getBalanceHandler);
+    library.on('block', getBalanceHandler);
 
     /* Use the Function Name to remove the Listener */
     return (): void => {
       stale = true;
-      library.removeListener("block", getBalanceHandler);
+      library.removeListener('block', getBalanceHandler);
       setBalance(undefined);
     };
     /* Ensuring Refresh if referential Identity of Library does not change across chainIds */
@@ -156,10 +156,10 @@ const Balance = (): ReactElement => {
       </span>
       <span>
         {balance === null
-          ? "Error"
+          ? 'Error'
           : balance
           ? `Ξ${Math.round(+ethers.utils.formatEther(balance) * 1e4) / 1e4}`
-          : ""}
+          : ''}
       </span>
     </React.Fragment>
   );
@@ -172,7 +172,7 @@ const NextNonce = (): ReactElement => {
   const [nextNonce, setNextNonce] = useState<number>();
 
   useEffect((): CleanupFunction => {
-    if (typeof account === "undefined" || account === null || !library) {
+    if (typeof account === 'undefined' || account === null || !library) {
       return;
     }
 
@@ -190,7 +190,7 @@ const NextNonce = (): ReactElement => {
       } catch (error: any) {
         if (!stale) {
           setNextNonce(undefined);
-          window.alert(`Error ${error && error.message ? error.message : ""}`);
+          window.alert(`Error ${error && error.message ? error.message : ''}`);
         }
       }
     };
@@ -202,7 +202,7 @@ const NextNonce = (): ReactElement => {
       getNextNonce(library, account).catch(console.error);
     };
 
-    library.on("block", getNextNonceHandler);
+    library.on('block', getNextNonceHandler);
 
     /* Use the Function Name to remove the Listener */
     return (): void => {
@@ -217,7 +217,7 @@ const NextNonce = (): ReactElement => {
       <span>
         <strong>Next Nonce</strong>
       </span>
-      <span>{nextNonce === null ? "Error" : nextNonce ?? ""}</span>
+      <span>{nextNonce === null ? 'Error' : nextNonce ?? ''}</span>
     </React.Fragment>
   );
 };
@@ -225,7 +225,7 @@ const NextNonce = (): ReactElement => {
 const StatusIcon = (): ReactElement => {
   const { active, error } = useWeb3React<Provider>();
   return (
-    <StyledStatusIcon>{active ? "🟢" : error ? "🔴" : "🟠"}</StyledStatusIcon>
+    <StyledStatusIcon>{active ? '🟢' : error ? '🔴' : '🟠'}</StyledStatusIcon>
   );
 };
 

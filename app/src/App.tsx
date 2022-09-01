@@ -1,10 +1,10 @@
-import React, { ReactElement } from "react";
-import styled from "styled-components";
-import { ActivateDeactivate } from "./components/ActivateDeactivate";
-import { SectionDivider } from "./components/SectionDivider";
-import { SignMessage } from "./components/SignMessage";
-import UserStory from "./components/UserStory";
-import { WalletStatus } from "./components/WalletStatus";
+import React, { ReactElement } from 'react';
+import styled from 'styled-components';
+import { ActivateDeactivate } from './components/ActivateDeactivate';
+import { SectionDivider } from './components/SectionDivider';
+import { SignMessage } from './components/SignMessage';
+import UserStory from './components/UserStory';
+import { WalletStatus } from './components/WalletStatus';
 
 const StyledAppDiv = styled.div`
   display: grid;
