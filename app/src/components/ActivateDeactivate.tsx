@@ -1,11 +1,12 @@
+import { Box, Button } from '@mui/material';
+import { styled } from '@mui/system';
 import { AbstractConnector } from '@web3-react/abstract-connector';
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import {
   NoEthereumProviderError,
-  UserRejectedRequestError,
+  UserRejectedRequestError
 } from '@web3-react/injected-connector';
-import React, { MouseEvent, ReactElement, useState } from 'react';
-import styled from 'styled-components';
+import { MouseEvent, ReactElement, useState } from 'react';
 import { injected } from '../utils/connectors';
 import { useEagerConnect, useInactiveListener } from '../utils/hooks';
 import { Provider } from '../utils/provider';
@@ -36,30 +37,30 @@ const getErrorMessage = (error: Error): string => {
   return errorMessage;
 };
 
-const StyledActivateDeactivateDiv = styled.div`
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 10px;
-  place-self: center;
-  align-items: center;
-`;
+const StyledActivateDeactivateBox = styled(Box)({
+  display: 'grid',
+  gridTemplateRows: '1fr',
+  gridTemplateColumns: '1fr 1fr',
+  gridGap: '10px',
+  placeSelf: 'center',
+  alignItems: 'center',
+});
 
-const StyledActivateButton = styled.button`
-  width: 150px;
-  height: 2rem;
-  border-radius: 1rem;
-  border-color: green;
-  cursor: pointer;
-`;
+const StyledActivateButton = styled(Button)({
+  width: '150px',
+  color: 'white',
+  backgroundColor: '#1976d2',
+  borderColor: 'green',
+  cursor: 'pointer',
+});
 
-const StyledDeactivateButton = styled.button`
-  width: 150px;
-  height: 2rem;
-  border-radius: 1rem;
-  border-color: red;
-  cursor: pointer;
-`;
+const StyledDeactivateButton = styled(Button)({
+  width: '150px',
+  color: 'white',
+  backgroundColor: '#1976d2',
+  borderColor: 'red',
+  cursor: 'pointer',
+});
 
 const Activate = (): ReactElement => {
   const context = useWeb3React<Provider>();
@@ -88,7 +89,7 @@ const Activate = (): ReactElement => {
   return (
     <StyledActivateButton
       disabled={active}
-      style={{
+      sx={{
         cursor: active ? 'not-allowed' : 'pointer',
         borderColor: activating ? 'orange' : active ? 'unset' : 'green',
       }}
@@ -111,7 +112,7 @@ const Deactivate = (): ReactElement => {
   return (
     <StyledDeactivateButton
       disabled={!active}
-      style={{
+      sx={{
         cursor: active ? 'pointer' : 'not-allowed',
         borderColor: active ? 'red' : 'unset',
       }}
@@ -122,7 +123,7 @@ const Deactivate = (): ReactElement => {
   );
 };
 
-export const ActivateDeactivate = (): ReactElement => {
+const ActivateDeactivate = (): ReactElement => {
   const context = useWeb3React<Provider>();
   const { error } = context;
 
@@ -131,9 +132,11 @@ export const ActivateDeactivate = (): ReactElement => {
   }
 
   return (
-    <StyledActivateDeactivateDiv>
+    <StyledActivateDeactivateBox>
       <Activate />
       <Deactivate />
-    </StyledActivateDeactivateDiv>
+    </StyledActivateDeactivateBox>
   );
 };
+
+export default ActivateDeactivate;

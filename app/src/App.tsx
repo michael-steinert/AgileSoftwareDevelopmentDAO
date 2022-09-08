@@ -1,27 +1,48 @@
 import React, { ReactElement } from 'react';
-import styled from 'styled-components';
-import { ActivateDeactivate } from './components/ActivateDeactivate';
-import { SectionDivider } from './components/SectionDivider';
-import { SignMessage } from './components/SignMessage';
-import UserStory from './components/UserStory';
-import { WalletStatus } from './components/WalletStatus';
-
-const StyledAppDiv = styled.div`
-  display: grid;
-  grid-gap: 20px;
-`;
+import { useState } from 'react';
+import {
+  Box,
+  createTheme,
+  PaletteMode,
+  Stack,
+  ThemeProvider,
+} from '@mui/material';
+import {
+  ActivateDeactivate,
+  SectionDivider,
+  WalletStatus,
+  UserStory,
+  SignMessage,
+} from './components';
 
 const App = (): ReactElement => {
+  const [mode, setMode] = useState<PaletteMode>('light');
+
+  const themeMode = createTheme({
+    palette: {
+      mode: mode,
+    },
+  });
+
   return (
-    <StyledAppDiv>
-      <ActivateDeactivate />
-      <SectionDivider />
-      <WalletStatus />
-      <SectionDivider />
-      <SignMessage />
-      <SectionDivider />
-      <UserStory />
-    </StyledAppDiv>
+    <ThemeProvider theme={themeMode}>
+      <Box
+        bgcolor={'background.default'}
+        color={'text.primary'}
+        sx={{
+          display: 'grid',
+          gridGap: '20px',
+        }}
+      >
+        <ActivateDeactivate />
+        <SectionDivider />
+        <WalletStatus />
+        <SectionDivider />
+        <SignMessage />
+        <SectionDivider />
+        <UserStory />
+      </Box>
+    </ThemeProvider>
   );
 };
 

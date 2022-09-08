@@ -1,13 +1,14 @@
+import { styled } from '@mui/system';
+import { useWeb3React } from '@web3-react/core';
 import { Contract, ethers, Signer } from 'ethers';
 import React, { ChangeEvent, ReactElement, useEffect, useState } from 'react';
-import { useWeb3React } from '@web3-react/core';
-import styled from 'styled-components';
 // @ts-ignore
 import GovernorContract from '../artifacts/contracts/GovernorContract.sol/GovernorContract.json';
+import { Box, Button } from '@mui/material';
+import { SectionDivider } from '.';
 // @ts-ignore
 import UserStoryContract from '../artifacts/contracts/UserStoryContract.sol/UserStoryContract.json';
 import { Provider } from '../utils/provider';
-import { SectionDivider } from './SectionDivider';
 
 type IUserStory = {
   creator: string;
@@ -19,45 +20,33 @@ type IUserStory = {
   isDone: boolean;
 };
 
-const StyledDeployContractButton = styled.button`
-  width: 180px;
-  height: 2rem;
-  border-radius: 1rem;
-  border-color: blue;
-  cursor: pointer;
-  place-self: center;
-`;
+const StyledUserStoryBox = styled(Box)({
+  display: 'grid',
+  gridGap: '10px',
+  placeSelf: 'center',
+  alignItems: 'center',
+});
 
-const StyledUserStoryDiv = styled.div`
-  display: grid;
-  /* grid-template-rows: 1fr 1fr 1fr; */
-  /* grid-template-columns: 135px 2.7fr 1fr; */
-  grid-gap: 10px;
-  place-self: center;
-  align-items: center;
-`;
+const StyledLabel = styled('label')({
+  fontWeight: 'bold',
+});
 
-const StyledLabel = styled.label`
-  font-weight: bold;
-`;
+const StyledInput = styled('input')({
+  padding: '0.4rem 0.6rem',
+});
 
-const StyledInput = styled.input`
-  padding: 0.4rem 0.6rem;
-`;
-
-const StyledButton = styled.button`
-  width: 150px;
-  height: 2rem;
-  border-radius: 1rem;
-  border-color: blue;
-  cursor: pointer;
-`;
+const StyledCreateButton = styled(Button)({
+  width: '150px',
+  color: 'white',
+  backgroundColor: '#1976d2',
+  borderColor: 'blue',
+  cursor: 'pointer',
+});
 
 const UserStory = (): ReactElement => {
   const { library, active, account } = useWeb3React<Provider>();
   const [signer, setSigner] = useState<Signer>();
   const [userStoryContract, setUserStoryContract] = useState<Contract>();
-  const [currentAccount, setCurrentAccount] = useState('');
   const [allUserStories, setAllUserStories] = useState<IUserStory[]>([]);
   const [error, setError] = useState<Error>();
   const [description, setDescription] = useState('');
@@ -250,7 +239,7 @@ const UserStory = (): ReactElement => {
 
   return (
     <React.Fragment>
-      <StyledUserStoryDiv>
+      <StyledUserStoryBox>
         <h1>Agile DAO</h1>
         <StyledLabel>Contract Address</StyledLabel>
         <div>
@@ -327,7 +316,7 @@ const UserStory = (): ReactElement => {
           onChange={handleEffortEstimationChange}
           style={{ fontStyle: userStoryContract ? 'normal' : 'italic' }}
         />
-        <StyledButton
+        <StyledCreateButton
           disabled={!active || !userStoryContract}
           style={{
             cursor: !active || !userStoryContract ? 'not-allowed' : 'pointer',
@@ -336,8 +325,8 @@ const UserStory = (): ReactElement => {
           onClick={storeUserStory}
         >
           Create
-        </StyledButton>
-      </StyledUserStoryDiv>
+        </StyledCreateButton>
+      </StyledUserStoryBox>
     </React.Fragment>
   );
 };

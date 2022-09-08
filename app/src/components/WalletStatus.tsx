@@ -1,23 +1,25 @@
 import { useWeb3React } from '@web3-react/core';
 import { ethers } from 'ethers';
 import React, { ReactElement, useEffect, useState } from 'react';
-import styled from 'styled-components';
+import { styled } from '@mui/system';
 import { Provider } from '../utils/provider';
+import { Box } from '@mui/material';
 
 type CleanupFunction = (() => void) | undefined;
 
-const StyledWalletStatusDiv = styled.div`
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: 0.6fr 0.1fr 0.6fr 1fr 0.1fr 0.6fr 0.5fr 0.1fr 1.1fr 0.4fr 0.1fr 1fr 0.9fr 0.1fr 0.7fr 0.1fr;
-  grid-gap: 10px;
-  place-self: center;
-  align-items: center;
-`;
+const StyledWalletStatusBox = styled(Box)({
+  display: 'grid',
+  gridTemplateRows: '1fr',
+  gridTemplateColumns:
+    '0.6fr 0.1fr 0.6fr 1fr 0.1fr 0.6fr 0.5fr 0.1fr 1.1fr 0.4fr 0.1fr 1fr 0.9fr 0.1fr 0.7fr 0.1fr',
+  gridGap: '10px',
+  placeSelf: 'center',
+  alignItems: 'center',
+});
 
-const StyledStatusIcon = styled.h1`
-  margin: 0px;
-`;
+const StyledStatusIcon = styled('h1')({
+  margin: 0,
+});
 
 const ChainId = (): ReactElement => {
   const { chainId } = useWeb3React<Provider>();
@@ -229,15 +231,17 @@ const StatusIcon = (): ReactElement => {
   );
 };
 
-export const WalletStatus = (): ReactElement => {
+const WalletStatus = (): ReactElement => {
   return (
-    <StyledWalletStatusDiv>
+    <StyledWalletStatusBox>
       <ChainId />
       <BlockNumber />
       <Account />
       <Balance />
       <NextNonce />
       <StatusIcon />
-    </StyledWalletStatusDiv>
+    </StyledWalletStatusBox>
   );
 };
+
+export default WalletStatus;

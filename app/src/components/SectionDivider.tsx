@@ -1,7 +1,10 @@
-import styled from 'styled-components';
+import { Box } from '@mui/material';
+import { styled } from '@mui/system';
 
-export const SectionDivider = styled.div`
-  border-top: 2px solid darkgrey;
+const SectionDivider = styled(Box)({
+  borderTop: '2px solid darkgrey',
   /* Make the Row stretch to entire Width of the Grid */
-  grid-column: 1 / 1;
-`;
+  gridColumn: '1 / 1',
+});
+
+export default SectionDivider;

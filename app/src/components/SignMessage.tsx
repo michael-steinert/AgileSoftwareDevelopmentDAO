@@ -1,18 +1,19 @@
+import { Button } from '@mui/material';
+import { styled } from '@mui/system';
 import { useWeb3React } from '@web3-react/core';
-import React, { MouseEvent, ReactElement } from 'react';
-import styled from 'styled-components';
+import { MouseEvent, ReactElement } from 'react';
 import { Provider } from '../utils/provider';
 
-const StyledButton = styled.button`
-  width: 150px;
-  height: 2rem;
-  border-radius: 1rem;
-  border-color: blue;
-  cursor: pointer;
-  place-self: center;
-`;
+const StyledSignButton = styled(Button)({
+  width: '150px',
+  color: 'white',
+  backgroundColor: '#1976d2',
+  borderColor: 'blue',
+  cursor: 'pointer',
+  placeSelf: 'center',
+});
 
-export const SignMessage = (): ReactElement => {
+const SignMessage = (): ReactElement => {
   const context = useWeb3React<Provider>();
   const { account, active, library } = context;
 
@@ -40,7 +41,7 @@ export const SignMessage = (): ReactElement => {
   };
 
   return (
-    <StyledButton
+    <StyledSignButton
       disabled={!active}
       style={{
         cursor: !active ? 'not-allowed' : 'pointer',
@@ -49,6 +50,8 @@ export const SignMessage = (): ReactElement => {
       onClick={handleSignMessage}
     >
       Sign Message
-    </StyledButton>
+    </StyledSignButton>
   );
 };
+
+export default SignMessage;
