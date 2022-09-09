@@ -44,7 +44,7 @@ const StyledActivateDeactivateBox = styled(Box)({
   gridGap: '10px',
   placeSelf: 'center',
   alignItems: 'center',
-});
+}) as typeof Box;
 
 const StyledActivateButton = styled(Button)({
   width: '150px',
@@ -52,7 +52,7 @@ const StyledActivateButton = styled(Button)({
   backgroundColor: '#1976d2',
   borderColor: 'green',
   cursor: 'pointer',
-});
+}) as typeof Button;
 
 const StyledDeactivateButton = styled(Button)({
   width: '150px',
@@ -60,7 +60,7 @@ const StyledDeactivateButton = styled(Button)({
   backgroundColor: '#1976d2',
   borderColor: 'red',
   cursor: 'pointer',
-});
+}) as typeof Button;
 
 const Activate = (): ReactElement => {
   const context = useWeb3React<Provider>();

@@ -11,7 +11,7 @@ const StyledSignButton = styled(Button)({
   borderColor: 'blue',
   cursor: 'pointer',
   placeSelf: 'center',
-});
+}) as typeof Button;
 
 const SignMessage = (): ReactElement => {
   const context = useWeb3React<Provider>();

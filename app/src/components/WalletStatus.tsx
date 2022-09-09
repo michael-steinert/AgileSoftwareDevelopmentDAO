@@ -3,7 +3,7 @@ import { ethers } from 'ethers';
 import React, { ReactElement, useEffect, useState } from 'react';
 import { styled } from '@mui/system';
 import { Provider } from '../utils/provider';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 type CleanupFunction = (() => void) | undefined;
 
@@ -15,11 +15,11 @@ const StyledWalletStatusBox = styled(Box)({
   gridGap: '10px',
   placeSelf: 'center',
   alignItems: 'center',
-});
+}) as typeof Box;
 
-const StyledStatusIcon = styled('h1')({
+const StyledStatusIcon = styled(Typography)({
   margin: 0,
-});
+}) as typeof Typography;
 
 const ChainId = (): ReactElement => {
   const { chainId } = useWeb3React<Provider>();

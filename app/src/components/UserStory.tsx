@@ -4,7 +4,7 @@ import { Contract, ethers, Signer } from 'ethers';
 import React, { ChangeEvent, ReactElement, useEffect, useState } from 'react';
 // @ts-ignore
 import GovernorContract from '../artifacts/contracts/GovernorContract.sol/GovernorContract.json';
-import { Box, Button } from '@mui/material';
+import { Box, Button, TextField, InputLabel } from '@mui/material';
 import { SectionDivider } from '.';
 // @ts-ignore
 import UserStoryContract from '../artifacts/contracts/UserStoryContract.sol/UserStoryContract.json';
@@ -25,15 +25,15 @@ const StyledUserStoryBox = styled(Box)({
   gridGap: '10px',
   placeSelf: 'center',
   alignItems: 'center',
-});
+}) as typeof Box;
 
-const StyledLabel = styled('label')({
+const StyledLabel = styled(InputLabel)({
   fontWeight: 'bold',
-});
+}) as typeof InputLabel;
 
-const StyledInput = styled('input')({
+const StyledInput = styled(TextField)({
   padding: '0.4rem 0.6rem',
-});
+}) as typeof TextField;
 
 const StyledCreateButton = styled(Button)({
   width: '150px',
@@ -41,7 +41,7 @@ const StyledCreateButton = styled(Button)({
   backgroundColor: '#1976d2',
   borderColor: 'blue',
   cursor: 'pointer',
-});
+}) as typeof Button;
 
 const UserStory = (): ReactElement => {
   const { library, active, account } = useWeb3React<Provider>();
@@ -318,7 +318,7 @@ const UserStory = (): ReactElement => {
         />
         <StyledCreateButton
           disabled={!active || !userStoryContract}
-          style={{
+          sx={{
             cursor: !active || !userStoryContract ? 'not-allowed' : 'pointer',
             borderColor: !active || !userStoryContract ? 'unset' : 'blue',
           }}

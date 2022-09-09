@@ -13,6 +13,7 @@ import {
   WalletStatus,
   UserStory,
   SignMessage,
+  Navbar,
 } from './components';
 
 const App = (): ReactElement => {
@@ -34,13 +35,16 @@ const App = (): ReactElement => {
           gridGap: '20px',
         }}
       >
-        <ActivateDeactivate />
-        <SectionDivider />
-        <WalletStatus />
-        <SectionDivider />
-        <SignMessage />
-        <SectionDivider />
-        <UserStory />
+        <Navbar setMode={setMode} mode={mode} />
+        <Stack direction='column' spacing={2} justifyContent='space-between'>
+          <ActivateDeactivate />
+          <SectionDivider />
+          <WalletStatus />
+          <SectionDivider />
+          <SignMessage />
+          <SectionDivider />
+          <UserStory />
+        </Stack>
       </Box>
     </ThemeProvider>
   );
