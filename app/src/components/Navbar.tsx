@@ -34,7 +34,7 @@ const Navbar: FunctionComponent<NavbarProps> = ({ mode, setMode }) => {
                 onChange={(e) => setMode(mode === 'light' ? 'dark' : 'light')}
               />
             }
-            label='Mode'
+            label={<ModeNight />}
           />
         </FormGroup>
       </StyledToolbar>
