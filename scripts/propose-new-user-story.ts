@@ -1,5 +1,5 @@
-import * as fs from "fs";
-import { deployments, ethers, network } from "hardhat";
+import * as fs from 'fs';
+import { deployments, ethers, network } from 'hardhat';
 import {
   developmentChains,
   FUNCTION_TO_CALL,
@@ -7,8 +7,8 @@ import {
   proposalsFile,
   PROPOSAL_DESCRIPTION,
   VOTING_DELAY,
-} from "../utils/hardhat-config";
-import { moveBlocks } from "../utils/move-blocks";
+} from '../utils/hardhat-config';
+import { moveBlocks } from '../utils/move-blocks';
 
 type UserStory = [
   description: string,
@@ -16,22 +16,22 @@ type UserStory = [
   effortEstimation: number
 ];
 
-const propose = async (
+const proposeNewUserStory = async (
   userStory: UserStory,
   functionToCall: string,
   proposalDescription: string
 ) => {
-  const DaoGovernor = await deployments.get("DaoGovernor");
+  const DaoGovernor = await deployments.get('DaoGovernor');
   const daoGovernor = await ethers.getContractAt(
-    "DaoGovernor",
+    'DaoGovernor',
     DaoGovernor.address
   );
   const userStoryTreasuryTransparentProxy = await deployments.get(
-    "UserStoryTreasury_Proxy"
+    'UserStoryTreasury_Proxy'
   );
   /* `UserStoryTreasury` can be reached at the Address of its Transparent Proxy */
   const userStoryTreasury = await ethers.getContractAt(
-    "UserStoryTreasury",
+    'UserStoryTreasury',
     userStoryTreasuryTransparentProxy.address
   );
   /* `encodeFunctionData` returns the encoded Data, which can be used as the Data for a Transaction for Fragment for the given Values */
@@ -69,11 +69,11 @@ const propose = async (
   /* Getting Deadline for Proposal */
   const proposalDeadline = await daoGovernor.proposalDeadline(proposalId);
   /* Getting all Proposals from `proposals.json` */
-  let proposals = JSON.parse(fs.readFileSync(proposalsFile, "utf8"));
+  let proposals = JSON.parse(fs.readFileSync(proposalsFile, 'utf8'));
   /* Saving new Proposal */
   proposals[network.config.chainId!.toString()].push(proposalId.toString());
   /* Writing new Proposal into `proposals.json` */
-  fs.writeFileSync(proposalsFile, JSON.stringify(proposals));
+  storeProposalId(proposalId);
   /* State of Proposal: 1 is not passed and 0 is passed */
   console.log(`Current Proposal State: ${proposalState}`);
   /* Block Number that the current Proposal was snapshot */
@@ -82,11 +82,24 @@ const propose = async (
   console.log(`Current Proposal Deadline: ${proposalDeadline}`);
 };
 
-propose(NEW_USER_STORY, FUNCTION_TO_CALL, PROPOSAL_DESCRIPTION)
+const storeProposalId = (proposalId: any) => {
+  const chainId = network.config.chainId!.toString();
+  let proposals: any;
+  if (fs.existsSync(proposalsFile)) {
+    proposals = JSON.parse(fs.readFileSync(proposalsFile, 'utf8'));
+  } else {
+    proposals = {};
+    proposals[chainId] = [];
+  }
+  proposals[chainId].push(proposalId.toString());
+  fs.writeFileSync(proposalsFile, JSON.stringify(proposals), 'utf8');
+};
+
+proposeNewUserStory(NEW_USER_STORY, FUNCTION_TO_CALL, PROPOSAL_DESCRIPTION)
   .then(() => process.exit(0))
   .catch((error) => {
     console.error(error);
     process.exit(1);
   });
 
-export default propose;
+export default proposeNewUserStory;

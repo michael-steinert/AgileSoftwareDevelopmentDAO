@@ -1,26 +1,23 @@
-import * as fs from "fs";
-import { deployments, ethers, network } from "hardhat";
+import * as fs from 'fs';
+import { deployments, ethers, network } from 'hardhat';
 import {
   developmentChains,
   proposalsFile,
   VOTING_PERIOD,
-} from "../utils/hardhat-config";
-import { moveBlocks } from "../utils/move-blocks";
+} from '../utils/hardhat-config';
+import { moveBlocks } from '../utils/move-blocks';
 
-/* Index of first Proposal in `proposals.json` */
-const index = 0;
-
-const vote = async (proposalIndex: number) => {
-  const proposals = JSON.parse(fs.readFileSync(proposalsFile, "utf8"));
-  /* Getting first Proposal of List of Proposals in `proposals.json` */
-  const proposalId = proposals[network.config.chainId!][proposalIndex];
+const voteForProposal = async () => {
+  const proposals = JSON.parse(fs.readFileSync(proposalsFile, 'utf8'));
+  /* Getting last Proposal for the Network of Proposals in `proposals.json` */
+  const proposalId = proposals[network.config.chainId!].at(-1);
   /* Vote Types := 0 = Against, 1 = For, and 2 = Abstain for Proposal */
   const voteType = 1;
-  const reasonForVote = "Voting for new User Story";
-  console.log("Voting in Process");
-  const DaoGovernor = await deployments.get("DaoGovernor");
+  const reasonForVote = 'Voting for new User Story';
+  console.log('Voting in Process');
+  const DaoGovernor = await deployments.get('DaoGovernor');
   const daoGovernor = await ethers.getContractAt(
-    "DaoGovernor",
+    'DaoGovernor',
     DaoGovernor.address
   );
   /* Creating Proposal with Reason */
@@ -37,14 +34,14 @@ const vote = async (proposalIndex: number) => {
   if (developmentChains.includes(network.name)) {
     await moveBlocks(VOTING_PERIOD + 1);
   }
-  console.log("Voted for new Proposal");
+  console.log('Voted for new Proposal');
 };
 
-vote(index)
+voteForProposal()
   .then(() => process.exit(0))
   .catch((error) => {
     console.error(error);
     process.exit(1);
   });
 
-export default vote;
+export default voteForProposal;

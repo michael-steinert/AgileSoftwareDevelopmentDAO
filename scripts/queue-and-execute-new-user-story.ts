@@ -1,15 +1,15 @@
-import { BigNumber } from "ethers";
-import { deployments, ethers, network } from "hardhat";
-import { UserStoryTreasury } from "../typechain-types";
+import { BigNumber } from 'ethers';
+import { deployments, ethers, network } from 'hardhat';
+import { UserStoryTreasury } from '../typechain-types';
 import {
   developmentChains,
   FUNCTION_TO_CALL,
   MIN_DELAY,
   NEW_USER_STORY,
   PROPOSAL_DESCRIPTION,
-} from "../utils/hardhat-config";
-import { moveBlocks } from "../utils/move-blocks";
-import { moveTime } from "../utils/move-time";
+} from '../utils/hardhat-config';
+import { moveBlocks } from '../utils/move-blocks';
+import { moveTime } from '../utils/move-time';
 
 interface UserStory {
   creator: string;
@@ -21,13 +21,13 @@ interface UserStory {
   isDone: boolean;
 }
 
-const queueAndExecute = async () => {
+const queueAndExecuteProposal = async () => {
   const userStoryTreasuryTransparentProxy = await deployments.get(
-    "UserStoryTreasury_Proxy"
+    'UserStoryTreasury_Proxy'
   );
   /* `UserStoryTreasury` can be reached at the Address of its Transparent Proxy */
   const userStoryTreasury = (await ethers.getContractAt(
-    "UserStoryTreasury",
+    'UserStoryTreasury',
     userStoryTreasuryTransparentProxy.address
   )) as UserStoryTreasury;
   const encodedFunctionCall = userStoryTreasury.interface.encodeFunctionData(
@@ -38,12 +38,12 @@ const queueAndExecute = async () => {
   /* `PROPOSAL_DESCRIPTION` has to be hashed to match because on-chain all Data are hashed */
   //const descriptionHash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(PROPOSAL_DESCRIPTION));
   const descriptionHash = ethers.utils.id(PROPOSAL_DESCRIPTION);
-  const DaoGovernor = await deployments.get("DaoGovernor");
+  const DaoGovernor = await deployments.get('DaoGovernor');
   const daoGovernor = await ethers.getContractAt(
-    "DaoGovernor",
+    'DaoGovernor',
     DaoGovernor.address
   );
-  console.log("Queueing Proposal in Process");
+  console.log('Queueing Proposal in Process');
   /* Exact the same Parameter as in the `propose()` because this Data is not stored on-chain, as a Measure to save Gas */
   const queueTransaction = await daoGovernor.queue(
     [userStoryTreasury.address],
@@ -59,7 +59,7 @@ const queueAndExecute = async () => {
     await moveTime(MIN_DELAY + 1);
     await moveBlocks(1);
   }
-  console.log("Executing Proposal in Process");
+  console.log('Executing Proposal in Process');
   /* Exact the same Parameter as in the `propose()` because this Data is not stored on-chain, as a Measure to save Gas */
   /* `execute()` will fail on Testnet or Mainnet because the `MIN_DELAY` for the Voting Period must expire */
   const executeTransaction = await daoGovernor.execute(
@@ -70,7 +70,7 @@ const queueAndExecute = async () => {
     descriptionHash
   );
   await executeTransaction.wait(1);
-  console.log("Proposal executed");
+  console.log('Proposal executed');
   /* Retrieving new Value that has been proposed and executed in Contract `UserStoryTreasuryCoordinator` */
   const allUserStories = await userStoryTreasury.retrieveAllUserStories();
   allUserStories?.forEach((userStory: UserStory, index: number) =>
@@ -78,11 +78,11 @@ const queueAndExecute = async () => {
   );
 };
 
-queueAndExecute()
+queueAndExecuteProposal()
   .then(() => process.exit(0))
   .catch((error) => {
     console.error(error);
     process.exit(1);
   });
 
-export default queueAndExecute;
+export default queueAndExecuteProposal;
