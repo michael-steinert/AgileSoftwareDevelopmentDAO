@@ -1,33 +1,36 @@
-import "@typechain/hardhat";
-import "@nomiclabs/hardhat-waffle";
-import "@nomiclabs/hardhat-etherscan";
-import "@nomiclabs/hardhat-ethers";
-import "hardhat-gas-reporter";
-import "dotenv/config";
-import "solidity-coverage";
-import "hardhat-deploy";
-import "solidity-coverage";
-import { HardhatUserConfig } from "hardhat/config";
+import '@typechain/hardhat';
+import '@nomiclabs/hardhat-waffle';
+import '@nomiclabs/hardhat-etherscan';
+import '@nomiclabs/hardhat-ethers';
+import 'hardhat-gas-reporter';
+import 'dotenv/config';
+import 'solidity-coverage';
+import 'hardhat-deploy';
+import 'solidity-coverage';
+import { HardhatUserConfig } from 'hardhat/config';
 
-const RINKEBY_RPC_URL = process.env.RINKEBY_RPC_URL || "";
-const MUMBAI_RPC_URL = process.env.MUMBAI_RPC_URL || "";
-const PRIVATE_KEY = process.env.PRIVATE_KEY || "";
-const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || "";
-const POLYGONSCAN_API_KEY = process.env.POLYGONSCAN_API_KEY || "";
+const RINKEBY_RPC_URL = process.env.RINKEBY_RPC_URL || '';
+const MUMBAI_RPC_URL = process.env.MUMBAI_RPC_URL || '';
+const PRIVATE_KEY = process.env.PRIVATE_KEY || '';
+const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || '';
+const POLYGONSCAN_API_KEY = process.env.POLYGONSCAN_API_KEY || '';
 
 const config: HardhatUserConfig = {
-  defaultNetwork: "hardhat",
+  defaultNetwork: 'hardhat',
   networks: {
     hardhat: {
       chainId: 31337,
+      allowUnlimitedContractSize: true,
     },
     localhost: {
       chainId: 31337,
+      allowUnlimitedContractSize: true,
     },
     rinkeby: {
       url: RINKEBY_RPC_URL,
       accounts: [PRIVATE_KEY],
       chainId: 4,
+      allowUnlimitedContractSize: true,
       gas: 2100000,
       gasPrice: 8000000000,
     },
@@ -35,12 +38,13 @@ const config: HardhatUserConfig = {
       url: MUMBAI_RPC_URL,
       accounts: [PRIVATE_KEY],
       chainId: 80001,
+      allowUnlimitedContractSize: true,
       gas: 2100000,
       gasPrice: 8000000000,
     },
   },
   solidity: {
-    version: "0.8.13",
+    version: '0.8.13',
     settings: {
       optimizer: {
         enabled: true,
@@ -63,8 +67,8 @@ const config: HardhatUserConfig = {
   },
   gasReporter: {
     enabled: true,
-    currency: "USD",
-    outputFile: "gas-report.txt",
+    currency: 'USD',
+    outputFile: 'gas-report.txt',
     noColors: true,
   },
   namedAccounts: {
@@ -77,10 +81,10 @@ const config: HardhatUserConfig = {
     },
   },
   paths: {
-    sources: "./contracts",
-    tests: "./test",
-    cache: "./cache",
-    artifacts: "./app/artifacts",
+    sources: './contracts',
+    tests: './test',
+    cache: './cache',
+    artifacts: './app/artifacts',
   },
   mocha: {
     /* Timeout after 200 Seconds for running Tests */
