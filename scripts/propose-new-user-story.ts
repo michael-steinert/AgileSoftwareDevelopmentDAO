@@ -26,13 +26,10 @@ const proposeNewUserStory = async (
     'DaoGovernor',
     DaoGovernor.address
   );
-  const userStoryTreasuryTransparentProxy = await deployments.get(
-    'UserStoryTreasury_Proxy'
-  );
-  /* `UserStoryTreasury` can be reached at the Address of its Transparent Proxy */
+  const UserStoryTreasury = await deployments.get('UserStoryTreasury');
   const userStoryTreasury = await ethers.getContractAt(
     'UserStoryTreasury',
-    userStoryTreasuryTransparentProxy.address
+    UserStoryTreasury.address
   );
   /* `encodeFunctionData` returns the encoded Data, which can be used as the Data for a Transaction for Fragment for the given Values */
   /* Encoding Function to call with its Parameter */

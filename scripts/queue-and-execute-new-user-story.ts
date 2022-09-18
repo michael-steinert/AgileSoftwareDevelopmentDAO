@@ -22,13 +22,10 @@ interface UserStory {
 }
 
 const queueAndExecuteProposal = async () => {
-  const userStoryTreasuryTransparentProxy = await deployments.get(
-    'UserStoryTreasury_Proxy'
-  );
-  /* `UserStoryTreasury` can be reached at the Address of its Transparent Proxy */
+  const UserStoryTreasury = await deployments.get('UserStoryTreasury');
   const userStoryTreasury = (await ethers.getContractAt(
     'UserStoryTreasury',
-    userStoryTreasuryTransparentProxy.address
+    UserStoryTreasury.address
   )) as UserStoryTreasury;
   const encodedFunctionCall = userStoryTreasury.interface.encodeFunctionData(
     FUNCTION_TO_CALL,
@@ -74,7 +71,7 @@ const queueAndExecuteProposal = async () => {
   /* Retrieving new Value that has been proposed and executed in Contract `UserStoryTreasuryCoordinator` */
   const allUserStories = await userStoryTreasury.retrieveAllUserStories();
   allUserStories?.forEach((userStory: UserStory, index: number) =>
-    console.log(`User Story ${index} : ${userStory}`)
+    console.log(`Retrieved User Story ${index} : ${userStory}`)
   );
 };
 
