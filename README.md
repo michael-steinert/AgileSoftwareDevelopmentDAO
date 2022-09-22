@@ -39,7 +39,7 @@
 
 - `UserStoryTreasury` is owned by the `TimeLock` and therefore can only be called by it
 - This ensures Automation, and dao-controlled Execution of successful Proposals
-- `Governor` is given Proposer Rights, while the Executor is given to anyone
+- `DaoGovernor` is given Proposer Rights, while the Executor is given to anyone
 
 ### Structure On-Chain Voting
 
@@ -78,7 +78,7 @@
 - Decisions that impact the DAO are not exclusively carried out by a small Group of People
 - Each Member of the Collective (DAO) has the Opportunity to propose Decisions that can shape the entire Organization (DAO)
 
-- Decentralized Governance vests Power directly with Token Holders, removing Executive Teams that could become Targets of Censorship, Manipulation, or Bribery
+- Decentralized Governance vests Power directly with Token Holders, removing Executive Teams that could become Targets of Censorship, Manipulation, or Corruption
 - Relying on Code for Executing Agreements also reduces reliance on external Legal Systems
 
 ## Types of Governance
@@ -159,14 +159,22 @@
 - A Proposal is a Sequence of Actions that the Governor Contract will perform if it passes
 - Each Action consists of a Target Address, Calldata encoding a Function Call, and an Amount of Ether to include
 - Additionally, a Proposal includes a human-readable Description
+- A Proposal can be in the following specified Sate:
+  - 0: Pending,
+  - 1: Active,
+  - 2: Canceled,
+  - 3: Defeated,
+  - 4: Succeeded,
+  - 5: Queued,
+  - 6: Expired,
+  - 7: Executed
 
 ## DAO Usage
 
-1. Run a Node: `npm run node`
-2. Deploy Smart Contracts: `npm run deploy`
-3. Create a Proposal: `npm run propose:local`
-4. Vote for created Proposal: `npm run vote:local`
-5. Queue and execute a voted Proposal: `npm run queue-and-execute:local`
+1. Run a Node and runs Deployment Scripts: `npm run node`
+2. Create a Proposal: `npm run propose:local`
+3. Vote for the created Proposal: `npm run vote:local`
+4. Queue and execute a for-voted Proposal: `npm run queue-and-execute:local`
 
 ## DAO Questions
 

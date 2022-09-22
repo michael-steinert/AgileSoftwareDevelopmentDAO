@@ -29,12 +29,12 @@ contract DaoGovernor is
         uint256 _votingDelay,
         /* After how much Blocks the Voting is ending - Length of Period during which People can cast their Vote */
         uint256 _votingPeriod,
-        /* Minimum Number of Votes an Account must have to create a proposal */
+        /* Minimum Number of Votes an Account must have to create a Proposal */
         uint256 _threshold,
         /* Percentage of how much People (from the total Supply) have to vote on the Proposal to be accepted */
         uint256 _quorumPercentage
     )
-        Governor("Governor")
+        Governor("Scrum DAO Governor")
         /* Voting Delay: Delay since proposal is created until voting starts. Blocks correspond to one Week on Ethereum  */
         GovernorSettings(_votingDelay, _votingPeriod, _threshold)
         GovernorVotes(_token)
@@ -42,6 +42,7 @@ contract DaoGovernor is
         GovernorTimelockControl(_timeLockController)
     {}
 
+    /* The following Functions are Overrides required by Solidity */
     function votingDelay()
         public
         view
@@ -120,6 +121,7 @@ contract DaoGovernor is
         return super._cancel(targets, values, calldatas, descriptionHash);
     }
 
+    /* Executor can execute a queued Proposal */
     function _executor()
         internal
         view
@@ -129,7 +131,6 @@ contract DaoGovernor is
         return super._executor();
     }
 
-    /* Execute can execute a queued Proposal */
     function supportsInterface(bytes4 interfaceId)
         public
         view
@@ -139,6 +140,8 @@ contract DaoGovernor is
         return super.supportsInterface(interfaceId);
     }
 
+    /* Returns the Balance of Votes for an Account as of the current Block */
+    /* Voting Power of an Account at a specific Block Number */
     function getVotes(address account, uint256 blockNumber)
         public
         view
