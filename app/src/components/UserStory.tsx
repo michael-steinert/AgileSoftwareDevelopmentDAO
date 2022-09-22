@@ -50,8 +50,8 @@ const UserStory = (): ReactElement => {
   const [allUserStories, setAllUserStories] = useState<IUserStory[]>([]);
   const [error, setError] = useState<Error>();
   const [description, setDescription] = useState('');
-  const [functionalComplexity, setFunctionalComplexity] = useState('');
-  const [effortEstimation, setEffortEstimation] = useState('');
+  const [functionalComplexity, setFunctionalComplexity] = useState(0);
+  const [effortEstimation, setEffortEstimation] = useState(0);
   const [allProposalIDs, setAllProposalIDs] = useState<number[]>([]);
 
   const governanceContractAddress =
@@ -227,14 +227,14 @@ const UserStory = (): ReactElement => {
     event: ChangeEvent<HTMLInputElement>
   ): void {
     event.preventDefault();
-    setFunctionalComplexity(event.target.value);
+    setFunctionalComplexity(event.target.valueAsNumber);
   }
 
   function handleEffortEstimationChange(
     event: ChangeEvent<HTMLInputElement>
   ): void {
     event.preventDefault();
-    setEffortEstimation(event.target.value);
+    setEffortEstimation(event.target.valueAsNumber);
   }
 
   return (

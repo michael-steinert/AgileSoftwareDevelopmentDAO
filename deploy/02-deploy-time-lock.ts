@@ -1,9 +1,13 @@
-import { DeployFunction } from "hardhat-deploy/types";
-import { HardhatRuntimeEnvironment } from "hardhat/types";
+import { DeployFunction } from 'hardhat-deploy/types';
+import { HardhatRuntimeEnvironment } from 'hardhat/types';
 import {
-  developmentChains, EXECUTORS, MIN_DELAY, networkConfig, PROPOSERS
-} from "../utils/hardhat-config";
-import verify from "../utils/verify";
+  developmentChains,
+  EXECUTORS,
+  MIN_DELAY,
+  networkConfig,
+  PROPOSERS,
+} from '../utils/hardhat-config';
+import verify from '../utils/verify';
 
 const deployTimeLock: DeployFunction = async (
   hre: HardhatRuntimeEnvironment
@@ -11,9 +15,9 @@ const deployTimeLock: DeployFunction = async (
   const { getNamedAccounts, deployments, network } = hre;
   const { deploy, log } = deployments;
   const { deployer } = await getNamedAccounts();
-  log("----------------------------------------------------");
-  log("Deploying Time Lock Controller and waiting for Confirmations");
-  const timeLock = await deploy("TimeLock", {
+  log('----------------------------------------------------');
+  log('Deploying Time Lock Controller and waiting for Confirmations');
+  const timeLock = await deploy('TimeLock', {
     from: deployer,
     args: [MIN_DELAY, PROPOSERS, EXECUTORS],
     log: true,
@@ -21,7 +25,7 @@ const deployTimeLock: DeployFunction = async (
     waitConfirmations: networkConfig[network.name].blockConfirmations || 1,
   });
   if (!developmentChains.includes(network.name)) {
-    await verify("TimeLock", timeLock.address, network.name, [
+    await verify('TimeLock', timeLock.address, network.name, [
       MIN_DELAY,
       PROPOSERS,
       EXECUTORS,
@@ -31,4 +35,4 @@ const deployTimeLock: DeployFunction = async (
 };
 
 export default deployTimeLock;
-deployTimeLock.tags = ["all", "deploy-time-lock"];
+deployTimeLock.tags = ['all', 'deploy-time-lock'];

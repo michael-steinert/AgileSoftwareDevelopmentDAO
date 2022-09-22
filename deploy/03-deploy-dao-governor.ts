@@ -1,9 +1,14 @@
-import { DeployFunction } from "hardhat-deploy/types";
-import { HardhatRuntimeEnvironment } from "hardhat/types";
+import { DeployFunction } from 'hardhat-deploy/types';
+import { HardhatRuntimeEnvironment } from 'hardhat/types';
 import {
-  developmentChains, networkConfig, QUORUM_PERCENTAGE, THRESHOLD, VOTING_DELAY, VOTING_PERIOD
-} from "../utils/hardhat-config";
-import verify from "../utils/verify";
+  developmentChains,
+  networkConfig,
+  QUORUM_PERCENTAGE,
+  THRESHOLD,
+  VOTING_DELAY,
+  VOTING_PERIOD,
+} from '../utils/hardhat-config';
+import verify from '../utils/verify';
 
 const deployDaoGovernor: DeployFunction = async (
   hre: HardhatRuntimeEnvironment
@@ -12,12 +17,12 @@ const deployDaoGovernor: DeployFunction = async (
   const { deploy, log, get } = deployments;
   const { deployer } = await getNamedAccounts();
   /* Getting existing Instance of Contract `GovernanceToken` */
-  const governanceToken = await get("GovernanceToken");
+  const governanceToken = await get('GovernanceToken');
   /* Getting existing Instance of Contract `TimeLockController` */
-  const timeLockController = await get("TimeLock");
-  log("----------------------------------------------------");
-  log("Deploying DAO Governor and waiting for Confirmations");
-  const daoGovernor = await deploy("DaoGovernor", {
+  const timeLockController = await get('TimeLock');
+  log('----------------------------------------------------');
+  log('Deploying DAO Governor and waiting for Confirmations');
+  const daoGovernor = await deploy('DaoGovernor', {
     from: deployer,
     args: [
       governanceToken.address,
@@ -36,7 +41,7 @@ const deployDaoGovernor: DeployFunction = async (
     !developmentChains.includes(network.name) &&
     process.env.ETHERSCAN_API_KEY
   ) {
-    await verify("DaoGovernor", daoGovernor.address, network.name, [
+    await verify('DaoGovernor', daoGovernor.address, network.name, [
       governanceToken.address,
       timeLockController.address,
       QUORUM_PERCENTAGE,
@@ -48,4 +53,4 @@ const deployDaoGovernor: DeployFunction = async (
 };
 
 export default deployDaoGovernor;
-deployDaoGovernor.tags = ["all", "deploy-dao-governor"];
+deployDaoGovernor.tags = ['all', 'deploy-dao-governor'];

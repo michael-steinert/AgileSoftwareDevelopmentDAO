@@ -25,7 +25,7 @@ const deployUserStoryTreasury: DeployFunction = async (
     'UserStoryTreasury',
     UserStoryTreasury.address
   )) as UserStoryTreasury;
-  log(`UserStoryTreasury at ${userStoryTreasury.address}`);
+  log(`User Story Treasury at ${userStoryTreasury.address}`);
   if (
     !developmentChains.includes(network.name) &&
     process.env.ETHERSCAN_API_KEY
@@ -41,7 +41,7 @@ const deployUserStoryTreasury: DeployFunction = async (
   /* TimeLock will have the Power to execute Operations on the Contract */
   const TimeLock = await deployments.get('TimeLock');
   log(
-    `UserStoryTreasury transfer Ownership to TimeLock at ${TimeLock.address}`
+    `Transfer Ownership of User Story Treasury to TimeLock at ${TimeLock.address}`
   );
   const transferOwnershipTransaction =
     await userStoryTreasury.transferOwnership(TimeLock.address);

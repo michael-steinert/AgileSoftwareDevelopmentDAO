@@ -21,10 +21,14 @@ const config: HardhatUserConfig = {
     hardhat: {
       chainId: 31337,
       allowUnlimitedContractSize: true,
+      gas: 12000000,
+      blockGasLimit: 0x1fffffffffffff,
     },
     localhost: {
       chainId: 31337,
       allowUnlimitedContractSize: true,
+      gas: 12000000,
+      blockGasLimit: 0x1fffffffffffff,
     },
     rinkeby: {
       url: RINKEBY_RPC_URL,
@@ -67,7 +71,7 @@ const config: HardhatUserConfig = {
   },
   gasReporter: {
     enabled: true,
-    currency: 'USD',
+    currency: 'EUR',
     outputFile: 'gas-report.txt',
     noColors: true,
   },

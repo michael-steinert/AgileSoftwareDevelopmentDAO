@@ -1,8 +1,8 @@
-import { ethers } from "hardhat";
-import { DeployFunction } from "hardhat-deploy/types";
-import { HardhatRuntimeEnvironment } from "hardhat/types";
-import { developmentChains, networkConfig } from "../utils/hardhat-config";
-import verify from "../utils/verify";
+import { ethers } from 'hardhat';
+import { DeployFunction } from 'hardhat-deploy/types';
+import { HardhatRuntimeEnvironment } from 'hardhat/types';
+import { developmentChains, networkConfig } from '../utils/hardhat-config';
+import verify from '../utils/verify';
 
 const deployGovernanceToken: DeployFunction = async (
   hre: HardhatRuntimeEnvironment
@@ -11,26 +11,26 @@ const deployGovernanceToken: DeployFunction = async (
   const { deploy, log } = deployments;
   /* Getting from `hardhat.config.ts` the `deployer` Account which is the Account with Index 0 */
   const { deployer } = await getNamedAccounts();
-  log("----------------------------------------------------");
-  log("Deploying Governance Token and waiting for Confirmations");
-  const governanceToken = await deploy("GovernanceToken", {
+  log('----------------------------------------------------');
+  log('Deploying Governance Token and waiting for Confirmations');
+  const governanceToken = await deploy('GovernanceToken', {
     from: deployer,
-    args: ["AGILE Token", "AGILE", (42 * 10 ** 18).toString()],
+    args: ['SCRUM Token', 'SCRUM', (42 * 10 ** 18).toString()],
     log: true,
     /* Waiting some Block Confirmation, so on a Testnet or Mainnet it can be verified properly */
     waitConfirmations: networkConfig[network.name].blockConfirmations || 1,
   });
-  log(`GovernanceToken at ${governanceToken.address}`);
+  log(`Governance Token at ${governanceToken.address}`);
   if (!developmentChains.includes(network.name)) {
-    await verify("GovernanceToken", governanceToken.address, network.name, [
-      "AGILE Token",
-      "AGILE",
+    await verify('GovernanceToken', governanceToken.address, network.name, [
+      'SCRUM Token',
+      'SCRUM',
       (42 * 10 ** 18).toString(),
     ]);
   }
   log(`Delegating to ${deployer} in Process`);
   await delegate(governanceToken.address, deployer);
-  log("Governance Token delegated");
+  log('Governance Token delegated');
 };
 
 /* Delegating a Vote from one User to another */
@@ -39,7 +39,7 @@ const delegate = async (
   delegatedAccount: string
 ) => {
   const governanceToken = await ethers.getContractAt(
-    "GovernanceToken",
+    'GovernanceToken',
     governanceTokenAddress
   );
   const delegateTransaction = await governanceToken.delegate(delegatedAccount);
@@ -55,4 +55,4 @@ const delegate = async (
 };
 
 export default deployGovernanceToken;
-deployGovernanceToken.tags = ["all", "deploy-governance-token"];
+deployGovernanceToken.tags = ['all', 'deploy-governance-token'];

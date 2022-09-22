@@ -1,5 +1,5 @@
-import daoIntegration from "./dao/dao-integration";
+import daoIntegration from './dao/dao-integration';
 
-describe("Testing DAO Integration", async () => {
+describe('Testing DAO Integration', async () => {
   await daoIntegration();
 });

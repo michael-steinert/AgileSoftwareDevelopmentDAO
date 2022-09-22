@@ -13,7 +13,7 @@ const voteForProposal = async () => {
   const proposalId = proposals[network.config.chainId!].at(-1);
   /* Vote Types := 0 = Against, 1 = For, and 2 = Abstain for Proposal */
   const voteType = 1;
-  const reasonForVote = 'Voting for new User Story';
+  const reasonForVote = 'Voting for User Story';
   console.log('Voting in Process');
   const DaoGovernor = await deployments.get('DaoGovernor');
   const daoGovernor = await ethers.getContractAt(
@@ -34,7 +34,7 @@ const voteForProposal = async () => {
   if (developmentChains.includes(network.name)) {
     await moveBlocks(VOTING_PERIOD + 1);
   }
-  console.log('Voted for new Proposal');
+  console.log('Voted for Proposal');
 };
 
 voteForProposal()

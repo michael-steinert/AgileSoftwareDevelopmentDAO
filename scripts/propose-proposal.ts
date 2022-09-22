@@ -16,7 +16,7 @@ type UserStory = [
   effortEstimation: number
 ];
 
-const proposeNewUserStory = async (
+const proposeProposal = async (
   userStory: UserStory,
   functionToCall: string,
   proposalDescription: string
@@ -92,11 +92,11 @@ const storeProposalId = (proposalId: any) => {
   fs.writeFileSync(proposalsFile, JSON.stringify(proposals), 'utf8');
 };
 
-proposeNewUserStory(NEW_USER_STORY, FUNCTION_TO_CALL, PROPOSAL_DESCRIPTION)
+proposeProposal(NEW_USER_STORY, FUNCTION_TO_CALL, PROPOSAL_DESCRIPTION)
   .then(() => process.exit(0))
   .catch((error) => {
     console.error(error);
     process.exit(1);
   });
 
-export default proposeNewUserStory;
+export default proposeProposal;
