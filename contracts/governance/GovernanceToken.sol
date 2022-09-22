@@ -18,6 +18,11 @@ contract GovernanceToken is ERC20Votes {
         _mint(msg.sender, initialSupply);
     }
 
+    /* Issue new for People to vote */
+    function issueToken(address to, uint256 amount) public {
+        _mint(to, amount);
+    }
+
     /* Update Balances to know how many Votes People have depending on the Checkpoint (certain Block) */
     function _afterTokenTransfer(
         address from,

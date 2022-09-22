@@ -216,6 +216,7 @@ const daoIntegration = async (): Promise<void> => {
       const deployedGovernanceOtherUser = await deployedGovernanceToken.connect(
         signer
       );
+      /* Issuing Tokens to another User */
       await deployedGovernanceOtherUser.issueToken(otherUser.address, 200);
       const transactionResponse = await deployedGovernanceToken.delegate(
         otherUser.address
