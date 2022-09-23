@@ -53,4 +53,4 @@ const deployDaoGovernor: DeployFunction = async (
 };
 
 export default deployDaoGovernor;
-deployDaoGovernor.tags = ['all', 'deploy-dao-governor'];
+deployDaoGovernor.tags = ['all-scripts', 'deploy-dao-governor'];

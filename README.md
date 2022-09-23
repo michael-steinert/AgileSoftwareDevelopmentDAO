@@ -37,7 +37,7 @@
 
 ## Description of the DAO
 
-- `UserStoryTreasury` is owned by the `TimeLock` and therefore can only be called by it
+- `UserStoryTreasury` is owned by the `TimeLock` and therefore it can only be called by the `TimeLock`
 - This ensures Automation, and dao-controlled Execution of successful Proposals
 - `DaoGovernor` is given Proposer Rights, while the Executor is given to anyone
 
@@ -46,7 +46,7 @@
 - **Governance Token**: The Governance Token gives Voting Power for each Account
 - **Governor**: The Governor contains the Logic and Mechanics to propose, vote and execute Proposals
 - **Time Lock**: The Time Lock is a Queue to enforce Time Gap between the Passing and Execution of a Proposal
-- **Target Contract**: The Target Contract is that Smart Contract on that the DAO is making Decisions
+- **Target Contract**: The Target Contract is that Smart Contract on that the DAO is going to make Decisions
 
 ### Time-related Concepts
 
@@ -168,6 +168,46 @@
   - 5: Queued,
   - 6: Expired,
   - 7: Executed
+
+## OpenZeppelin TimeLock
+
+- In a Governance System, the TimeLock Controller is in Charge of Introducing a Delay between a Proposal and its Execution
+- When the `TimeLock` is set as the Owner of an `ownable` Smart Contract, it enforces a Delay on all `onlyOwner` Maintenance Operations
+- When the `TimeLock` is self-governed, it only can execute the `Target Contract` after a Delay
+- The Delay gives Time for Users of the controlled `ownable` Contract to exit before a potentially dangerous Maintenance Operation is applied
+- It contains the following Roles that can only be granted or revoked by someone with the **Admin Role**
+  - **Proposer** is an Address (Smart Contract or EOA) that is in Charge of Scheduling (and Cancelling) Operations
+  - **Executor** is an Address (Smart Contract or EOA) that is in Charge of Executing Operations once the `TimeLock` has expired
+  - **Admin** is an Address (Smart Contract or EOA) that is in Charge of Granting the Roles of Proposer and Executor
+- After deployment of the `TimeLock`, both the `TimeLock` and the Deployer have the **Admin Role** - this helps further Configurations of the `TimeLock` by the Deployer but after the Configuration is done, it is recommended that the Deployer renounces its **Admin Role** and relies on time-locked Operations to perform future Maintenance
+- A `TimeLock` Controller is self-governed if only the `TimeLock` holds the **Admin Role**
+- When the `TimeLock` is self-governed, a **Proposer** will be able to schedule a Proposal, and will have to wait for the Delay of the `TimeLock` until the Proposal can be executed, at which Point it will actually come into Effect
+- When the `TimeLock` is self-governed, it should be ensured when Revoking a **Proposer** or **Executor** that at least one other trusted User is assigned to that Role - otherwise, no one will have the correct Privileges to create or execute Proposals for the `TimeLock` Controller
+
+### OpenZeppelin TimeLock Operation Lifecycle
+
+- An Operation is a Transaction (or a set of Transactions) that is the Subject of the `TimeLock`
+- It has to be scheduled by a **Proposer** and executed by an **Executor**
+- The `TimeLock` enforces a minimum Delay between the Proposition and the Execution in the following Operation Lifecycle
+- **Unset → Pending → Pending + Ready → Done**
+
+  - **Unset**: An Operation that is not Part of the `TimeLock` Mechanism
+  - **Pending**: An Operation that has been scheduled, before the Timer expires
+  - **Ready**: An Operation that has been scheduled, after the Timer expires
+  - **Done**: An Operation that has been executed
+
+- By Calling `schedule()`, a **Proposer** moves the Operation from the **Unset** to the **Pending** State
+- This starts a Timer that must be longer than the minimum Delay
+- The Timer expires at a Timestamp accessible through the `getTimestamp()`
+
+- Once the Timer expires, the Operation automatically gets the **Ready** State - at this Point, it can be executed
+
+- By Calling `execute()`, an **Executor** triggers the Operation’s underlying Transactions and moves it to the **Done** State
+- If the Operation has a Predecessor, it has to be in the **Done** State for this Transition to succeed
+
+- `cancel()` allows **Proposers** to cancel any **Pending** Operation
+- This resets the Operation to the **Unset** State
+- It is thus possible for a **Proposer** to re-schedule an Operation that has been cancelled - tn this case, the Timer restarts when the Operation is re-scheduled
 
 ## DAO Usage
 

@@ -49,4 +49,4 @@ const deployUserStoryTreasury: DeployFunction = async (
 };
 
 export default deployUserStoryTreasury;
-deployUserStoryTreasury.tags = ['all', 'deploy-user-story-treasury'];
+deployUserStoryTreasury.tags = ['all-scripts', 'deploy-user-story-treasury'];

@@ -12,7 +12,7 @@ import "@openzeppelin/contracts/governance/TimelockController.sol";
 /* Contract holds all Funds and Ownerships */
 contract TimeLock is TimelockController {
     constructor(
-        /* `minDelay` is how long the DAO has to wait before executing the Proposal */
+        /* `minDelay` is how long the DAO has to wait before executing the Proposal - a Delay for an Operation to become valid */
         uint256 minDelay,
         /* The Proposer Role is in Charge of queueing Operations */
         /* The Governor Contract should be granted the Proposer Role, and it should likely be the only Proposer in the system */

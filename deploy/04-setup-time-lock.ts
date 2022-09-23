@@ -35,7 +35,7 @@ const setupDaoGovernor: DeployFunction = async (
     daoGovernor.address
   );
   await proposerTransaction.wait();
-  /* Everyone can execute a Proposal after the TimeLock Period */
+  /* Everyone can execute a Proposal after the TimeLock Delay */
   const executorTransaction = await timeLockController.grantRole(
     executorRole,
     ethers.constants.AddressZero
@@ -52,4 +52,4 @@ const setupDaoGovernor: DeployFunction = async (
 };
 
 export default setupDaoGovernor;
-setupDaoGovernor.tags = ['all', 'setup-dao-governor'];
+setupDaoGovernor.tags = ['all-scripts', 'setup-time-lock'];

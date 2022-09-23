@@ -32,6 +32,7 @@ const proposeProposal = async (
     UserStoryTreasury.address
   );
   /* `encodeFunctionData` returns the encoded Data, which can be used as the Data for a Transaction for Fragment for the given Values */
+  /* The Data containing the encoded Function Selector and Parameters of the Call */
   /* Encoding Function to call with its Parameter */
   const encodedFunctionCall = userStoryTreasury.interface.encodeFunctionData(
     functionToCall,

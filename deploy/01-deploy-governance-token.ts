@@ -55,4 +55,4 @@ const delegate = async (
 };
 
 export default deployGovernanceToken;
-deployGovernanceToken.tags = ['all', 'deploy-governance-token'];
+deployGovernanceToken.tags = ['all-scripts', 'deploy-governance-token'];

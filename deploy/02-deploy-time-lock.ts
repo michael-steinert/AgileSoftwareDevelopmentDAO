@@ -35,4 +35,4 @@ const deployTimeLock: DeployFunction = async (
 };
 
 export default deployTimeLock;
-deployTimeLock.tags = ['all', 'deploy-time-lock'];
+deployTimeLock.tags = ['all-scripts', 'deploy-time-lock'];
