@@ -193,7 +193,7 @@ const UserStory = (): ReactElement => {
           return [...previousProposalIDs, proposalId];
         });
         console.log(`Sate with Proposal ID:\n  ${allProposalIDs}`);
-        /* State of Proposal: 1 is not passed and 0 is passed */
+        // State of Proposal - 0 is pending, 1 is active and 4 is succeeded Proposal
         console.log(`Current Proposal State: ${proposalState}`);
         /* Block Number that the current Proposal was snapshot */
         console.log(`Current Proposal Snapshot: ${proposalSnapShot}`);

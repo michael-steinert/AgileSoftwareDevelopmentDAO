@@ -39,7 +39,7 @@ const daoIntegration = async (): Promise<void> => {
       );
       await deployedGovernanceToken.deployed();
 
-      /* Delegating Governance Token to User */
+      // Delegating Governance Token to User
       let transactionResponse = await deployedGovernanceToken.delegate(
         owner.address
       );
@@ -53,9 +53,12 @@ const daoIntegration = async (): Promise<void> => {
       deployedDaoGovernor = await daoGovernor.deploy(
         deployedGovernanceToken.address,
         deployedTimeLock.address,
+        // Delay, in Number of Blocks, between the Proposal is created and the Vote starts
         VOTING_DELAY,
+        // Delay, in Number of Blocks, between the Vote start and Vote ends
         VOTING_PERIOD,
         THRESHOLD,
+        // Minimum Number of Votes voted required for a Proposal to be successful
         QUORUM_PERCENTAGE
       );
       await deployedDaoGovernor.deployed();
@@ -67,13 +70,13 @@ const daoIntegration = async (): Promise<void> => {
         await userStoryTreasuryContractFactory.deploy();
       await deployedUserStoryTreasury.deployed();
 
-      /* Transfer Ownership to Timelock Contract so that it can execute the Operation */
+      // Transfer Ownership to TimeLock Contract so that it can execute the Operation
       const transferTx = await deployedUserStoryTreasury.transferOwnership(
         deployedTimeLock.address
       );
       await transferTx.wait(1);
 
-      /* Granting Roles to the relevant Parties */
+      // Granting Roles to the relevant Parties
       const proposerRole = await deployedTimeLock.PROPOSER_ROLE();
       const executorRole = await deployedTimeLock.EXECUTOR_ROLE();
       const adminRole = await deployedTimeLock.TIMELOCK_ADMIN_ROLE();
@@ -102,9 +105,9 @@ const daoIntegration = async (): Promise<void> => {
     });
 
     it('Testing Creation, Voting and Execution of Proposal by single User', async () => {
-      /* Creating Proposal */
+      // Creating Proposal
       console.log('Creating Proposal');
-      /* Encoding Function to call with its Parameters */
+      // Encoding Function to call with its Parameters
       const encodedFunctionCall =
         userStoryTreasuryContractFactory.interface.encodeFunctionData(
           FUNCTION_TO_CALL,
@@ -121,53 +124,65 @@ const daoIntegration = async (): Promise<void> => {
       const proposalId = proposeTransactionReceipt.events![0].args!.proposalId;
       console.log(`Proposed with Proposal ID: ${proposalId}`);
 
-      /* State of Proposal - 1 is not passed and 0 is passed */
+      // State of Proposal - 0 is pending, 1 is active and 4 is succeeded Proposal
       let proposalState = await deployedDaoGovernor.state(proposalId);
       console.log(`Current Proposal State is ${proposalState}`);
 
-      /* Which Block Number the Proposal was snapshot */
+      /*
+      `proposalSnapShot` is the Block Number used to retrieve User’s Votes and Quorum
+      The Snapshot is performed at the End of this Block, hence, Voting for this Proposal starts at the Beginning of the following Block
+      */
       const proposalSnapShot = await deployedDaoGovernor.proposalSnapshot(
         proposalId
       );
       console.log(`Current Proposal Snapshot is ${proposalSnapShot}`);
 
-      /* Block Number when the Proposal Voting expires */
+      /*
+      `proposalDeadline` is the Block Number at which Votes close
+      Votes close at the End of this Block, so it is possible to cast a Vote during this Block
+      */
       const proposalDeadline = await deployedDaoGovernor.proposalDeadline(
         proposalId
       );
       console.log(`Current Proposal Deadline is ${proposalDeadline}`);
 
-      /* Voting for Proposal */
+      // Voting for Proposal
       console.log('Voting for Proposal');
       const voteWay = 1;
       const reason = 'User Story fits in Sprint';
 
+      // Cast a Vote with a Reason
       const voteTransaction = await deployedDaoGovernor.castVoteWithReason(
         proposalId,
         voteWay,
         reason
       );
       const voteTransactionReceipt = await voteTransaction.wait(1);
+      // Check that `owner` has voted
+      assert.equal(
+        await deployedDaoGovernor.hasVoted(proposalId, owner.address),
+        true
+      );
       console.log(voteTransactionReceipt.events![0].args!.reason);
 
       proposalState = await deployedDaoGovernor.state(proposalId);
-      /* Proposal State 1 it is active */
+      // Proposal State 1 it is active
       assert.equal(proposalState.toString(), '1');
       console.log(`Current Proposal State: ${proposalState}`);
 
-      /* Moving Blocks to simulate Completion of Voting Period */
+      // Moving Blocks to simulate Completion of Voting Period
       await moveBlocks(VOTING_PERIOD + 1);
 
-      /* Queue Proposal */
+      // Queue Proposal
       console.log('Queueing Proposal');
-      /* Alternative: ethers.utils.keccak256(ethers.utils.toUtf8Bytes(PROPOSAL_DESCRIPTION)) */
-      const descriptionHash = ethers.utils.keccak256(
-        ethers.utils.toUtf8Bytes(PROPOSAL_DESCRIPTION)
-      );
+
+      // `PROPOSAL_DESCRIPTION` has to be hashed to match because on-chain all Data are hashed
+      const descriptionHash = ethers.utils.id(PROPOSAL_DESCRIPTION);
       proposalState = await deployedDaoGovernor.state(proposalId);
       console.log(`Current Proposal State is ${proposalState}`);
 
       const latestBlock = (await ethers.provider.getBlockNumber()) - 1;
+      // `votes` are the Voting Power of an Account at a specific Block Number
       const votes = await deployedDaoGovernor.getVotes(
         owner.address,
         latestBlock
@@ -196,7 +211,7 @@ const daoIntegration = async (): Promise<void> => {
       await moveTime(MIN_DELAY + 1);
       await moveBlocks(1);
 
-      /* Execute Proposal */
+      // Execute Proposal
       console.log('Executing Proposal');
       const executeTransaction = await deployedDaoGovernor.execute(
         [deployedUserStoryTreasury.address],
@@ -211,21 +226,21 @@ const daoIntegration = async (): Promise<void> => {
     });
 
     it('Create another User, issue Governance Token, both Users voting to match over 80% Quorum and Execution', async () => {
-      /* Adding another User to DAO */
+      // Adding another User to DAO
       const signer = await ethers.getSigner(otherUser.address);
       const deployedGovernanceOtherUser = await deployedGovernanceToken.connect(
         signer
       );
-      /* Issuing Tokens to another User */
+      // Issuing Tokens to another User
       await deployedGovernanceOtherUser.issueToken(otherUser.address, 200);
       const transactionResponse = await deployedGovernanceToken.delegate(
         otherUser.address
       );
       await transactionResponse.wait(1);
 
-      /* Creating Proposal */
+      // Creating Proposal
       console.log('Creating Proposal');
-      /* Encoding Function to call with its Parameters */
+      // Encoding Function to call with its Parameters
       const encodedFunctionCall =
         userStoryTreasuryContractFactory.interface.encodeFunctionData(
           FUNCTION_TO_CALL,
@@ -242,65 +257,74 @@ const daoIntegration = async (): Promise<void> => {
       const proposalId = proposeTransactionReceipt.events![0].args!.proposalId;
       console.log(`Proposed with Proposal ID: ${proposalId}`);
 
-      /* State of Proposal - 1 is not passed and 0 is passed */
+      // State of Proposal - 0 is pending, 1 is active and 4 is succeeded Proposal
       let proposalState = await deployedDaoGovernor.state(proposalId);
       console.log(`Current Proposal State is ${proposalState}`);
 
-      /* Which Block Number the Proposal was snapshot */
+      // Which Block Number the Proposal was snapshot
       const proposalSnapShot = await deployedDaoGovernor.proposalSnapshot(
         proposalId
       );
       console.log(`Current Proposal Snapshot is ${proposalSnapShot}`);
 
-      /* Block Number when the Proposal Voting expires */
+      // Block Number when the Proposal Voting expires
       const proposalDeadline = await deployedDaoGovernor.proposalDeadline(
         proposalId
       );
       console.log(`Current Proposal Deadline is ${proposalDeadline}`);
 
-      /* Voting for Proposal */
+      // Voting for Proposal */
       console.log('Voting for Proposal');
       const voteWay = 1;
       const reason = 'User Story fits in Sprint';
 
-      /*  First User is voting */
+      // First User is casting a Vote with Reason
       let voteTransaction = await deployedDaoGovernor.castVoteWithReason(
         proposalId,
         voteWay,
         reason
       );
       let voteTransactionReceipt = await voteTransaction.wait(1);
+      // Check that `owner` has voted
+      assert.equal(
+        await deployedDaoGovernor.hasVoted(proposalId, owner.address),
+        true
+      );
       console.log(voteTransactionReceipt.events![0].args!.reason);
 
       proposalState = await deployedDaoGovernor.state(proposalId);
-      /* Proposal State 1 it is active */
+      // Proposal State 1 it is active
       assert.equal(proposalState.toString(), '1');
       console.log(`Current Proposal State: ${proposalState}`);
 
-      /*  Second User is voting */
+      // Second User is voting
       const deployedDaoGovernorOtherUser = await deployedDaoGovernor.connect(
         signer
       );
+      // Second User is casting a Vote with Reason
       voteTransaction = await deployedDaoGovernorOtherUser.castVoteWithReason(
         proposalId,
         voteWay,
         reason
       );
       voteTransactionReceipt = await voteTransaction.wait(1);
+      // Check that `otherUser` has voted
+      assert.equal(
+        await deployedDaoGovernor.hasVoted(proposalId, otherUser.address),
+        true
+      );
       console.log(voteTransactionReceipt.events[0].args.reason);
 
       proposalState = await deployedDaoGovernor.state(proposalId);
       console.log(`Current Proposal State: ${proposalState}`);
 
-      /* Moving Blocks to simulate Completion of Voting Period */
+      /// Moving Blocks to simulate Completion of Voting Period
       await moveBlocks(VOTING_PERIOD + 1);
 
-      /* Queueing Proposal */
+      // Queueing Proposal
       console.log('Queueing Proposal');
-      /* Alternative: ethers.utils.keccak256(ethers.utils.toUtf8Bytes(PROPOSAL_DESCRIPTION)) */
-      const descriptionHash = ethers.utils.keccak256(
-        ethers.utils.toUtf8Bytes(PROPOSAL_DESCRIPTION)
-      );
+      // `PROPOSAL_DESCRIPTION` has to be hashed to match because on-chain all Data are hashed
+      const descriptionHash = ethers.utils.id(PROPOSAL_DESCRIPTION);
       proposalState = await deployedDaoGovernor.state(proposalId);
       console.log(`Current Proposal State is ${proposalState}`);
 
@@ -333,7 +357,7 @@ const daoIntegration = async (): Promise<void> => {
       await moveTime(MIN_DELAY + 1);
       await moveBlocks(1);
 
-      /* Execute Proposal */
+      // Execute Proposal
       console.log('Executing Proposal');
       const executeTransaction = await deployedDaoGovernor.execute(
         [deployedUserStoryTreasury.address],

@@ -5,7 +5,7 @@ import "./IUserStoryTreasury.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-/* `UserStoryTreasury` is owned and governed by DAO - new Values for `UserStory` are proposed through the DAO */
+// `UserStoryTreasury` is owned and governed by DAO - new Values for `UserStory` are proposed through the DAO
 contract UserStoryTreasury is IUserStoryTreasury, Ownable {
     error InvalidUserStory(
         string sentDescription,
@@ -20,13 +20,13 @@ contract UserStoryTreasury is IUserStoryTreasury, Ownable {
 
     UserStory[] public userStories;
 
-    /* Only DAO can invoke `storeUserStory` to save a new Value in the Contract */
+    // Only DAO can invoke `storeUserStory()` to save a new Value in the Target Contract
     function storeUserStory(
         string memory _description,
         uint256 _functionalComplexity,
         uint256 _effortEstimation
     ) public override onlyOwner returns (UserStory memory) {
-        /* Convert String to Byte to check its Length */
+        // Convert String to Byte to check its Length
         bytes memory descriptionAsByte = bytes(_description);
         if (
             descriptionAsByte.length == 0 ||
@@ -63,7 +63,7 @@ contract UserStoryTreasury is IUserStoryTreasury, Ownable {
         }
     }
 
-    /* Everyone can invoke `retrieveUserStory` to get the UserStory for a UserStoryNumber */
+    // Everyone can invoke `retrieveUserStory()` to get the User Story for a User Story Number
     function retrieveUserStory(uint256 _userStoryNumber)
         public
         view
@@ -73,7 +73,7 @@ contract UserStoryTreasury is IUserStoryTreasury, Ownable {
         return userStories[_userStoryNumber];
     }
 
-    /* Everyone can invoke `retrieveAllUserStory` to get all UserStories */
+    // Everyone can invoke `retrieveAllUserStory()` to get all User Stories
     function retrieveAllUserStories()
         public
         view

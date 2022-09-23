@@ -122,7 +122,7 @@
 
 - Voting Power is determined based on the Number of Tokens delegated to each Address
 - This means Users must submit a Delegation Transaction before their Tokens will be included in Governance Votes
-- Users may either delegate to a third Party, or self-delegate if they would like to participate in Voting directly
+- Users may either delegate their Token to a third Party, or self-delegate if they would like to participate in Voting directly
 
 - The basic Unit of Governance is a Proposal, which represents a Package of executable Code to make specific Adjustments to the underlying Protocol
 - To prevent Spamming, only Users whose Voting Power exceeds the Proposal Submission Threshold are able to submit Proposals

@@ -9,9 +9,9 @@ import { moveBlocks } from '../utils/move-blocks';
 
 const voteForProposal = async () => {
   const proposals = JSON.parse(fs.readFileSync(proposalsFile, 'utf8'));
-  /* Getting last Proposal for the Network of Proposals in `proposals.json` */
+  // Getting last Proposal for the Network of Proposals in `proposals.json`
   const proposalId = proposals[network.config.chainId!].at(-1);
-  /* Vote Types := 0 = Against, 1 = For, and 2 = Abstain for Proposal */
+  // Vote Types := 0 = Against, 1 = For, and 2 = Abstain for Proposal
   const voteType = 1;
   const reasonForVote = 'Voting for User Story';
   console.log('Voting in Process');
@@ -20,7 +20,7 @@ const voteForProposal = async () => {
     'DaoGovernor',
     DaoGovernor.address
   );
-  /* Creating Proposal with Reason */
+  // Cast a Vote with a Reason
   const voteTransaction = await daoGovernor.castVoteWithReason(
     proposalId,
     voteType,
@@ -30,7 +30,7 @@ const voteForProposal = async () => {
   console.log(voteTransactionResult.events[0].args.reason);
   const proposalState = await daoGovernor.state(proposalId);
   console.log(`Current Proposal State is ${proposalState}`);
-  /* If working on a Development Network, the Blocks will be pushed forward till got to the Voting Period */
+  // If working on a Development Network, the Blocks will be pushed forward till got to the Voting Period
   if (developmentChains.includes(network.name)) {
     await moveBlocks(VOTING_PERIOD + 1);
   }
