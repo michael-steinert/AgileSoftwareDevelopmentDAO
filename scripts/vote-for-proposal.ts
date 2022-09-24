@@ -11,7 +11,7 @@ const voteForProposal = async () => {
   const proposals = JSON.parse(fs.readFileSync(proposalsFile, 'utf8'));
   // Getting last Proposal for the Network of Proposals in `proposals.json`
   const proposalId = proposals[network.config.chainId!].at(-1);
-  // Vote Types := 0 = Against, 1 = For, and 2 = Abstain for Proposal
+  // Type of Vote - 0 is against, 1 is for, and 2 is abstain the Proposal
   const voteType = 1;
   const reasonForVote = 'Voting for User Story';
   console.log('Voting in Process');
@@ -30,7 +30,7 @@ const voteForProposal = async () => {
   console.log(voteTransactionResult.events[0].args.reason);
   const proposalState = await daoGovernor.state(proposalId);
   console.log(`Current Proposal State is ${proposalState}`);
-  // If working on a Development Network, the Blocks will be pushed forward till got to the Voting Period
+  // If on a Development Network, then Blocks will be pushed forward until the Voting Period is over
   if (developmentChains.includes(network.name)) {
     await moveBlocks(VOTING_PERIOD + 1);
   }

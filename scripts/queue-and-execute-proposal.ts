@@ -49,7 +49,7 @@ const queueAndExecuteProposal = async () => {
   await queueTransaction.wait(1);
   /*
   `MIN_DELAY` gives the Users some Time to check the Proposal before it is executed
-  If working on a Development Network, the Time and Blocks will be pushed forward till got to the Voting Period
+  If working on Development Network, then Time and Blocks will be pushed forward until the Voting Period is over
   */
   if (developmentChains.includes(network.name)) {
     // Moving Time by `MIN_DELAY + 1` to be sure that the Voting Period is expired

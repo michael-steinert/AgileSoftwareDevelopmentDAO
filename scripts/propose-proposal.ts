@@ -58,7 +58,7 @@ const proposeProposal = async (
     // Description of Proposal
     proposalDescription
   );
-  // If working on a Development Network, the Blocks will be pushed forward till got to the Voting Period
+  // If working on Development Network, then Blocks will be pushed forward until the Voting Period is over
   if (developmentChains.includes(network.name)) {
     await moveBlocks(VOTING_DELAY + 1);
   }

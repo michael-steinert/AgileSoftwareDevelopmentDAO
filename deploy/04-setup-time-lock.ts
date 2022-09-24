@@ -29,7 +29,7 @@ const setupDaoGovernor: DeployFunction = async (
   /* Admin is an Address (Smart Contract or EOA) that is in Charge of Granting the Roles of Proposer and Executor */
   const adminRole = await timeLockController.TIMELOCK_ADMIN_ROLE();
   /* `deployer` owns the Contract `timeLockContract` so he can change the Roles */
-  /* Only Contract `governorContract` can create a Proposal */
+  /* Only Contract `timeLockController` can create Proposals */
   const proposerTransaction = await timeLockController.grantRole(
     proposerRole,
     daoGovernor.address

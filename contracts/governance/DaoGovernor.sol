@@ -50,7 +50,7 @@ contract DaoGovernor is
         GovernorTimelockControl(_timeLockController)
     {}
 
-    // `votingDelay()` returns a Delay (in Number of Blocks) since the Proposal is submitted until Voting Power is fixed and Voting starts
+    // Returns a Delay (in Number of Blocks) since the Proposal is submitted until Voting Power is fixed and Voting starts
     function votingDelay()
         public
         view
@@ -61,7 +61,7 @@ contract DaoGovernor is
         return super.votingDelay();
     }
 
-    // `votingPeriod()` returns a Delay (in Number of Blocks) since the Proposal starts until Voting ends
+    // Returns a Delay (in Number of Blocks) since the Proposal starts until Voting ends
     function votingPeriod()
         public
         view
@@ -71,7 +71,7 @@ contract DaoGovernor is
         return super.votingPeriod();
     }
 
-    // `quorum(uint256 blockNumber)` returns the Quorum required for a Proposal to be successful
+    // Returns the Quorum required for a Proposal to be successful
     function quorum(uint256 blockNumber)
         public
         view
@@ -81,7 +81,7 @@ contract DaoGovernor is
         return super.quorum(blockNumber);
     }
 
-    // `state(uint256 proposalId)` returns the State of a Proposal on given Proposal ID
+    // Returns the State of a Proposal on given Proposal ID
     function state(uint256 proposalId)
         public
         view
@@ -167,7 +167,7 @@ contract DaoGovernor is
         return super.supportsInterface(interfaceId);
     }
 
-    // `getVotes()` returns the Balance of Votes for an Account as of the current Block that equals the Voting Power of an Account at a specific Block Number
+    // Returns the Balance of Votes for an Account as of the current Block that equals the Voting Power of an Account at a specific Block Number
     function getVotes(address account, uint256 blockNumber)
         public
         view

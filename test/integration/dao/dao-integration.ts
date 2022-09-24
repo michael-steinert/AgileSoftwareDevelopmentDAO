@@ -148,13 +148,14 @@ const daoIntegration = async (): Promise<void> => {
 
       // Voting for Proposal
       console.log('Voting for Proposal');
-      const voteWay = 1;
+      // Type of Vote - 0 is against, 1 is for, and 2 is abstain the Proposal
+      const voteType = 1;
       const reason = 'User Story fits in Sprint';
 
       // Cast a Vote with a Reason
       const voteTransaction = await deployedDaoGovernor.castVoteWithReason(
         proposalId,
-        voteWay,
+        voteType,
         reason
       );
       const voteTransactionReceipt = await voteTransaction.wait(1);
@@ -275,13 +276,14 @@ const daoIntegration = async (): Promise<void> => {
 
       // Voting for Proposal */
       console.log('Voting for Proposal');
-      const voteWay = 1;
+      // Type of Vote - 0 is against, 1 is for, and 2 is abstain the Proposal
+      const voteType = 1;
       const reason = 'User Story fits in Sprint';
 
       // First User is casting a Vote with Reason
       let voteTransaction = await deployedDaoGovernor.castVoteWithReason(
         proposalId,
-        voteWay,
+        voteType,
         reason
       );
       let voteTransactionReceipt = await voteTransaction.wait(1);
@@ -304,7 +306,7 @@ const daoIntegration = async (): Promise<void> => {
       // Second User is casting a Vote with Reason
       voteTransaction = await deployedDaoGovernorOtherUser.castVoteWithReason(
         proposalId,
-        voteWay,
+        voteType,
         reason
       );
       voteTransactionReceipt = await voteTransaction.wait(1);
