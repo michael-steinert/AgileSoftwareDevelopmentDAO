@@ -7,7 +7,7 @@ export function useEagerConnect(): boolean {
   const { activate, active } = useWeb3React<Provider>();
   const [tried, setTried] = useState(false);
 
-  /* Combining `useCallback` and `useEffect` Hooks together so that `tryActivate` will only be called once when attempting eager Connection */
+  // Combining `useCallback` and `useEffect` Hooks together so that `tryActivate` will only be called once when attempting eager Connection
   const tryActivate = useCallback((): void => {
     const _tryActivate = async () => {
       const isAuthorized = await injected.isAuthorized();
@@ -27,7 +27,7 @@ export function useEagerConnect(): boolean {
     tryActivate();
   }, [tryActivate]);
 
-  /* If the Connection worked, wait until get the Confirmation of that to flip the Flag */
+  // If the Connection worked, wait until get the Confirmation of that to flip the Flag
   useEffect((): void => {
     if (!tried && active) {
       setTried(true);
@@ -61,14 +61,14 @@ export function useInactiveListener(suppress: boolean = false): void {
         }
       };
 
-      /* Subscribe to Event Calling Listener when the Event occurs */
+      // Subscribe to Event Calling Listener when the Event occurs
       ethereum.on('connect', handleConnect);
       ethereum.on('chainChanged', handleChainChanged);
       ethereum.on('accountsChanged', handleAccountsChanged);
 
       return (): void => {
         if (ethereum.removeListener) {
-          /* Remove the Listener that trigger this Event */
+          // Remove the Listener that trigger this Event
           ethereum.removeListener('connect', handleConnect);
           ethereum.removeListener('chainChanged', handleChainChanged);
           ethereum.removeListener('accountsChanged', handleAccountsChanged);

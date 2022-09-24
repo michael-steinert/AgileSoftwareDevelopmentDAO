@@ -4,7 +4,7 @@ import { AbstractConnector } from '@web3-react/abstract-connector';
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
 import {
   NoEthereumProviderError,
-  UserRejectedRequestError
+  UserRejectedRequestError,
 } from '@web3-react/injected-connector';
 import { MouseEvent, ReactElement, useState } from 'react';
 import { injected } from '../utils/connectors';
@@ -80,10 +80,10 @@ const Activate = (): ReactElement => {
     _activate(activate).catch(console.error);
   };
 
-  /* Handle Logic to eagerly connect to the injected Ethereum Provider, if it exists and has granted Access already */
+  // Handle Logic to eagerly connect to the injected Ethereum Provider, if it exists and has granted Access already
   const eagerConnectionSuccessful = useEagerConnect();
 
-  /* Handle Logic to connect in Reaction to certain Events on the injected Ethereum Provider, if it exists */
+  // Handle Logic to connect in Reaction to certain Events on the injected Ethereum Provider, if it exists
   useInactiveListener(!eagerConnectionSuccessful);
 
   return (
