@@ -17,6 +17,12 @@
 - If the Proposer's Voting Power drops below the Proposal Submission Threshold at any Time from Submission until the Voting or TimeLock Period ends, the Proposal can be cancelled
 - Once the entire Process has finished, the Proposal can be executed and relevant Code or Parameter Changes are implemented in the Protocol
 
+### Proposal State Flowchart
+
+- Proposals are executable Code, not Suggestions for a Team or Foundation to implement
+- All Proposals are Subject to a 3 day Voting Period, and any Address with Voting Power can vote for or against the Proposal
+- If a Majority, and at least 400,000 Votes are cast for the Proposal, it is queued in the `TimeLock`, and can be implemented after 2 Days
+
 ![governance-workflow](https://user-images.githubusercontent.com/29623199/157656041-2ad35235-c26e-45d9-93d9-33d43047ae90.png)
 
 ## OpenZeppelin TimeLock

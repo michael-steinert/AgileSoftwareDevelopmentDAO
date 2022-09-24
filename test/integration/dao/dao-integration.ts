@@ -39,7 +39,7 @@ const daoIntegration = async (): Promise<void> => {
       );
       await deployedGovernanceToken.deployed();
 
-      // Delegating Governance Token to User
+      // Delegating Governance Token / Voting Weight to User
       let transactionResponse = await deployedGovernanceToken.delegate(
         owner.address
       );
@@ -234,6 +234,7 @@ const daoIntegration = async (): Promise<void> => {
       );
       // Issuing Tokens to another User
       await deployedGovernanceOtherUser.issueToken(otherUser.address, 200);
+      // Delegating Governance Token / Voting Weight to `otherUser`
       const transactionResponse = await deployedGovernanceToken.delegate(
         otherUser.address
       );
