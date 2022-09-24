@@ -5,6 +5,7 @@ import "@openzeppelin/contracts/governance/TimelockController.sol";
 
 /*
 TimeLockController that controls the Time Delay after a Proposal has passed
+It will execute Proposals and thus the TimeLock that should hold any Funds, Ownership, and Access Control Roles
 It waits a Delay Time after a Proposal has passed before performing the Action from the Proposal
 TimeLock is a Best Practice for Governance Management, allows Time-delayed Opt-Out Changes in a System
 It allows Users to exit the System if they disagree with a Decision before it is executed
@@ -30,5 +31,13 @@ contract TimeLock is TimelockController {
         The Admin Role will be granted automatically to both Deployer and TimeLock itself, but should be renounced by the Deployer after Setup
         */
         address[] memory executors
-    ) TimelockController(minDelay, proposers, executors) {}
+    ) TimelockController(minDelay, proposers, executors) {
+        /*
+        The Proposer Role is in Charge of Queueing Operations - this is the Role the Governor Contract should be granted, and it should likely be the only Proposer in the System
+        The Executor Role is in Charge of Executing already available Operations - this Role can be assigned to the Zero Address to allow anyone to execute Proposals
+        If Operations can be particularly time-sensitive, the Governor should be made Executor instead
+        The Admin Role can grant and revoke the two previous Roles - this is a sensitive Role that will be granted automatically to both Deployer and TimeLock itself
+        It should be renounced by the Deployer after Setup so that the DAO becomes self-governed
+      */
+    }
 }

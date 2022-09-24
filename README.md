@@ -5,7 +5,9 @@
 
 # Tally
 
-- Tally allows Users to create Proposals, visualize Voting Power and Advocates, navigate Proposals, and cast Votes
+- Tally is a full-fledged Application for user-owned on-chain Governance
+- It comprises a Voting Dashboard, Proposal Creation Wizard, Real Time Research and Analysis, and Educational Content
+- It also allows Users to create Proposals, visualize Voting Power and Advocates, navigate Proposals, and cast Votes
 
 # Decentralized autonomous Organization
 
@@ -157,8 +159,18 @@
 ### Proposal
 
 - A Proposal is a Sequence of Actions that the Governor Contract will perform if it passes
-- Each Action consists of a Target Address, Calldata encoding a Function Call, and an Amount of Ether to include
+- Each Action consists of a **Target Address**, **Calldata encoding a Function Call**, and an **Amount of Ether** to include
 - Additionally, a Proposal includes a human-readable Description
+
+- Once a Proposal is active, Delegates can cast their Vote
+- The Delegates carry the Voting Power, that means the if a Token Holder wants to participate:
+
+  - they can set a trusted Representative as their Delegate,
+  - or they can become a Delegate themselves by self-delegating their Voting Power
+
+- Once the Voting Period is over, if Quorum was reached (enough Voting Power participated) and the Majority voted in Benefit of the Proposal
+- Then the Proposal is considered successful and can proceed to be executed
+
 - A Proposal can be in the following specified Sate:
   - 0: Pending,
   - 1: Active,

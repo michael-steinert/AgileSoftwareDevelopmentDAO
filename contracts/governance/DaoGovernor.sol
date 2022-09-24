@@ -13,7 +13,7 @@ import "@openzeppelin/contracts/governance/extensions/GovernorTimelockControl.so
 `Governor` is the core Contract that contains all the Logic and Primitives - It is abstract and requires choosing one of each of the Modules
 `GovernorSettings` manages Settings Voting Delay, Voting Period Duration and Proposal Threshold in a way that can be updated through a Governance Proposal, without requiring an Upgrade
 `GovernorCountingSimple` offers three Options to Voters: For, Against, and Abstain, and where only For and Abstain Votes are counted towards Quorum
-`GovernorVotes` hooks to an ERC20Votes Instance to determine the Voting Power of an Account based on the Token Balance they hold when a Proposal becomes active
+`GovernorVotes` hooks to an ERC20Votes Instance `IVotes` to determine the Voting Power of an Account based on the Token Balance they hold when a Proposal becomes active
 `GovernorVotesQuorumFraction` works together with `ERC20Votes` to define Quorum as a Percentage of the Total Supply at the Block a Proposal’s Voting Power is retrieved
 `GovernorTimelockControl` connects with an Instance of TimelockController - it allows multiple Proposers and Executors, in addition to the Governor itself
 */
@@ -31,13 +31,14 @@ contract DaoGovernor is
         // DAO does not executed any Proposal before the Timelock Controller has been executed
         TimelockController _timeLockController,
         /*
-        After how much Blocks the Voting beginning - Delay since Proposal is created until Voting starts (in Block Time ~ 13.2 Seconds)
-        `_votingDelay` is a Delay since the Proposal is created until Coting starts
+        After how much Blocks after the Creation of the Proposal the Voting Power should be fixed
+        A Delay since Proposal is created until Voting begins - A large Voting Delay gives Users Time to unstake Tokens if necessary
+        `_votingDelay` is a Delay since the Proposal is created and Voting starts
         */
         uint256 _votingDelay,
-        // After how much Blocks the Voting is ending - Length of Period during which People can cast their Vote
+        // After how much Blocks the Voting is ending - Length of Period during which People can cast their Vote resp. the Porposal remains open to Votes
         uint256 _votingPeriod,
-        // Minimum Number of Votes an Account must have to create a Proposal
+        // Minimum Number of Votes an Account must have to create a Proposal - it restricts Proposal Creation to Accounts who have enough Voting Power
         uint256 _threshold,
         // Percentage of how much People (from the Total Supply) have to vote on the Proposal to be accepted
         uint256 _quorumPercentage
