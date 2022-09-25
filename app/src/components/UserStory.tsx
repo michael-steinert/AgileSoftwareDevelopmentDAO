@@ -47,8 +47,8 @@ const UserStory = (): ReactElement => {
   const [allProposalIDs, setAllProposalIDs] = useState<number[]>([]);
 
   const governanceContractAddress =
-    '0x15F16B9c06a107eEED8192682Ca22fdac64E74e3';
-  const userStoryContractAddress = '0xbD046a019aCf77B9F370C4F7C4C6354Af8936C1a';
+    '0x685b749604722369a30E77F890E7852255e88586';
+  const userStoryContractAddress = '0x3c7c05A116cBD477ED7A5dde02454d146B81DEcD';
   const governanceContractABI = GovernorContract.abi;
   const userStoryContractABI = UserStoryContract.abi;
 
@@ -194,7 +194,7 @@ const UserStory = (): ReactElement => {
         // Creating a new Proposal, with a Proposal ID that is obtained by Hashing together the Proposal Data, and which will also be found in an event in the Logs of the Transaction
         const proposeTransaction = await governorContract.propose(
           // Targets that are called from the DAO
-          [userStoryContract.address],
+          [userStoryContractAddress],
           // Ether sending to Targets
           [0],
           // Encoded Parameters for the Functions that are going to be called

@@ -15,7 +15,7 @@ export interface networkConfigInfo {
 export const networkConfig: networkConfigInfo = {
   localhost: {},
   hardhat: {},
-  rinkeby: {
+  goerli: {
     blockConfirmations: 3,
   },
   mumbai: {
@@ -26,28 +26,33 @@ export const networkConfig: networkConfigInfo = {
 export const developmentChains = ['hardhat', 'localhost'];
 export const proposalsFile = 'proposals.json';
 
-/* Governor */
-/* Quorum required for a Proposal to pass - A Proposal needs 80% of Voters to vote for it to pass */
-/* Percentage of total Supply of Token Holders (People) / Tokens needed to approve Proposals (80%) */
+/*
+Governor
+Quorum required for a Proposal to pass - A Proposal needs 80% of Voters to vote for it to pass
+Quorum is the Percentage of total Supply of Token Holders needed to vote on a Proposal
+80% of the Token Holders have to vote for a Proposal to be
+*/
 export const QUORUM_PERCENTAGE: number = 80;
-/* Length of Period during which People can cast their Vote */
-/* The Vote has to last over 5 Blocks */
-/* Block Time on Ethereum Rinkeby: 15 Seconds */
-/* Block Time on Polygon Mumbai: 3 Seconds */
+/*
+Length of Period during which Token Holders can cast their Vote
+The Vote has to last over 5 Blocks
+*/
 export const VOTING_PERIOD: number = 5;
-/* Delay since Proposal is created until Voting starts */
+// Delay since Proposal is created until Voting starts
 export const VOTING_DELAY: number = 3;
-/* Minimum Number of Votes an Account must have to create a Proposal */
+// Minimum Number of Votes an Account must have to create a Proposal
 export const THRESHOLD: number = 0;
 
-/* Time Lock Controller */
-/* The passed Vote has to wait some Time before it can be executed */
-/* A Vote has to pass 3600 Seconds before it can be enacted */
+/*
+Time Lock Controller
+The passed Vote has to wait a Delay before it can be executed
+A Vote has to pass 3600 Seconds before it can be enacted
+*/
 export const MIN_DELAY: number = 3600;
 export const PROPOSERS: string[] = [];
 export const EXECUTORS: string[] = [];
 
-/* User Story Treasury */
+// User Story Treasury
 export const NEW_USER_STORY: UserStory = ['First User Story', 21, 42];
 export const FUNCTION_TO_CALL: any = 'storeUserStory';
 export const PROPOSAL_DESCRIPTION: string = 'Proposal #1 Store new User Story';

@@ -9,11 +9,12 @@ import 'hardhat-deploy';
 import 'solidity-coverage';
 import { HardhatUserConfig } from 'hardhat/config';
 
-const RINKEBY_RPC_URL = process.env.RINKEBY_RPC_URL || '';
+const GOERLI_RPC_URL = process.env.GOERLI_RPC_URL || '';
 const MUMBAI_RPC_URL = process.env.MUMBAI_RPC_URL || '';
 const PRIVATE_KEY = process.env.PRIVATE_KEY || '';
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || '';
 const POLYGONSCAN_API_KEY = process.env.POLYGONSCAN_API_KEY || '';
+const COINMARKETCAP_API_KEY = process.env.COINMARKETCAP_API_KEY || '';
 
 const config: HardhatUserConfig = {
   defaultNetwork: 'hardhat',
@@ -30,10 +31,10 @@ const config: HardhatUserConfig = {
       gas: 12000000,
       blockGasLimit: 0x1fffffffffffff,
     },
-    rinkeby: {
-      url: RINKEBY_RPC_URL,
+    goerli: {
+      url: GOERLI_RPC_URL,
       accounts: [PRIVATE_KEY],
-      chainId: 4,
+      chainId: 5,
       allowUnlimitedContractSize: true,
       gas: 2100000,
       gasPrice: 8000000000,
@@ -58,13 +59,10 @@ const config: HardhatUserConfig = {
   },
   etherscan: {
     apiKey: {
-      /* Ethereum */
+      // Ethereum
       mainnet: ETHERSCAN_API_KEY,
-      ropsten: ETHERSCAN_API_KEY,
-      rinkeby: ETHERSCAN_API_KEY,
       goerli: ETHERSCAN_API_KEY,
-      kovan: ETHERSCAN_API_KEY,
-      /* Polygon */
+      // Polygon
       polygon: POLYGONSCAN_API_KEY,
       polygonMumbai: POLYGONSCAN_API_KEY,
     },
@@ -74,13 +72,16 @@ const config: HardhatUserConfig = {
     currency: 'EUR',
     outputFile: 'gas-report.txt',
     noColors: true,
+    coinmarketcap: COINMARKETCAP_API_KEY,
   },
   namedAccounts: {
     deployer: {
-      /* Default: the first Account (with Index 0) is taken and named as `deployer` */
+      // Default: the first Account (with Index 0) is taken and named as `deployer`
       default: 0,
-      /* Mainnet with ID 1: the first Account (with Index 0) is taken and named as `deployer` */
-      /* Depending on how the Hardhat Network is configured, the Account with Index 0 can be different on one Network than on another */
+      /*
+      Mainnet with ID 1: the first Account (with Index 0) is taken and named as `deployer`
+      Depending on how the Hardhat Network is configured, the Account with Index 0 can be different on one Network than on another
+      */
       1: 0,
     },
   },
@@ -91,7 +92,7 @@ const config: HardhatUserConfig = {
     artifacts: './app/artifacts',
   },
   mocha: {
-    /* Timeout after 200 Seconds for running Tests */
+    // Timeout after 200 Seconds for running Tests
     timeout: 200000,
   },
 };
