@@ -6,7 +6,7 @@ export async function moveBlocks(amount: number) {
   );
   console.log('Moving Blocks');
   for (let index = 0; index < amount; index++) {
-    /* Moving Blocks on Development Network forward */
+    // Moving Blocks forward on Development Network
     await network.provider.request({
       method: 'evm_mine',
       params: [],

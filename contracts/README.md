@@ -20,10 +20,10 @@
 ### Proposal State Flowchart
 
 - Proposals are executable Code, not Suggestions for a Team or Foundation to implement
-- All Proposals are Subject to a 3 day Voting Period, and any Address with Voting Power can vote for or against the Proposal
+- All Proposals are Subject to a 3 Day Voting Period, and any Address with Voting Power can vote for or against the Proposal
 - If a Majority, and at least 400,000 Votes are cast for the Proposal, it is queued in the `TimeLock`, and can be implemented after 2 Days
 
-![governance-workflow](https://user-images.githubusercontent.com/29623199/157656041-2ad35235-c26e-45d9-93d9-33d43047ae90.png)
+![governance-process](https://user-images.githubusercontent.com/29623199/192141281-fdda1252-a923-46db-96e6-27fdf8d90ebc.png)
 
 ## OpenZeppelin TimeLock
 
@@ -92,9 +92,9 @@
   - 7: Executed
 
 - A Vote Type for a Proposal can be in the following specified Sate:
-  - 0 is Against,
-  - 1 is For,
-  - 2 is Abstain
+  - 0: Against,
+  - 1: For,
+  - 2: Abstain
 
 ## Events
 

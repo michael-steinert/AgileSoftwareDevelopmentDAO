@@ -3,7 +3,7 @@ import { DeployFunction } from 'hardhat-deploy/types';
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { UserStoryTreasury } from '../typechain-types';
 import { developmentChains, networkConfig } from '../utils/hardhat-config';
-import verify from '../utils/verify';
+import verifyContract from '../utils/verify-contract';
 
 const deployUserStoryTreasury: DeployFunction = async (
   hre: HardhatRuntimeEnvironment
@@ -12,12 +12,12 @@ const deployUserStoryTreasury: DeployFunction = async (
   const { deploy, log } = deployments;
   const { deployer } = await getNamedAccounts();
   log('Deploying User Story Treasury and waiting for Confirmations');
-  /* Deployment of `UserStoryTreasury` */
+  // Deployment of `UserStoryTreasury`
   await deploy('UserStoryTreasury', {
     from: deployer,
     args: [],
     log: true,
-    /* Waiting some Block Confirmation, so on a Testnet or Mainnet it can be verified properly */
+    // Waiting some Block Confirmation in Order to verify properly the Smart Contract
     waitConfirmations: networkConfig[network.name].blockConfirmations || 1,
   });
   const UserStoryTreasury = await deployments.get('UserStoryTreasury');
@@ -30,15 +30,17 @@ const deployUserStoryTreasury: DeployFunction = async (
     !developmentChains.includes(network.name) &&
     process.env.ETHERSCAN_API_KEY
   ) {
-    await verify(
+    await verifyContract(
       'UserStoryTreasury',
       userStoryTreasury.address,
       network.name,
       []
     );
   }
-  /* Giving Ownership of Contract `UserStoryTreasury` from Deployer to Contract `TimeLock` */
-  /* TimeLock will have the Power to execute Operations on the Contract */
+  /*
+  Giving Ownership of Contract `UserStoryTreasury` from Deployer to Contract `TimeLock`
+  TimeLock will have the Power to execute Operations on the Contract
+  */
   const TimeLock = await deployments.get('TimeLock');
   log(
     `Transfer Ownership of User Story Treasury to TimeLock at ${TimeLock.address}`

@@ -236,12 +236,15 @@ const UserStory = (): ReactElement => {
     }
   };
 
-  // Pop a Error Message if User is not on Testnet Rinkeby
+  // Pop a Error Message if User is not on Development Network
   if (error && error.name === 'UnsupportedChainIdError') {
     return (
       <div>
-        <h2>Please connect to Testnet Rinkeby</h2>
-        <p>This decentralized Application only works on the Testnet Rinkeby</p>
+        <h2>Please connect to a Development Network</h2>
+        <p>
+          This decentralized Application only works on the Development Goerli
+          Rinkeby
+        </p>
       </div>
     );
   }

@@ -7,7 +7,7 @@ import {
   networkConfig,
   PROPOSERS,
 } from '../utils/hardhat-config';
-import verify from '../utils/verify';
+import verifyContract from '../utils/verify-contract';
 
 const deployTimeLock: DeployFunction = async (
   hre: HardhatRuntimeEnvironment
@@ -21,11 +21,11 @@ const deployTimeLock: DeployFunction = async (
     from: deployer,
     args: [MIN_DELAY, PROPOSERS, EXECUTORS],
     log: true,
-    /* Waiting some Block Confirmation, so on a Testnet or Mainnet it can be verified properly */
+    // Waiting some Block Confirmation in Order to verify properly the Smart Contract
     waitConfirmations: networkConfig[network.name].blockConfirmations || 1,
   });
   if (!developmentChains.includes(network.name)) {
-    await verify('TimeLock', timeLock.address, network.name, [
+    await verifyContract('TimeLock', timeLock.address, network.name, [
       MIN_DELAY,
       PROPOSERS,
       EXECUTORS,
