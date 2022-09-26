@@ -42,6 +42,10 @@
 - `UserStoryTreasury` is owned by the `TimeLock`, therefore its `onlyOwner` Methods can be only called by the `TimeLock`
 - This ensures self-governed Automation, and dao-controlled Execution of successful Proposals
 - `DaoGovernor` is given Proposer Rights, while the Executor is given to anyone
+- The Sprint Backlog is governed and upgraded by Token Holders, using three distinct Smart Contracts; the `GovernanceToken`, `DaoGovernor`, and `TimeLock`
+- Together, these Smart Contracts allow the Community to propose, vote, and execute User Stories through the administrative Functions of a `GovernanceToken`
+- Token Holders can delegate their Voting Rights to themselves, or an Address of their Choice
+- Proposals can create User Stories into the Backlog and be planned into the next Sprint
 
 ### Structure On-Chain Voting
 

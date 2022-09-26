@@ -6,27 +6,71 @@
 
 - The basic Unit of Governance is a Proposal, which represents a Package of executable Code to make specific Adjustments to the underlying Protocol
 - To prevent Spamming, only Users whose Voting Power exceeds the Proposal Submission Threshold are able to submit Proposals
+- **Threshold** is the minimum Number of Votes required for an Account to create a Proposal
 
 - An optional Proposal Delay Parameter allows Protocols to delay the Start of Voting for a specified Length of Time after a Proposal is submitted, giving Time for Users to update their Vote Delegation
+- **Voting Delay** ist the Number of Blocks to wait before Voting on a Proposal may begin
+- This value is added to the current Block Number when a Proposal is created
 
 - Voting takes Place over a predefined Voting Period determined by the underlying Protocol
-- When the Voting Period ends, the System first checks if the Number of Votes for the Proposal exceed the Protocol's Quorum Threshold (The Percentage of required Votes of the total Tokens that must be cast to reach the Quorum)
+- **Voting Period** is the Duration of Voting on a Proposal, in Blocks
+- When the Voting Period ends, the System first checks if the Number of Votes for the Proposal exceed the Protocol's Quorum
+- **Quorum** is the Percentage of required minimum Votes of the total Tokens that must be vote to a Proposal for it to succeed
 
-- If the Quorum Threshold has been met and the Vote gains Majority Support, the passed Proposal is then placed into a TimeLock Queue which delays Code (Proposal) Execution
+- If the Quorum Threshold has been met and the Vote gains Majority Support, the passed Proposal is then placed into a `TimeLock` Queue which delays Code (Proposal) Execution
 - This Time-lock is intended as a Security Measure, allowing Users to withdraw Funds if they think the Proposal is malicious or otherwise unacceptable
-- If the Proposer's Voting Power drops below the Proposal Submission Threshold at any Time from Submission until the Voting or TimeLock Period ends, the Proposal can be cancelled
+- If the Proposer's Voting Power drops below the Proposal Submission Threshold at any Time from Submission until the Voting or `TimeLock` Period ends, the Proposal can be cancelled
 - Once the entire Process has finished, the Proposal can be executed and relevant Code or Parameter Changes are implemented in the Protocol
 
-### Proposal State Flowchart
+- All Governance Parameters like **Threshold**, **Voting Delay**, **Voting Period** and **Quorum** can be changed through Governance
+
+## Governance Operations
+
+- `propose()` creates a Proposal to change the Protocol
+- Proposals will be voted on by delegated Voters
+- A Proposer must hold more `GovernanceToken` than the current Proposal Threshold as of the immediately previous Block
+- The Proposer can not create another Proposal if they currently have a pending or active Proposal
+- It is not possible to queue two identical Actions in the same Block due to a Restriction in the `TimeLock`, therefore Actions in a single proposal must be unique, and unique Proposals that share an identical Action must be queued in different Blocks
+- If there is sufficient Support before the **Voting Period** ends, the Proposal shall be automatically enacted
+- Enacted Proposals are queued and executed in the `TimeLock` Smart Contract
+
+- `queue()` moves a Proposal into the `TimeLock` Waiting Period, after the Proposal has succeeded
+- The Waiting Period (e.g. 2 Days) begins when `queue()` is called by any Address
+
+- `execute()` executes a Proposal, after the `TimeLock` Waiting Period has elapsed
+- The Execution can be called by any Address and applies the Proposal Changes to the `Target Contract`
+- It will invoke each of the Actions described in the Proposal
+
+- `cancel()` cancels a Proposal at any Time before it is executed, including while it is queued in the `TimeLock`
+- It can be called by the Proposal Creator, or any Address, if the Proposal Creator fails to maintain more delegated Votes than the Proposal Threshold
+
+- `state()` gets the Proposal State for the specified Proposal
+
+- `castVote()` casts a Vote on a Proposal
+- The Account’s Voting Weight is determined by the Number of `GovernanceToken` the Account had delegated to it at the time the Proposal State became active
+- `castVoteWithReason()` casts a Vote on a Proposal with a Reason attached to the Vote
+
+## Proposal State Flowchart
 
 - Proposals are executable Code, not Suggestions for a Team or Foundation to implement
-- All Proposals are Subject to a 3 Day Voting Period, and any Address with Voting Power can vote for or against the Proposal
-- If a Majority, and at least 400,000 Votes are cast for the Proposal, it is queued in the `TimeLock`, and can be implemented after 2 Days
+- When a Governance Proposal is created, it enters a 2 Day Review Period, after which Voting Weights are recorded and Voting begins
+- A Voting Period of 3 Days applies to all Proposals, and any Address with Voting Power can vote for or against the Proposal
+- If a Majority, at least 80% of possible Votes are cast for the Proposal, it is queued in the `TimeLock`, and can be executed after 2 Days
+- In Total, the Creation of a User Story takes at least one Week (7 Days)
 
 ![governance-process](https://user-images.githubusercontent.com/29623199/192141281-fdda1252-a923-46db-96e6-27fdf8d90ebc.png)
 
-## OpenZeppelin TimeLock
+# OpenZeppelin Governance Token
 
+- `GovernanceToken` is an ERC20 Token that allows the Owner to delegate Voting Rights to any Address, including their own Address
+- Changes to the Owner’s Token Balance automatically adjust the Voting Rights of the Delegate
+- `delegate(address delegatee)` delegates Votes from the Sender to the Delegatee
+- Users can delegate to one Address at a Time, and the Number of Votes added to the Delegatee’s Vote Count is equivalent to the Balance of `GovernanceToken` in the User’s Account
+- Votes are delegated from the current Block and onward, until the Sender delegates again, or Transfers their `GovernanceToken`
+
+# OpenZeppelin TimeLock
+
+- The `TimeLock` Smart Contract queues and executes Proposals that have passed a Governance Vote
 - In a Governance System, the TimeLock Controller is in Charge of Introducing a Delay between a Proposal and its Execution
 - When the `TimeLock` is set as the Owner of an `ownable` Smart Contract, it enforces a Delay on all `onlyOwner` Maintenance Operations
 - When the `TimeLock` is self-governed, it only can execute the `Target Contract` after a Delay
@@ -40,12 +84,12 @@
 - When the `TimeLock` is self-governed, a **Proposer** will be able to schedule a Proposal, and will have to wait for the Delay of the `TimeLock` until the Proposal can be executed, at which Point it will actually come into Effect
 - When the `TimeLock` is self-governed, it should be ensured when Revoking a **Proposer** or **Executor** that at least one other trusted User is assigned to that Role - otherwise, no one will have the correct Privileges to create or execute Proposals for the `TimeLock` Controller
 
-### OpenZeppelin TimeLock Operation Lifecycle
+## OpenZeppelin TimeLock Operation Lifecycle
 
 - An Operation is a Transaction (or a set of Transactions) that is the Subject of the `TimeLock`
 - It has to be scheduled by a **Proposer** and executed by an **Executor**
 - The `TimeLock` enforces a minimum Delay between the Proposition and the Execution in the following Operation Lifecycle
-- **Unset → Pending → Pending + Ready → Done**
+- **Unset -> Pending -> Pending + Ready -> Done**
 
   - **Unset**: An Operation that is not Part of the `TimeLock` Mechanism
   - **Pending**: An Operation that has been scheduled, before the Timer expires
@@ -65,7 +109,7 @@
 - This resets the Operation to the **Unset** State
 - It is thus possible for a **Proposer** to re-schedule an Operation that has been cancelled - tn this case, the Timer restarts when the Operation is re-scheduled
 
-## Proposal
+# Proposal
 
 - A Proposal is a Sequence of Actions that the Governor Contract will perform if it passes
 - Each Action consists of a **Target Address**, **Calldata encoding a Function Call**, and an **Amount of Ether** to include
@@ -96,7 +140,7 @@
   - 1: For,
   - 2: Abstain
 
-## Events
+# Events
 
 - **ProposalCreated**(proposalId, proposer, targets, values, signatures, calldata, startBlock, endBlock, description)
 - **ProposalCanceled**(proposalId)
