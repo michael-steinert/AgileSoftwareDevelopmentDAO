@@ -9,9 +9,12 @@
 - It comprises a Voting Dashboard, Proposal Creation Wizard, Real Time Research and Analysis, and Educational Content
 - It also allows Users to create Proposals, visualize Voting Power and Advocates, navigate Proposals, and cast Votes
 
-# Decentralized autonomous Organization
+# Decentralized Autonomous Organization (DAO)
 
-- A decentralized autonomous Organization (DAO) is a collective Entity owned and operated by its Community Members
+- DAOs are Organizations that aim to limit centralized Points of Authority or Control
+- They are communally governed through democratic Processes, facilitated through Smart Contracts that lay out a clear and specific Set of Rules for the Organization
+- They offer a transparent and decentralized Way to crowd-source Decisions
+- A DAO is a collective Entity owned and operated by its Community Members
 - Funds are stored in their in the Treasury of the DAO and are governed by Smart Contracts, which means DAOs do not have to rely on Intermediate (like Banks) to store their Funds
 - There is no central Authority within the Organization
 - Decisions are executed via Proposals and Voting, this ensures Fairness and Equality amongst its Owners (Community Members)
