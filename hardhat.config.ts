@@ -89,7 +89,13 @@ const config: HardhatUserConfig = {
     sources: './contracts',
     tests: './test',
     cache: './cache',
-    artifacts: './app/artifacts',
+    artifacts: './app/src/artifacts',
+  },
+  typechain: {
+    outDir: 'typechain-types',
+    target: 'ethers-v5',
+    alwaysGenerateOverloads: false,
+    dontOverrideCompile: false,
   },
   mocha: {
     // Timeout after 200 Seconds for running Tests
