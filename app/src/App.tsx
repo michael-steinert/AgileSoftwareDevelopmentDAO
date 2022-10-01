@@ -1,20 +1,13 @@
-import React, { ReactElement } from 'react';
-import { useState } from 'react';
+import { ReactElement, useState } from 'react';
 import {
   Box,
   createTheme,
+  Divider,
   PaletteMode,
   Stack,
   ThemeProvider,
 } from '@mui/material';
-import {
-  ActivateDeactivate,
-  SectionDivider,
-  WalletStatus,
-  UserStory,
-  SignMessage,
-  Navbar,
-} from './components';
+import { ActivateDeactivateWallet, Navbar, UserStory } from './components';
 
 const App = (): ReactElement => {
   const [mode, setMode] = useState<PaletteMode>('light');
@@ -37,12 +30,8 @@ const App = (): ReactElement => {
       >
         <Navbar setMode={setMode} mode={mode} />
         <Stack direction='column' spacing={2} justifyContent='space-between'>
-          <ActivateDeactivate />
-          <SectionDivider />
-          <WalletStatus />
-          <SectionDivider />
-          <SignMessage />
-          <SectionDivider />
+          <ActivateDeactivateWallet />
+          <Divider />
           <UserStory />
         </Stack>
       </Box>

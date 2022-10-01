@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, ReactElement } from 'react';
 import {
   AppBar,
   FormControlLabel,
@@ -20,7 +20,10 @@ const StyledToolbar = styled(Toolbar)({
   justifyContent: 'space-between',
 }) as typeof Toolbar;
 
-const Navbar: FunctionComponent<NavbarProps> = ({ mode, setMode }) => {
+const Navbar: FunctionComponent<NavbarProps> = ({
+  mode,
+  setMode,
+}): ReactElement => {
   return (
     <AppBar position='sticky'>
       <StyledToolbar>

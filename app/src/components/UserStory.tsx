@@ -1,14 +1,22 @@
+import React, {
+  ChangeEvent,
+  FunctionComponent,
+  ReactElement,
+  useEffect,
+  useState,
+} from 'react';
+import {
+  Box,
+  Button,
+  InputLabel,
+  TextField,
+  Divider,
+  Typography,
+} from '@mui/material';
 import { styled } from '@mui/system';
-import { useWeb3React } from '@web3-react/core';
-import { Contract, ethers, Signer } from 'ethers';
-import React, { ChangeEvent, ReactElement, useEffect, useState } from 'react';
-// @ts-ignore
-import GovernorContract from '../artifacts/contracts/GovernorContract.sol/GovernorContract.json';
-import { Box, Button, TextField, InputLabel } from '@mui/material';
-import { SectionDivider } from '.';
-// @ts-ignore
-import UserStoryContract from '../artifacts/contracts/UserStoryContract.sol/UserStoryContract.json';
-import { Provider } from '../utils/provider';
+import { useEthers } from '@usedapp/core';
+import { Contract, providers } from 'ethers';
+import { useUserStoryTreasury, useDaoGovernor } from '../hooks';
 
 const StyledUserStoryBox = styled(Box)({
   display: 'grid',
@@ -33,38 +41,33 @@ const StyledCreateButton = styled(Button)({
   cursor: 'pointer',
 }) as typeof Button;
 
-const UserStory = (): ReactElement => {
-  const { library, active, account } = useWeb3React<Provider>();
-
-  const [signer, setSigner] = useState<Signer>();
-  const [userStoryContract, setUserStoryContract] = useState<Contract>();
+const UserStory: FunctionComponent = (): ReactElement => {
+  const { account, active } = useEthers();
   const [allUserStories, setAllUserStories] = useState<IUserStory[]>([]);
   const [allProposals, setAllProposals] = useState<IProposal[]>([]);
   const [error, setError] = useState<Error>();
   const [description, setDescription] = useState('');
-  const [functionalComplexity, setFunctionalComplexity] = useState(0);
-  const [effortEstimation, setEffortEstimation] = useState(0);
-  const [allProposalIDs, setAllProposalIDs] = useState<number[]>([]);
+  const [functionalComplexity, setFunctionalComplexity] = useState('0');
+  const [effortEstimation, setEffortEstimation] = useState('0');
+  const [allProposalIds, setAllProposalIds] = useState<number[]>([]);
 
-  const governanceContractAddress =
-    '0x685b749604722369a30E77F890E7852255e88586';
-  const userStoryContractAddress = '0x3c7c05A116cBD477ED7A5dde02454d146B81DEcD';
-  const governanceContractABI = GovernorContract.abi;
-  const userStoryContractABI = UserStoryContract.abi;
+  const { ethereum } = window as any;
+  // A Provider is a Class which provides an Abstraction for a Connection to the Ethereum Network
+  // It provides read-only Access to the Blockchain and its Status
+  const provider = new providers.Web3Provider(ethereum);
+  // A Signer is a Class which has Access to a Private Key,
+  // which can sign Messages and Transactions to authorize the Network to charge the Account ETH to perform Operations
+  const signer = provider.getSigner();
+
+  // Initialize Dao Governor by using Custom Hook
+  const [daoGovernor, daoGovernorInterface] = useDaoGovernor(signer!);
+
+  // Initialize User Story Treasury by using Custom Hook
+  const [userStoryTreasury, userStoryTreasuryInterface] = useUserStoryTreasury(
+    signer!
+  );
 
   useEffect((): void => {
-    if (!library) {
-      setSigner(undefined);
-      return;
-    }
-    setSigner(library.getSigner());
-  }, [library]);
-
-  useEffect((): void => {
-    const { ethereum } = window as any;
-    let _userStoryContract: ethers.Contract;
-    let _governorContract: ethers.Contract;
-
     // Listen on emitted Event to update the Data in Real-Time
     const onUserStoryCreated =
       () =>
@@ -93,6 +96,9 @@ const UserStory = (): ReactElement => {
           ];
         });
       };
+
+    // Subscribe to Event Calling Listener when the Event `UserStoryCreated` occurs
+    userStoryTreasury?.on('UserStoryCreated', onUserStoryCreated);
 
     // Listen on emitted Event to update the Data in Real-Time
     const onProposalCreated =
@@ -124,128 +130,89 @@ const UserStory = (): ReactElement => {
           ];
         });
       };
-    if (ethereum) {
-      const provider = new ethers.providers.Web3Provider(ethereum);
-      const signer = provider.getSigner();
 
-      // Instantiate User Story Contract
-      _userStoryContract = new ethers.Contract(
-        userStoryContractAddress,
-        userStoryContractABI,
-        signer
-      );
-      setUserStoryContract(_userStoryContract);
+    // Subscribe to Event Calling Listener when the Event `ProposalCreated` occurs
+    daoGovernor?.on('ProposalCreated', onProposalCreated);
 
-      // Subscribe to Event Calling Listener when the Event `UserStoryCreated` occurs
-      _userStoryContract.on('UserStoryCreated', onUserStoryCreated);
+    // Retrieving all existing User Stories, then store them into State
+    const retrieveAllUserStories = async (
+      userStoryTreasury: Contract
+    ): Promise<void> => {
+      // Fetching all User Stories
+      const userStories = await userStoryTreasury.retrieveAllUserStory();
+      console.log(userStories);
 
-      // Retrieving all existing User Stories, then store them into State
-      const retrieveAllUserStories = async (
-        _userStoryContract: Contract
-      ): Promise<void> => {
-        // Fetching all User Stories
-        const userStories = await _userStoryContract.retrieveAllUserStory();
-        console.log(userStories);
-        // Change all User Stories, if they changed
-        if (allUserStories !== userStories) {
-          setAllUserStories(userStories);
-        }
-      };
-      retrieveAllUserStories(_userStoryContract).catch(console.error);
-
-      // Instantiate Governor Contract
-      _governorContract = new ethers.Contract(
-        governanceContractAddress,
-        governanceContractABI,
-        signer
-      );
-
-      // Subscribe to Event Calling Listener when the Event `ProposalCreated` occurs
-      _governorContract.on('ProposalCreated', onProposalCreated);
-    }
-  }, []);
+      // Change all User Stories, if they changed
+      if (allUserStories !== userStories) {
+        setAllUserStories(userStories);
+      }
+    };
+    // retrieveAllUserStories(userStoryTreasury!).catch(console.error);
+  }, [daoGovernor, userStoryTreasury]);
 
   const storeUserStory = async () => {
     try {
-      const { ethereum } = window as any;
-      if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const userStoryContract = new ethers.Contract(
-          userStoryContractAddress,
-          userStoryContractABI,
-          signer
-        );
-        const governorContract = new ethers.Contract(
-          governanceContractAddress,
-          governanceContractABI,
-          signer
-        );
+      // `encodeFunctionData` returns the encoded Data, which can be used as the Data for a Transaction for Fragment for the given Values
+      // Encoding Function to call with their Parameters
+      const encodedFunctionCall =
+        userStoryTreasuryInterface?.encodeFunctionData('storeUserStory', [
+          description,
+          functionalComplexity,
+          effortEstimation,
+        ]);
 
-        // `encodeFunctionData` returns the encoded Data, which can be used as the Data for a Transaction for Fragment for the given Values
-        // Encoding Function to call with their Parameters
-        const encodedFunctionCall =
-          userStoryContract.interface.encodeFunctionData('storeUserStory', [
-            description,
-            functionalComplexity,
-            effortEstimation,
-          ]);
+      // Creating a new Proposal, with a Proposal ID that is obtained by Hashing together the Proposal Data, and which will also be found in an event in the Logs of the Transaction
+      const proposeTransaction = await daoGovernor?.propose(
+        // Targets that are called from the DAO
+        [userStoryTreasury?.address],
+        // Ether sending to Targets
+        [0],
+        // Encoded Parameters for the Functions that are going to be called
+        [encodedFunctionCall],
+        // Description of Proposal
+        'Proposal for creating new User Story'
+      );
 
-        // Creating a new Proposal, with a Proposal ID that is obtained by Hashing together the Proposal Data, and which will also be found in an event in the Logs of the Transaction
-        const proposeTransaction = await governorContract.propose(
-          // Targets that are called from the DAO
-          [userStoryContractAddress],
-          // Ether sending to Targets
-          [0],
-          // Encoded Parameters for the Functions that are going to be called
-          [encodedFunctionCall],
-          // Description of Proposal
-          'Proposal for creating a new User Story'
-        );
+      const proposeTransactionResult = await proposeTransaction.wait();
 
-        const proposeTransactionResult = await proposeTransaction.wait();
-        // Getting `proposalId` from Event `ProposalCreated`
-        const proposalId = proposeTransactionResult.events[0].args.proposalId;
-        console.log(`Proposed with Proposal ID:\n  ${proposalId}`);
-        const proposalState = await governorContract.state(proposalId);
-        // Getting current Snapshot of Proposal
-        const proposalSnapShot = await governorContract.proposalSnapshot(
-          proposalId
-        );
-        // Getting Deadline for Proposal
-        const proposalDeadline = await governorContract.proposalDeadline(
-          proposalId
-        );
-        // Set User Story from Event
-        setAllProposalIDs((previousProposalIDs: number[]) => {
-          return [...previousProposalIDs, proposalId];
-        });
-        console.log(`Sate with Proposal ID:\n  ${allProposalIDs}`);
-        // State of Proposal - 0 is pending, 1 is active and 4 is succeeded Proposal
-        console.log(`Current Proposal State: ${proposalState}`);
-        // Block Number that the current Proposal was snapshot
-        console.log(`Current Proposal Snapshot: ${proposalSnapShot}`);
-        // Block Number that the Proposal Voting will expire
-        console.log(`Current Proposal Deadline: ${proposalDeadline}`);
-      } else {
-        console.log('Ethereum Object does not exist');
-      }
-    } catch (err: any) {
-      setError(err);
-      console.error(err.message);
+      // Getting `proposalId` from Event `ProposalCreated`
+      const proposalId = proposeTransactionResult.events[0].args.proposalId;
+      console.log(`Proposed with Proposal ID:\n  ${proposalId}`);
+
+      // State of Proposal - 0 is pending, 1 is active and 4 is succeeded Proposal
+      const proposalState = await daoGovernor?.state(proposalId);
+      console.log(`Current Proposal State: ${proposalState}`);
+
+      // Block Number that the current Proposal was snapshot
+      const proposalSnapShot = await daoGovernor?.proposalSnapshot(proposalId);
+      console.log(`Current Proposal Snapshot: ${proposalSnapShot}`);
+
+      // Block Number that the Proposal Voting will expire
+      const proposalDeadline = await daoGovernor?.proposalDeadline(proposalId);
+      console.log(`Current Proposal Deadline: ${proposalDeadline}`);
+
+      // Set User Story from Event
+      setAllProposalIds((previousProposalIds: number[]) => {
+        return [...previousProposalIds, proposalId];
+      });
+      console.log(`Sate with Proposal ID:\n  ${allProposalIds}`);
+    } catch (error: any) {
+      setError(error);
+      console.error(error.message);
     }
   };
 
-  // Pop a Error Message if User is not on Development Network
+  // Show Error Message if User is not on Development Network
   if (error && error.name === 'UnsupportedChainIdError') {
     return (
-      <div>
-        <h2>Please connect to a Development Network</h2>
-        <p>
+      <Box>
+        <Typography variant='h2'>
+          Please connect to a Development Network
+        </Typography>
+        <Typography variant='subtitle2'>
           This decentralized Application only works on the Development Goerli
-          Rinkeby
-        </p>
-      </div>
+        </Typography>
+      </Box>
     );
   }
 
@@ -260,23 +227,23 @@ const UserStory = (): ReactElement => {
     event: ChangeEvent<HTMLInputElement>
   ): void => {
     event.preventDefault();
-    setFunctionalComplexity(event.target.valueAsNumber);
+    setFunctionalComplexity(event.target.value);
   };
 
   const handleEffortEstimationChange = (
     event: ChangeEvent<HTMLInputElement>
   ): void => {
     event.preventDefault();
-    setEffortEstimation(event.target.valueAsNumber);
+    setEffortEstimation(event.target.value);
   };
 
   return (
     <React.Fragment>
       <StyledUserStoryBox>
         <h1>Scrum DAO</h1>
-        <StyledLabel>User story Treasury Address</StyledLabel>
+        <StyledLabel>User Story Treasury Address</StyledLabel>
         <Box>
-          {userStoryContract ? (
+          {userStoryTreasury ? (
             typeof account === 'undefined' ? (
               ''
             ) : account ? (
@@ -292,7 +259,7 @@ const UserStory = (): ReactElement => {
         </Box>
         <StyledLabel>Current User Stories</StyledLabel>
         <Box>
-          {userStoryContract ? (
+          {userStoryTreasury ? (
             <div>
               <h2>Active User Stories</h2>
               {allUserStories &&
@@ -309,9 +276,9 @@ const UserStory = (): ReactElement => {
             <em>{`<Smart Contract not for User Stories yet deployed>`}</em>
           )}
         </Box>
-        <SectionDivider />
+        <Divider />
         <Box>
-          {userStoryContract ? (
+          {userStoryTreasury ? (
             <div>
               <h2>Active Proposals</h2>
               {allProposals &&
@@ -328,17 +295,17 @@ const UserStory = (): ReactElement => {
             <em>{`<Smart Contract for Proposals not yet deployed>`}</em>
           )}
         </Box>
-        <SectionDivider />
+        <Divider />
         <h2>Create new User Story</h2>
         <StyledLabel htmlFor={'descriptionInput'}>Description</StyledLabel>
         <StyledInput
           id={'descriptionInput'}
           type={'text'}
           placeholder={
-            userStoryContract ? '' : '<Smart Contract not yet deployed>'
+            userStoryTreasury ? '' : '<Smart Contract not yet deployed>'
           }
           onChange={handleDescriptionChange}
-          style={{ fontStyle: userStoryContract ? 'normal' : 'italic' }}
+          style={{ fontStyle: userStoryTreasury ? 'normal' : 'italic' }}
         />
         <StyledLabel htmlFor={'functionalComplexityInput'}>
           Functional Complexity
@@ -347,10 +314,10 @@ const UserStory = (): ReactElement => {
           id={'functionalComplexityInput'}
           type={'text'}
           placeholder={
-            userStoryContract ? '' : '<Smart Contract not yet deployed>'
+            userStoryTreasury ? '' : '<Smart Contract not yet deployed>'
           }
           onChange={handleFunctionalComplexityChange}
-          style={{ fontStyle: userStoryContract ? 'normal' : 'italic' }}
+          style={{ fontStyle: userStoryTreasury ? 'normal' : 'italic' }}
         />
         <StyledLabel htmlFor={'effortEstimationInput'}>
           Effort Estimation
@@ -359,16 +326,16 @@ const UserStory = (): ReactElement => {
           id={'effortEstimationInput'}
           type={'text'}
           placeholder={
-            userStoryContract ? '' : '<Smart Contract not yet deployed>'
+            userStoryTreasury ? '' : '<Smart Contract not yet deployed>'
           }
           onChange={handleEffortEstimationChange}
-          style={{ fontStyle: userStoryContract ? 'normal' : 'italic' }}
+          style={{ fontStyle: userStoryTreasury ? 'normal' : 'italic' }}
         />
         <StyledCreateButton
-          disabled={!active || !userStoryContract}
+          disabled={!active || !userStoryTreasury}
           sx={{
-            cursor: !active || !userStoryContract ? 'not-allowed' : 'pointer',
-            borderColor: !active || !userStoryContract ? 'unset' : 'blue',
+            cursor: !active || !userStoryTreasury ? 'not-allowed' : 'pointer',
+            borderColor: !active || !userStoryTreasury ? 'unset' : 'blue',
           }}
           onClick={storeUserStory}
         >

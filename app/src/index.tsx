@@ -1,17 +1,24 @@
-import { Web3ReactProvider } from '@web3-react/core';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { DAppProvider, Goerli } from '@usedapp/core';
+
 import App from './App';
 import './index.css';
-import { getProvider } from './utils/provider';
+
+const DAPP_CONFIG = {
+  readOnlyChainId: Goerli.chainId || 5,
+  readOnlyUrls: {
+    [Goerli.chainId]: process.env.REACT_APP_GOERLI_RPC_URL || '',
+  },
+};
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <Web3ReactProvider getLibrary={getProvider}>
+    <DAppProvider config={DAPP_CONFIG}>
       <App />
-    </Web3ReactProvider>
+    </DAppProvider>
   </React.StrictMode>
 );
