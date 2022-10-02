@@ -9,6 +9,7 @@ import {
   Typography,
 } from '@mui/material';
 import { ModeNight } from '@mui/icons-material';
+import WalletButton from './WalletButton';
 
 type NavbarProps = {
   mode: string;
@@ -30,6 +31,7 @@ const Navbar: FunctionComponent<NavbarProps> = ({
         <Typography variant='h6' sx={{ display: { xs: 'none', sm: 'block' } }}>
           Navbar
         </Typography>
+        <WalletButton />
         <FormGroup>
           <FormControlLabel
             control={

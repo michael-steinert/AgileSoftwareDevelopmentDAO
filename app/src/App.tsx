@@ -1,13 +1,13 @@
-import { ReactElement, useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import {
   Box,
   createTheme,
-  Divider,
+  CssBaseline,
   PaletteMode,
   Stack,
   ThemeProvider,
 } from '@mui/material';
-import { ActivateDeactivateWallet, Navbar, UserStory } from './components';
+import { Navbar, UserStory } from './components';
 
 const App = (): ReactElement => {
   const [mode, setMode] = useState<PaletteMode>('light');
@@ -19,23 +19,23 @@ const App = (): ReactElement => {
   });
 
   return (
-    <ThemeProvider theme={themeMode}>
-      <Box
-        bgcolor={'background.default'}
-        color={'text.primary'}
-        sx={{
-          display: 'grid',
-          gridGap: '20px',
-        }}
-      >
+    <React.Fragment>
+      <CssBaseline />
+      <ThemeProvider theme={themeMode}>
         <Navbar setMode={setMode} mode={mode} />
-        <Stack direction='column' spacing={2} justifyContent='space-between'>
-          <ActivateDeactivateWallet />
-          <Divider />
-          <UserStory />
-        </Stack>
-      </Box>
-    </ThemeProvider>
+        <Box
+          bgcolor={'background.default'}
+          color={'text.primary'}
+          sx={{
+            padding: 2,
+          }}
+        >
+          <Stack direction='column' spacing={4}>
+            <UserStory />
+          </Stack>
+        </Box>
+      </ThemeProvider>
+    </React.Fragment>
   );
 };
 
