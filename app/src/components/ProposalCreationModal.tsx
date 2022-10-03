@@ -1,19 +1,20 @@
 import {
+  Alert,
+  AlertTitle,
   Backdrop,
   Box,
   Button,
   Fade,
   Modal,
   Stack,
-  TextField,
-  Typography,
+  TextField
 } from '@mui/material';
 import { Contract, utils } from 'ethers';
 import React, {
   ChangeEvent,
   FunctionComponent,
   ReactElement,
-  useState,
+  useState
 } from 'react';
 
 type ProposalCreationModalProps = {
@@ -106,14 +107,10 @@ const ProposalCreationModal: FunctionComponent<ProposalCreationModalProps> = ({
   // Show Error Message if User is not on Development Network
   if (error && error.name === 'UnsupportedChainIdError') {
     return (
-      <Box>
-        <Typography variant='h2'>
-          Please connect to a Development Network
-        </Typography>
-        <Typography variant='subtitle2'>
-          This decentralized Application only works on the Development Goerli
-        </Typography>
-      </Box>
+      <Alert onClose={() => {}} severity='error' variant='outlined'>
+        <AlertTitle>Wrong Network</AlertTitle>
+        Please connect to Network Goerli!
+      </Alert>
     );
   }
 
