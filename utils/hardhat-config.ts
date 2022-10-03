@@ -46,9 +46,9 @@ export const THRESHOLD: number = 0;
 /*
 Time Lock Controller
 The passed Vote has to wait a Delay before it can be executed
-A Vote has to pass 3600 Seconds before it can be enacted
+A Vote has to pass 300 Seconds (5 Minutes) before it can be enacted
 */
-export const MIN_DELAY: number = 3600;
+export const MIN_DELAY: number = 300;
 export const PROPOSERS: string[] = [];
 export const EXECUTORS: string[] = [];
 
