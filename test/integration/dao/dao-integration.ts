@@ -43,7 +43,7 @@ const daoIntegration = async (): Promise<void> => {
       let transactionResponse = await deployedGovernanceToken.delegate(
         owner.address
       );
-      await transactionResponse.wait(1);
+      await transactionResponse.wait();
 
       const timeLock = await ethers.getContractFactory('TimeLock');
       deployedTimeLock = await timeLock.deploy(MIN_DELAY, [], []);
@@ -74,7 +74,7 @@ const daoIntegration = async (): Promise<void> => {
       const transferTx = await deployedUserStoryTreasury.transferOwnership(
         deployedTimeLock.address
       );
-      await transferTx.wait(1);
+      await transferTx.wait();
 
       // Granting Roles to the relevant Parties
       const proposerRole = await deployedTimeLock.PROPOSER_ROLE();
@@ -84,18 +84,18 @@ const daoIntegration = async (): Promise<void> => {
         proposerRole,
         deployedDaoGovernor.address
       );
-      await proposerTx.wait(1);
+      await proposerTx.wait();
 
       const executorTx = await deployedTimeLock.grantRole(
         executorRole,
         ethers.constants.AddressZero
       );
-      await executorTx.wait(1);
+      await executorTx.wait();
       const revokeTx = await deployedTimeLock.revokeRole(
         adminRole,
         owner.address
       );
-      await revokeTx.wait(1);
+      await revokeTx.wait();
     });
 
     it('should store User Story only through Governance', async () => {
@@ -120,7 +120,7 @@ const daoIntegration = async (): Promise<void> => {
         PROPOSAL_DESCRIPTION
       );
       await moveBlocks(VOTING_DELAY + 1);
-      const proposeTransactionReceipt = await proposeTransaction.wait(1);
+      const proposeTransactionReceipt = await proposeTransaction.wait();
       const proposalId = proposeTransactionReceipt.events![0].args!.proposalId;
       console.log(`Proposed with Proposal ID: ${proposalId}`);
 
@@ -158,7 +158,7 @@ const daoIntegration = async (): Promise<void> => {
         voteType,
         reason
       );
-      const voteTransactionReceipt = await voteTransaction.wait(1);
+      const voteTransactionReceipt = await voteTransaction.wait();
       // Check that `owner` has voted
       assert.equal(
         await deployedDaoGovernor.hasVoted(proposalId, owner.address),
@@ -208,7 +208,7 @@ const daoIntegration = async (): Promise<void> => {
         [encodedFunctionCall],
         descriptionHash
       );
-      await queueTransaction.wait(1);
+      await queueTransaction.wait();
       await moveTime(MIN_DELAY + 1);
       await moveBlocks(1);
 
@@ -220,7 +220,7 @@ const daoIntegration = async (): Promise<void> => {
         [encodedFunctionCall],
         descriptionHash
       );
-      await executeTransaction.wait(1);
+      await executeTransaction.wait();
       const newUserStory =
         await deployedUserStoryTreasury.retrieveAllUserStories();
       console.log(`New User Story is ${newUserStory.toString()}`);
@@ -238,7 +238,7 @@ const daoIntegration = async (): Promise<void> => {
       const transactionResponse = await deployedGovernanceToken.delegate(
         otherUser.address
       );
-      await transactionResponse.wait(1);
+      await transactionResponse.wait();
 
       // Creating Proposal
       console.log('Creating Proposal');
@@ -255,7 +255,7 @@ const daoIntegration = async (): Promise<void> => {
         PROPOSAL_DESCRIPTION
       );
       await moveBlocks(VOTING_DELAY + 1);
-      const proposeTransactionReceipt = await proposeTransaction.wait(1);
+      const proposeTransactionReceipt = await proposeTransaction.wait();
       const proposalId = proposeTransactionReceipt.events![0].args!.proposalId;
       console.log(`Proposed with Proposal ID: ${proposalId}`);
 
@@ -287,7 +287,7 @@ const daoIntegration = async (): Promise<void> => {
         voteType,
         reason
       );
-      let voteTransactionReceipt = await voteTransaction.wait(1);
+      let voteTransactionReceipt = await voteTransaction.wait();
       // Check that `owner` has voted
       assert.equal(
         await deployedDaoGovernor.hasVoted(proposalId, owner.address),
@@ -310,7 +310,7 @@ const daoIntegration = async (): Promise<void> => {
         voteType,
         reason
       );
-      voteTransactionReceipt = await voteTransaction.wait(1);
+      voteTransactionReceipt = await voteTransaction.wait();
       // Check that `otherUser` has voted
       assert.equal(
         await deployedDaoGovernor.hasVoted(proposalId, otherUser.address),
@@ -356,7 +356,7 @@ const daoIntegration = async (): Promise<void> => {
         [encodedFunctionCall],
         descriptionHash
       );
-      await queueTransaction.wait(1);
+      await queueTransaction.wait();
       await moveTime(MIN_DELAY + 1);
       await moveBlocks(1);
 
@@ -368,7 +368,7 @@ const daoIntegration = async (): Promise<void> => {
         [encodedFunctionCall],
         descriptionHash
       );
-      await executeTransaction.wait(1);
+      await executeTransaction.wait();
       const newUserStory =
         await deployedUserStoryTreasury.retrieveAllUserStories();
       console.log(`New User Story is ${newUserStory.toString()}`);

@@ -46,7 +46,7 @@ const queueAndExecuteProposal = async () => {
     [encodedFunctionCall],
     descriptionHash
   );
-  await queueTransaction.wait(1);
+  await queueTransaction.wait();
   /*
   `MIN_DELAY` gives the Users some Time to check the Proposal before it is executed
   If working on Development Network, then Time and Blocks will be pushed forward until the Voting Period is over
@@ -68,7 +68,7 @@ const queueAndExecuteProposal = async () => {
     [encodedFunctionCall],
     descriptionHash
   );
-  await executeTransaction.wait(1);
+  await executeTransaction.wait();
   console.log('Proposal executed');
   // Retrieving new Value that has been proposed, voted for and executed
   const allUserStories = await userStoryTreasury.retrieveAllUserStories();

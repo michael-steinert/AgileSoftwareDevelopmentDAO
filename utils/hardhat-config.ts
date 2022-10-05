@@ -24,7 +24,7 @@ export const networkConfig: networkConfigInfo = {
 };
 
 export const developmentChains = ['hardhat', 'localhost'];
-export const proposalsFile = 'proposals.json';
+export const proposalsFile = './proposals.json';
 
 /*
 Governor
@@ -35,11 +35,11 @@ Quorum is the Percentage of total Supply of Token Holders needed to vote on a Pr
 export const QUORUM_PERCENTAGE: number = 80;
 /*
 Length of Period during which Token Holders can cast their Vote
-The Vote has to last over 5 Blocks
+The Vote has to last over 42 Blocks
 */
-export const VOTING_PERIOD: number = 5;
+export const VOTING_PERIOD: number = 42;
 // Delay since Proposal is created until Voting starts
-export const VOTING_DELAY: number = 3;
+export const VOTING_DELAY: number = 1;
 // Minimum Number of Votes an Account must have to create a Proposal
 export const THRESHOLD: number = 0;
 

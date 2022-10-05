@@ -26,7 +26,7 @@ const voteForProposal = async () => {
     voteType,
     reasonForVote
   );
-  const voteTransactionResult = await voteTransaction.wait(1);
+  const voteTransactionResult = await voteTransaction.wait();
   console.log(voteTransactionResult.events[0].args.reason);
   const proposalState = await daoGovernor.state(proposalId);
   console.log(`Current Proposal State is ${proposalState}`);

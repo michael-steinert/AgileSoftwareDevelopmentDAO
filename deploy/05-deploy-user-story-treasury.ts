@@ -47,7 +47,7 @@ const deployUserStoryTreasury: DeployFunction = async (
   );
   const transferOwnershipTransaction =
     await userStoryTreasury.transferOwnership(TimeLock.address);
-  await transferOwnershipTransaction.wait(1);
+  await transferOwnershipTransaction.wait();
 };
 
 export default deployUserStoryTreasury;

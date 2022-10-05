@@ -62,7 +62,7 @@ const proposeProposal = async (
   if (developmentChains.includes(network.name)) {
     await moveBlocks(VOTING_DELAY + 1);
   }
-  const proposeTransactionResult = await proposeTransaction.wait(1);
+  const proposeTransactionResult = await proposeTransaction.wait();
   // Getting `proposalId` from Event `ProposalCreated`
   const proposalId = proposeTransactionResult.events[0].args.proposalId;
   console.log(`Proposed with Proposal ID:\n  ${proposalId}`);
