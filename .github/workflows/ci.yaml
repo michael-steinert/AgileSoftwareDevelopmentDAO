@@ -18,7 +18,7 @@ jobs:
       - run: npx hardhat compile
   test:
     runs-on: ubuntu-20.04
-    needs: build
+    needs: compile
     name: Test
     steps:
       - uses: actions/checkout@v2
