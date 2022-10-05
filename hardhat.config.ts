@@ -51,7 +51,7 @@ const config: HardhatUserConfig = {
     },
   },
   solidity: {
-    version: '0.8.13',
+    version: '0.8.17',
     settings: {
       optimizer: {
         enabled: true,
@@ -92,12 +92,6 @@ const config: HardhatUserConfig = {
     tests: './test',
     cache: './cache',
     artifacts: './app/src/artifacts',
-  },
-  typechain: {
-    outDir: 'typechain-types',
-    target: 'ethers-v5',
-    alwaysGenerateOverloads: false,
-    dontOverrideCompile: false,
   },
   mocha: {
     // Timeout after 200 Seconds for running Tests

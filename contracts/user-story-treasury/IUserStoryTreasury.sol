@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.17;
 
 // Interface for Smart Contract `UserStoryTreasury`
 abstract contract IUserStoryTreasury {
