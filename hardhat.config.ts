@@ -11,7 +11,9 @@ import { HardhatUserConfig } from 'hardhat/config';
 
 const GOERLI_RPC_URL = process.env.GOERLI_RPC_URL || '';
 const MUMBAI_RPC_URL = process.env.MUMBAI_RPC_URL || '';
-const PRIVATE_KEY = process.env.PRIVATE_KEY || '';
+const PRIVATE_KEY =
+  process.env.PRIVATE_KEY ||
+  '00000000000000000000000000000000000000000000000000000000';
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || '';
 const POLYGONSCAN_API_KEY = process.env.POLYGONSCAN_API_KEY || '';
 const COINMARKETCAP_API_KEY = process.env.COINMARKETCAP_API_KEY || '';

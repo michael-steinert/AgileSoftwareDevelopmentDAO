@@ -39,8 +39,9 @@ const UserStoryTable: FunctionComponent<UserStoryTableProps> = ({
     retrieveAllUserStories(userStoryTreasury!).catch(console.error);
 
     // Listen on emitted Event to update the Data in Real-Time
-    const onUserStoryCreated =
-      () =>
+    // Subscribe to Event Calling Listener when the Event `UserStoryCreated` occurs
+    userStoryTreasury?.on(
+      'UserStoryCreated',
       (
         creator: string,
         userStoryNumber: number,
@@ -65,10 +66,8 @@ const UserStoryTable: FunctionComponent<UserStoryTableProps> = ({
             },
           ];
         });
-      };
-
-    // Subscribe to Event Calling Listener when the Event `UserStoryCreated` occurs
-    userStoryTreasury?.on('UserStoryCreated', onUserStoryCreated);
+      }
+    );
   }, [userStoryTreasury]);
 
   return (

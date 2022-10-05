@@ -37,9 +37,8 @@ const UserStory: FunctionComponent = (): ReactElement => {
 
   useEffect((): void => {
     // Listen on emitted Event to update the Data in Real-Time
-    const onProposalCreated =
-      () =>
-      (
+    // Subscribe to Event Calling Listener when the Event `ProposalCreated` occurs
+    daoGovernor?.on('ProposalCreated', (
         proposalId: number,
         proposer: string,
         targets: any,
@@ -65,10 +64,7 @@ const UserStory: FunctionComponent = (): ReactElement => {
             },
           ];
         });
-      };
-
-    // Subscribe to Event Calling Listener when the Event `ProposalCreated` occurs
-    daoGovernor?.on('ProposalCreated', onProposalCreated);
+      });
   }, [daoGovernor, userStoryTreasury]);
 
   return (
