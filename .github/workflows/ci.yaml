@@ -1,0 +1,29 @@
+name: UI CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  compile:
+    runs-on: ubuntu-20.04
+    name: Compile
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '16'
+      - run: npm install
+      - run: npx hardhat compile
+  test:
+    runs-on: ubuntu-20.04
+    needs: build
+    name: Test
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '16'
+      - run: npm install
+      - run: npx hardhat test
