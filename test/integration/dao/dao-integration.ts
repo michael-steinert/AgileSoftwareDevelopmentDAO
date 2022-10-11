@@ -240,7 +240,7 @@ const daoIntegration = async (): Promise<void> => {
     /* 
     Test Scenario
     1. Add an initial Member - the Founder of DAO
-    2. Add another Member and issue him Governance Tokens worth Half of the Founder’s Share
+    2. Add another Member and issue him Governance Tokens worth 24% (10 of 42 Governance Tokens) of the Founder’s Share
     3. The Founder creates a Proposal - he proposes a Function to be executed on a Target Smart Contract
     4. The Founder and other Member votes on the created Proposal, it will pass since the Quorum is reached of 80%
     5. Execute the Proposal - and thus the Function inside the Target Smart Contract
@@ -250,8 +250,8 @@ const daoIntegration = async (): Promise<void> => {
       const otherSigner = await ethers.getSigner(otherUser.address);
       const deployedGovernanceTokenOtherUser =
         await deployedGovernanceToken.connect(otherSigner);
-      // Issuing Half of Governance Tokens to another User - the Initial Supply is 42 Governance Tokens
-      await deployedGovernanceTokenOtherUser.issueToken(otherUser.address, 21);
+      // Issuing 10 of possible 42 Governance Tokens to another User - the Initial Supply is 42 Governance Tokens
+      await deployedGovernanceTokenOtherUser.issueToken(otherUser.address, 10);
       /*
       Setting the other User as Delegate of the Governance Token
       The Other User can not vote until he is add as a Delegate of the Governance Token
