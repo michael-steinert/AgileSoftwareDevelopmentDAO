@@ -7,7 +7,7 @@ import {
   THRESHOLD,
   VOTING_DELAY,
   VOTING_PERIOD,
-} from '../utils/hardhat-config';
+} from '../utils/dao-config';
 import verifyContract from '../utils/verify-contract';
 
 const deployDaoGovernor: DeployFunction = async (

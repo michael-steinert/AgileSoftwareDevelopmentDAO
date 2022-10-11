@@ -2,7 +2,7 @@ import { ethers } from 'hardhat';
 import { DeployFunction } from 'hardhat-deploy/types';
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { UserStoryTreasury } from '../typechain-types';
-import { developmentChains, networkConfig } from '../utils/hardhat-config';
+import { developmentChains, networkConfig } from '../utils/dao-config';
 import verifyContract from '../utils/verify-contract';
 
 const deployUserStoryTreasury: DeployFunction = async (

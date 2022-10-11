@@ -7,7 +7,7 @@ import {
   MIN_DELAY,
   NEW_USER_STORY,
   PROPOSAL_DESCRIPTION,
-} from '../utils/hardhat-config';
+} from '../utils/dao-config';
 import { moveBlocks } from '../utils/move-blocks';
 import { moveTime } from '../utils/move-time';
 

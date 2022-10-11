@@ -6,7 +6,7 @@ import {
   MIN_DELAY,
   networkConfig,
   PROPOSERS,
-} from '../utils/hardhat-config';
+} from '../utils/dao-config';
 import verifyContract from '../utils/verify-contract';
 
 const deployTimeLock: DeployFunction = async (

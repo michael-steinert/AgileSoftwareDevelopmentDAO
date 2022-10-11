@@ -4,7 +4,7 @@ import {
   developmentChains,
   proposalsFile,
   VOTING_PERIOD,
-} from '../utils/hardhat-config';
+} from '../utils/dao-config';
 import { moveBlocks } from '../utils/move-blocks';
 
 const voteForProposal = async () => {

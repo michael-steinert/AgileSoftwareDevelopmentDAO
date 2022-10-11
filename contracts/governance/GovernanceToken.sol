@@ -27,6 +27,7 @@ contract GovernanceToken is ERC20Votes {
         _mint(to, amount);
     }
 
+    // The Functions below are Overrides required by Solidity
     // Update Balances to know how many Votes the Users have depending on the Checkpoint (certain Block)
     function _afterTokenTransfer(
         address from,
@@ -38,7 +39,7 @@ contract GovernanceToken is ERC20Votes {
     }
 
     function _mint(address to, uint256 amount) internal override(ERC20Votes) {
-        // `_afterTokenTransfer` of `ERC20Votes`
+        // `_mint` of `ERC20Votes`
         super._mint(to, amount);
     }
 
@@ -46,6 +47,7 @@ contract GovernanceToken is ERC20Votes {
         internal
         override(ERC20Votes)
     {
+        // `_burn` of `ERC20Votes`
         super._burn(account, amount);
     }
 }

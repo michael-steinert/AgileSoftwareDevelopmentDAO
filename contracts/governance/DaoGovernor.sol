@@ -124,6 +124,7 @@ contract DaoGovernor is
         return super.propose(targets, values, calldatas, description);
     }
 
+    // The Functions below are Overrides required by Solidity
     /*
     Execute a successful Proposal after a Delay from `TimelockController`
     This requires the Quorum to be reached, the Vote to be successful, and the Deadline to be reached

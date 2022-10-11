@@ -26,8 +26,13 @@ export const networkConfig: networkConfigInfo = {
 export const developmentChains = ['hardhat', 'localhost'];
 export const proposalsFile = './proposals.json';
 
+// Governance Token
+export const TOKEN_NAME: string = 'SCRUM Token';
+export const TOKEN_SYMBOL: string = 'SCRUM';
+export const TOKEN_INITIAL_SUPPLY: number = 42;
+
 /*
-Governor
+DAO Governor
 Quorum required for a Proposal to pass - A Proposal needs 80% of Voters to vote for it to pass
 Quorum is the Percentage of total Supply of Token Holders needed to vote on a Proposal
 80% of the Token Holders have to vote for a Proposal to be

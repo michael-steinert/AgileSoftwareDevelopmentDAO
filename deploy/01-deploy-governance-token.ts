@@ -1,7 +1,13 @@
 import { ethers } from 'hardhat';
 import { DeployFunction } from 'hardhat-deploy/types';
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
-import { developmentChains, networkConfig } from '../utils/hardhat-config';
+import {
+  developmentChains,
+  TOKEN_INITIAL_SUPPLY,
+  networkConfig,
+  TOKEN_NAME,
+  TOKEN_SYMBOL,
+} from '../utils/dao-config';
 import verifyContract from '../utils/verify-contract';
 
 const deployGovernanceToken: DeployFunction = async (
@@ -15,7 +21,7 @@ const deployGovernanceToken: DeployFunction = async (
   log('Deploying Governance Token and waiting for Confirmations');
   const governanceToken = await deploy('GovernanceToken', {
     from: deployer,
-    args: ['SCRUM Token', 'SCRUM', (42 * 10 ** 18).toString()],
+    args: [TOKEN_NAME, TOKEN_SYMBOL, TOKEN_INITIAL_SUPPLY],
     log: true,
     // Waiting some Block Confirmation in Order to verify properly the Smart Contract
     waitConfirmations: networkConfig[network.name].blockConfirmations || 1,
@@ -26,7 +32,7 @@ const deployGovernanceToken: DeployFunction = async (
       'GovernanceToken',
       governanceToken.address,
       network.name,
-      ['SCRUM Token', 'SCRUM', (42 * 10 ** 18).toString()]
+      [TOKEN_NAME, TOKEN_SYMBOL, TOKEN_INITIAL_SUPPLY]
     );
   }
   log(`Delegating to ${deployer} in Process`);

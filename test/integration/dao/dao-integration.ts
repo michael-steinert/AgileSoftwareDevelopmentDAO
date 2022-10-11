@@ -9,9 +9,12 @@ import {
   PROPOSAL_DESCRIPTION,
   QUORUM_PERCENTAGE,
   THRESHOLD,
+  TOKEN_INITIAL_SUPPLY,
+  TOKEN_NAME,
+  TOKEN_SYMBOL,
   VOTING_DELAY,
   VOTING_PERIOD,
-} from '../../../utils/hardhat-config';
+} from '../../../utils/dao-config';
 import { moveBlocks } from '../../../utils/move-blocks';
 import { moveTime } from '../../../utils/move-time';
 
@@ -33,13 +36,13 @@ const daoIntegration = async (): Promise<void> => {
         'GovernanceToken'
       );
       deployedGovernanceToken = await governanceToken.deploy(
-        'SCRUM Token',
-        'SCRUM',
-        (42 * 10 ** 18).toString()
+        TOKEN_NAME,
+        TOKEN_SYMBOL,
+        TOKEN_INITIAL_SUPPLY
       );
       await deployedGovernanceToken.deployed();
 
-      // Delegating Governance Token / Voting Weight to User
+      // Setting the Owner as Delegate of the Governance Token - this allows him to vote
       let transactionResponse = await deployedGovernanceToken.delegate(
         owner.address
       );
@@ -71,31 +74,32 @@ const daoIntegration = async (): Promise<void> => {
       await deployedUserStoryTreasury.deployed();
 
       // Transfer Ownership to TimeLock Contract so that it can execute the Operation
-      const transferTx = await deployedUserStoryTreasury.transferOwnership(
-        deployedTimeLock.address
-      );
-      await transferTx.wait();
+      const transferTransaction =
+        await deployedUserStoryTreasury.transferOwnership(
+          deployedTimeLock.address
+        );
+      await transferTransaction.wait();
 
       // Granting Roles to the relevant Parties
       const proposerRole = await deployedTimeLock.PROPOSER_ROLE();
       const executorRole = await deployedTimeLock.EXECUTOR_ROLE();
       const adminRole = await deployedTimeLock.TIMELOCK_ADMIN_ROLE();
-      const proposerTx = await deployedTimeLock.grantRole(
+      const proposerTransaction = await deployedTimeLock.grantRole(
         proposerRole,
         deployedDaoGovernor.address
       );
-      await proposerTx.wait();
+      await proposerTransaction.wait();
 
-      const executorTx = await deployedTimeLock.grantRole(
+      const executorTransaction = await deployedTimeLock.grantRole(
         executorRole,
         ethers.constants.AddressZero
       );
-      await executorTx.wait();
-      const revokeTx = await deployedTimeLock.revokeRole(
+      await executorTransaction.wait();
+      const revokeTransaction = await deployedTimeLock.revokeRole(
         adminRole,
         owner.address
       );
-      await revokeTx.wait();
+      await revokeTransaction.wait();
     });
 
     it('should store User Story only through Governance', async () => {
@@ -104,6 +108,13 @@ const daoIntegration = async (): Promise<void> => {
       ).to.be.revertedWith('Ownable: caller is not the owner');
     });
 
+    /* 
+    Test Scenario
+    1. Add an initial Member - the Founder of DAO
+    2. The Founder creates a Proposal - he proposes a Function to be executed on a Target Smart Contract
+    3. The Founder votes on the created Proposal, it will pass since Founder has 100% of the Vote Share
+    4. Execute the Proposal - and thus the Function inside the Target Smart Contract
+    */
     it('Testing Creation, Voting and Execution of Proposal by single User', async () => {
       // Creating Proposal
       console.log('Creating Proposal');
@@ -226,15 +237,27 @@ const daoIntegration = async (): Promise<void> => {
       console.log(`New User Story is ${newUserStory.toString()}`);
     });
 
+    /* 
+    Test Scenario
+    1. Add an initial Member - the Founder of DAO
+    2. Add another Member and issue him Governance Tokens worth Half of the Founder’s Share
+    3. The Founder creates a Proposal - he proposes a Function to be executed on a Target Smart Contract
+    4. The Founder and other Member votes on the created Proposal, it will pass since the Quorum is reached of 80%
+    5. Execute the Proposal - and thus the Function inside the Target Smart Contract
+    */
     it('Create another User, issue Governance Token, both Users voting to match over 80% Quorum and Execution', async () => {
       // Adding another User to DAO
-      const signer = await ethers.getSigner(otherUser.address);
-      const deployedGovernanceOtherUser = await deployedGovernanceToken.connect(
-        signer
-      );
-      // Issuing Tokens to another User
-      await deployedGovernanceOtherUser.issueToken(otherUser.address, 200);
-      // Delegating Governance Token / Voting Weight to `otherUser`
+      const otherSigner = await ethers.getSigner(otherUser.address);
+      const deployedGovernanceTokenOtherUser =
+        await deployedGovernanceToken.connect(otherSigner);
+      // Issuing Half of Governance Tokens to another User - the Initial Supply is 42 Governance Tokens
+      await deployedGovernanceTokenOtherUser.issueToken(otherUser.address, 21);
+      /*
+      Setting the other User as Delegate of the Governance Token
+      The Other User can not vote until he is add as a Delegate of the Governance Token
+      The Delegation allows Members who have Governance Tokens and do not want to participate in Decision Making do not to do it
+      By Avoiding the Delegation the Members do not need to spend extra Gas on Maintaining the Snapshots of their Voting Power on Ledger
+      */
       const transactionResponse = await deployedGovernanceToken.delegate(
         otherUser.address
       );
@@ -302,7 +325,7 @@ const daoIntegration = async (): Promise<void> => {
 
       // Second User is voting
       const deployedDaoGovernorOtherUser = await deployedDaoGovernor.connect(
-        signer
+        otherSigner
       );
       // Second User is casting a Vote with Reason
       voteTransaction = await deployedDaoGovernorOtherUser.castVoteWithReason(

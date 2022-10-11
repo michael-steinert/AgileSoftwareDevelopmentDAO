@@ -7,7 +7,7 @@ import {
   proposalsFile,
   PROPOSAL_DESCRIPTION,
   VOTING_DELAY,
-} from '../utils/hardhat-config';
+} from '../utils/dao-config';
 import { moveBlocks } from '../utils/move-blocks';
 
 type UserStory = [
