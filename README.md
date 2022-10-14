@@ -1,8 +1,3 @@
-# TODOs
-
-- Front End reacts on emitted Events (hardhat) from Smart Contracts
-- Front End using a Poll to vote (npm: react-polls)
-
 # Tally
 
 - Tally is a full-fledged Application for user-owned on-chain Governance
@@ -15,7 +10,7 @@
 - They are communally governed through democratic Processes, facilitated through Smart Contracts that lay out a clear and specific Set of Rules for the Organization
 - They offer a transparent and decentralized Way to crowd-source Decisions
 - A DAO is a collective Entity owned and operated by its Community Members
-- Funds are stored in their in the Treasury of the DAO and are governed by Smart Contracts, which means DAOs do not have to rely on Intermediate (like Banks) to store their Funds
+- Funds are stored in their in the Treasury of the DAO and are governed by Smart Contracts, which means DAOs do not rely on Intermediate to store their Funds
 - There is no central Authority within the Organization
 - Decisions are executed via Proposals and Voting, this ensures Fairness and Equality amongst its Owners (Community Members)
 - DAOs allow everyone to have a Voice within the Proposal and Voting
@@ -24,7 +19,6 @@
 
   - distributes Decision-Making Power
   - shares Ownership amongst Participants
-  - automates exception to Decisions
   - are cryptographically secured and transparent
 
 - Smart Contracts are a Computer Programs that run on the Blockchain, they are executed once pre-determined Conditions are met

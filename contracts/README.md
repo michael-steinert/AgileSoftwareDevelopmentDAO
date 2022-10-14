@@ -58,7 +58,7 @@
 - If a Majority, at least 80% of possible Votes are cast for the Proposal, it is queued in the `TimeLock`, and can be executed after 2 Days
 - In Total, the Creation of a User Story takes at least one Week (7 Days)
 
-![governance-process](https://user-images.githubusercontent.com/29623199/192141281-fdda1252-a923-46db-96e6-27fdf8d90ebc.png)
+![governance-process](https://user-images.githubusercontent.com/29623199/195898545-cd47cddc-5f1e-49e6-9314-c5e05952ac6c.png)
 
 # OpenZeppelin Governance Token
 
