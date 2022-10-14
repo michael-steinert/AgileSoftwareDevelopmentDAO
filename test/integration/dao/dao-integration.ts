@@ -43,10 +43,10 @@ const daoIntegration = async (): Promise<void> => {
       await deployedGovernanceToken.deployed();
 
       // Setting the Owner as Delegate of the Governance Token - this allows him to vote
-      let transactionResponse = await deployedGovernanceToken.delegate(
+      const delegationTransaction = await deployedGovernanceToken.delegate(
         owner.address
       );
-      await transactionResponse.wait();
+      await delegationTransaction.wait();
 
       const timeLock = await ethers.getContractFactory('TimeLock');
       deployedTimeLock = await timeLock.deploy(MIN_DELAY, [], []);
@@ -258,10 +258,10 @@ const daoIntegration = async (): Promise<void> => {
       The Delegation allows Members who have Governance Tokens and do not want to participate in Decision Making do not to do it
       By Avoiding the Delegation the Members do not need to spend extra Gas on Maintaining the Snapshots of their Voting Power on Ledger
       */
-      const transactionResponse = await deployedGovernanceToken.delegate(
+      const delegationTransaction = await deployedGovernanceToken.delegate(
         otherUser.address
       );
-      await transactionResponse.wait();
+      await delegationTransaction.wait();
 
       // Creating Proposal
       console.log('Creating Proposal');
