@@ -30,8 +30,14 @@ contract TimeLock is TimelockController {
         The Admin Role can grant and revoke the two Roles Proposer ans Executor
         The Admin Role will be granted automatically to both Deployer and TimeLock itself, but should be renounced by the Deployer after Setup
         */
-        address[] memory executors
-    ) TimelockController(minDelay, proposers, executors) {
+        address[] memory executors,
+        /*
+        Optional Account to be granted Admin Role
+        The optional Admin can help with the initial Configuration of Roles after Deployment without causing Delays
+        This Role should be later renounced in Favour of Administration through timelocked Proposals
+        */
+        address admin
+    ) TimelockController(minDelay, proposers, executors, admin) {
         /*
         The Proposer Role is in Charge of Queueing Operations - this is the Role the Governor Contract should be granted, and it should likely be the only Proposer in the System
         The Executor Role is in Charge of Executing already available Operations - this Role can be assigned to the Zero Address to allow anyone to execute Proposals

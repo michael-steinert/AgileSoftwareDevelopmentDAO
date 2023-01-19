@@ -19,7 +19,7 @@ const deployTimeLock: DeployFunction = async (
   log('Deploying Time Lock Controller and waiting for Confirmations');
   const timeLock = await deploy('TimeLock', {
     from: deployer,
-    args: [MIN_DELAY, PROPOSERS, EXECUTORS],
+    args: [MIN_DELAY, PROPOSERS, EXECUTORS, deployer],
     log: true,
     // Waiting some Block Confirmation in Order to verify properly the Smart Contract
     waitConfirmations: networkConfig[network.name].blockConfirmations || 1,
