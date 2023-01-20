@@ -29,6 +29,7 @@ const deployTimeLock: DeployFunction = async (
       MIN_DELAY,
       PROPOSERS,
       EXECUTORS,
+      deployer,
     ]);
   }
   log(`Time Lock Controller at ${timeLock.address}`);
