@@ -8,7 +8,7 @@ import './index.css';
 const DAPP_CONFIG = {
   readOnlyChainId: Goerli.chainId || 5,
   readOnlyUrls: {
-    [Goerli.chainId]: process.env.REACT_APP_GOERLI_RPC_URL || '',
+    [Goerli.chainId]: import.meta.env.VITE_GOERLI_RPC_URL || '',
   },
 };
 
