@@ -344,7 +344,11 @@ const daoIntegration = async (): Promise<void> => {
         await deployedDaoGovernor.hasVoted(proposalId, deployer.address),
         true
       );
-      console.log(voteTransactionReceipt.events![0].args!.reason);
+      console.log(
+        `User #1 voted for Proposal with Description: ${
+          voteTransactionReceipt.events![0].args!.reason
+        }`
+      );
 
       proposalState = await deployedDaoGovernor.state(proposalId);
       // Proposal State 1 it is active
@@ -366,7 +370,11 @@ const daoIntegration = async (): Promise<void> => {
         await deployedDaoGovernor.hasVoted(proposalId, otherUser.address),
         true
       );
-      console.log(voteTransactionReceipt.events![0].args!.reason);
+      console.log(
+        `User #2 voted for Proposal with Description: ${
+          voteTransactionReceipt.events![0].args!.reason
+        }`
+      );
 
       proposalState = await deployedDaoGovernor.state(proposalId);
       console.log(`Current Proposal State: ${proposalState}`);
